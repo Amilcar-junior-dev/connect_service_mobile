@@ -1,0 +1,56 @@
+import { vars } from "nativewind";
+
+export const Theme = {
+  light: {
+    vars: vars({
+     "--color-background": "255 255 255",
+      "--color-tab": "244 244 244",
+      "--color-text-primary": "30 30 45",
+      "--color-text-secondary": "162 162 167",
+      "--color-warning-red": "234 0 27",
+      "--color-warning-yellow": "247 159 26",
+      "--color-primary-blue": "0 102 255",
+      "--color-secondary-blue": "75 91 152",
+      "--color-card-background": "39 35 61",
+      "--color-border": "244 244 244",
+    }),
+    colors: {
+      background:  "rgba(255 255 255)",
+      tab: "rgba(244 244 244)",
+      textPrimary: "rgba(30 30 45)",
+      textSecondary: "rgba(162 162 167)",
+      warningRed: "rgba(234 0 27)",
+      warningYellow: "rgba(247 159 26)",
+      primaryBlue: "rgba(0 102 255)",
+      secondaryBlue: "rgba(75 91 152)",
+      cardBackground: "rgba(39 35 61)",
+      border: "rgba(244 244 244)",
+    },
+  },
+  dark: {
+    vars: vars({
+       "--color-background": "22 22 34",
+      "--color-tab": "39 39 58",
+      "--color-text-primary": "255 255 255",
+      "--color-text-secondary": "162 162 167",
+      "--color-warning-red": "234 0 27",
+      "--color-warning-yellow": "247 159 26",
+      "--color-primary-blue": "0 102 255",
+      "--color-secondary-blue": "75 91 152",
+      "--color-card-background": "39 35 61",
+      "--color-border": "35 37 51",
+    }),
+    colors: {
+      background:  "rgba(22 22 34)",
+      tab: "rgba(39 39 58)",
+      textPrimary: "rgba(255 255 255)",
+      textSecondary: "rgba(162 162 167)",
+      warningRed: "rgba(234 0 27)",
+      warningYellow: "rgba(247 159 26)",
+      primaryBlue: "rgba(0 102 255)",
+      secondaryBlue:  "rgba(75 91 152)",
+      cardBackground: "rgba(39 35 61)",
+      border: "rgba(35 37 51)",
+    },
+  },
+};
