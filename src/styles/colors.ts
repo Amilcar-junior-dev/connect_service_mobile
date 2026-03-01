@@ -3,7 +3,7 @@ import { vars } from "nativewind";
 export const Theme = {
   light: {
     vars: vars({
-     "--color-background": "255 255 255",
+      "--color-background": "255 255 255",
       "--color-tab": "244 244 244",
       "--color-text-primary": "30 30 45",
       "--color-text-secondary": "162 162 167",
@@ -29,7 +29,7 @@ export const Theme = {
   },
   dark: {
     vars: vars({
-       "--color-background": "22 22 34",
+      "--color-background": "22 22 34",
       "--color-tab": "39 39 58",
       "--color-text-primary": "255 255 255",
       "--color-text-secondary": "162 162 167",

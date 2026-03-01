@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "connect_service",
-    "slug": "connect_service",
-    "scheme": "connect_service", 
+    "name": "connectservice",
+    "slug": "connectservice",
+    "scheme": "connectservice", 
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.connect_service.mybank"
+      "bundleIdentifier": "com.connectservice.mybank"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +24,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.connect_service.mybank"
+      "package": "com.connectservice.mybank"
     },
     "web": {
       "favicon": "./assets/favicon.png"
