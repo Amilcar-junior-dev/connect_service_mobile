@@ -10,7 +10,6 @@ export default function Index(){
       console.log("🚀 ~ index.tsx:8 ~ RootLayout ~ colorScheme:", colorScheme)
     //   const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
-
    
     return (
         <View  style={[activeTheme.vars]}  className={`flex-1 bg-background pl-4 pr-4 `}>
@@ -21,7 +20,7 @@ export default function Index(){
                     </View>
                     <View className={`w-full pl-4 `}>
                         <Text className={`text-textPrimary text-xs`}> Bem vindo de volta,</Text>
-                        <Text className={`text-textPrimary text-lg font-bold mt-1`}> Junior Oliveira </Text>
+                        <Text className={`text-textPrimary text-lg font-bold mt-1`}> FINANCIAL </Text>
                     </View>
                 </View>
                 <View className={`w-full h-52 mt-5 bg-slate-500`}>

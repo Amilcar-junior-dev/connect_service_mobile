@@ -8,6 +8,7 @@ module.exports = {
     extend: {
       colors: {
         background: "rgb(var(--color-background) / <alpha-value>)",
+        neutral: "rgb(var(--color-neutral) / <alpha-value>)",
         tab: "rgb(var(--color-tab) / <alpha-value>)",
         textPrimary: "rgb(var(--color-text-primary) / <alpha-value>)",
         textSecondary: "rgb(var(--color-text-secondary) / <alpha-value>)",

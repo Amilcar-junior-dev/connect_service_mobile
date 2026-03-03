@@ -4,7 +4,8 @@ export const Theme = {
   light: {
     vars: vars({
       "--color-background": "255 255 255",
-      "--color-tab": "244 244 244",
+      "--color-neutral": "217 217 217", // cor ajustada e adicionada
+      "--color-tab": "1, 22, 39", // cor ajustada e adicionada
       "--color-text-primary": "30 30 45",
       "--color-text-secondary": "162 162 167",
       "--color-warning-red": "234 0 27",
@@ -16,7 +17,8 @@ export const Theme = {
     }),
     colors: {
       background:  "rgba(255 255 255)",
-      tab: "rgba(244 244 244)",
+      neutral:  "rgba(217 217 217)", // cor ajustada e adicionada
+      tab: "rgb(1, 22, 39)", // cor ajustada e adicionada
       textPrimary: "rgba(30 30 45)",
       textSecondary: "rgba(162 162 167)",
       warningRed: "rgba(234 0 27)",
@@ -30,6 +32,7 @@ export const Theme = {
   dark: {
     vars: vars({
       "--color-background": "22 22 34",
+      "--color-neutral": "217 217 217",
       "--color-tab": "39 39 58",
       "--color-text-primary": "255 255 255",
       "--color-text-secondary": "162 162 167",
@@ -42,6 +45,7 @@ export const Theme = {
     }),
     colors: {
       background:  "rgba(22 22 34)",
+      neutral:  "rgba(217 217 217)", 
       tab: "rgba(39 39 58)",
       textPrimary: "rgba(255 255 255)",
       textSecondary: "rgba(162 162 167)",
