@@ -8,7 +8,7 @@ import { JSX } from 'react/jsx-runtime';
 export default function TabLayout() {
   return (
     <Tabs 
-     screenOptions={{ headerShown:false }}
+     screenOptions={{ headerShown:false, }}
      tabBar={(props: JSX.IntrinsicAttributes & BottomTabBarProps) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="home" />
