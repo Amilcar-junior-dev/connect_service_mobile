@@ -18,7 +18,14 @@ module.exports = {
         secondaryBlue: "rgb(var(--color-secondary-blue) / <alpha-value>)",
         cardBackground: "rgb(var(--color-card-background) / <alpha-value>)",
         border: "rgb(var(--color-border) / <alpha-value>)",
-        
+        lightBlue: "rgb(var(--color-light-blue) / <alpha-value>)",
+        lightGreen: "rgb(var(--color-light-green) / <alpha-value>)",
+        darkGreen: "rgb(var(--color-dark-green) / <alpha-value>)",
+      },
+      fontFamily: {
+        robotoRegular: ['Roboto_400Regular'],
+        robotoMedium: ['Roboto_500Medium'],
+        robotoBold: ['Roboto_700Bold'],
       },
     },
   },

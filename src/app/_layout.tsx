@@ -1,14 +1,35 @@
-import {Stack} from 'expo-router'
+import { Stack } from 'expo-router'
+import { useFonts } from 'expo-font'
+import {
+  Roboto_400Regular,
+  Roboto_500Medium,
+  Roboto_700Bold,
+} from '@expo-google-fonts/roboto'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import '~/styles/global.css' 
+import { useColorScheme } from 'nativewind'
+import { Theme } from '~/styles/colors'
+import '~/styles/global.css'
 
-export default function RouteLayout(){
-    return (
-         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name='login' options={{ headerShown: false }} />
-                <Stack.Screen name='register' options={{ headerShown: false }} />
-            </Stack>
-         </GestureHandlerRootView>
-    )
+export default function RouteLayout() {
+  const [fontsLoaded] = useFonts({
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold,
+  })
+
+  const { colorScheme } = useColorScheme()
+  const activeTheme = colorScheme === 'dark' ? Theme.dark : Theme.light
+
+  if (!fontsLoaded) {
+    return null
+  }
+
+  return (
+    <GestureHandlerRootView style={[{ flex: 1 }, activeTheme.vars]}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
+      </Stack>
+    </GestureHandlerRootView>
+  )
 }

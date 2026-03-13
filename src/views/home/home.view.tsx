@@ -18,11 +18,11 @@ export const HomeView: React.FC = ({
         >
             <SafeAreaView className={`flex-1`} >
                 <TopSheet>
-                    <View className="px-5 pb-8">
+                    {/* <View className="px-5 pb-8">
                     <Text className="text-xl font-bold">
                         Connect Service
                     </Text>
-                    </View>
+                    </View> */}
                 </TopSheet>
                
             </SafeAreaView>
