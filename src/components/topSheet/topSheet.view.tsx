@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
   interpolate,
   Extrapolation,
+  SharedValue,
 } from "react-native-reanimated";
 import {
   Gesture,
@@ -20,15 +21,13 @@ import MonthTag from '~/assets/svg/MonthTag.svg';
 import RealTag from '~/assets/svg/RealTag.svg';
 import DolarTag from '~/assets/svg/DolarTag.svg';
 
-import { Theme } from "~/styles/colors";
 import { useActiveTheme } from "~/hooks/colorScheme";
 
+interface TopSheetProps {
+  translateY: SharedValue<number>;
+}
 
-
-
-
-
-export function TopSheet() {
+export function TopSheet({ translateY }: TopSheetProps) {
   const { height } = Dimensions.get("window");
   const insets = useSafeAreaInsets();
   const {colors} = useActiveTheme()
@@ -40,7 +39,7 @@ export function TopSheet() {
   const MAX_TRANSLATE_Y = 0;
   const MIN_TRANSLATE_Y = -(EXPANDED_HEIGHT - COLLAPSED_HEIGHT);
 
-  const translateY = useSharedValue(MIN_TRANSLATE_Y);
+  // const translateY = useSharedValue(MIN_TRANSLATE_Y);
   const context = useSharedValue(0);
 
   const financialAnimatedStyle = useAnimatedStyle(() => {
@@ -50,6 +49,12 @@ export function TopSheet() {
       [0, 1],
       Extrapolation.CLAMP
     );
+   const scale = interpolate(
+      translateY.value,
+      [MIN_TRANSLATE_Y, MAX_TRANSLATE_Y],
+      [0.85, 1],
+      Extrapolation.CLAMP
+    )
   
     const translateYItems = interpolate(
       translateY.value,
@@ -60,7 +65,10 @@ export function TopSheet() {
   
     return {
       opacity,
-      transform: [{ translateY: translateYItems }],
+      transform: [
+        { translateY: translateYItems },
+        { scale }
+      ]
     };
   });
   const headerAnimatedStyle = useAnimatedStyle(() => {
@@ -144,7 +152,7 @@ export function TopSheet() {
       >
         <GestureDetector gesture={gesture}>
             <View className={`items-center py-3 absolute -bottom-8 self-center`}>
-              <View className={`w-14 h-1.5 bg-gray-300 rounded-full`} />
+              <View className={`w-3.5 h-3.5 bg-gray-300 rounded-full`} />
             </View>
         </GestureDetector>
         <View className={`w-full h-full pb-2 relative  rounded-b-[15px]`}>
