@@ -1,11 +1,12 @@
 // src/components/calendar/calendar.view.tsx
 import React, { useCallback, useRef } from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
 import { CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import { useCalendarViewModel } from '~/viewModels/components/calendar/calendarViewModel';
+import { useCalendarViewModel } from './useCalendarViewModel';
 
 import Today from '~/assets/svg/Today.svg';
+import { DailyAgendaAccordion } from '../dailyAgendaAccordion/DailyAgendaAccordion';
 // Configuração básica
 LocaleConfig.locales['pt-br'] = {
   monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -72,69 +73,77 @@ export  function ExpandableCalendarScreen() {
   return (
     // ⚠️ O SEGREDO AQUI: Tiramos o flex: 1 e forçamos uma altura fixa de 350 pixels 
     // com um fundo vermelho só para você enxergar a caixa dele!
-      
-      <CalendarProvider 
-         date={vm.initialDate}
-        onDateChanged={vm.handleDayPress}
-        style={{ borderRadius:12, paddingLeft: 0, paddingRight: 0 }}
-      >
-        <View 
-            className="bg-transparent rounded-[20px] shadow-sm  h-[350px]"
-        >
-            <ExpandableCalendar 
-            firstDay={1} 
-            style={{borderRadius:12, }}
-            // Usamos o nosso componente de dia quadrado em vez do padrão
-            dayComponent={renderCustomDay}
-            // ⚠️ ADICIONE ESTA LINHA: É ela que avisa o dayComponent quem está selecionado
-            disableWeekScroll
-            // ⚠️ A SOLUÇÃO AQUI: Impede o calendário de fechar sozinho ao clicar num dia
-            // Retorna true se o calendario estiver aberto e false caso não
-            onCalendarToggled={vm.handleCalendarToggled}
-            theme={{
-                // Cor dos dias normais do mês atual
-                dayTextColor: colors.textPrimary,
-                // Cor dos dias de fora do mês (opacos)
-                textDisabledColor: colors.neutral,
-                
-                // Cor exclusiva para o dia de "Hoje"
-                todayTextColor: colors.background, 
-                // Cor de fundo do dia de hoje
-                todayBackgroundColor: colors.primaryBlue,
-                // Cor de fundo do dia selecionado
-                selectedDayBackgroundColor: colors.textPrimary,
-                // Cor do texto do dia selecionado
-                selectedDayTextColor: colors.background,
-                // Customizando a tipografia
-                textDayFontFamily: 'Roboto_400Regular',
-                textMonthFontFamily: 'Roboto_700Bold',
-                textDayHeaderFontFamily: 'Roboto_700Bold',
-                
-                // Cores do cabeçalho
-                monthTextColor: colors.textPrimary,
-                arrowColor: colors.textPrimary,
-                // expandableKnobColor: colors.neutral,
-            }}
-            disablePan={false} 
-            />
-            {/* {!vm.isSelectedToday && vm.isExpanded && (
-                <View className="items-start mt-4"> 
-                <TouchableOpacity
-                    onPress={vm.goToToday}
-                    activeOpacity={0.7}
-                    className="flex-row items-center bg-white px-4 py-2 rounded-full shadow-sm"
-                    style={{ elevation: 3 }}
-                >
-                    <Today height={20} width={20} color={colors.textPrimary}/>
-                    <Text className="text-textPrimary font-robotoBold text-sm ml-1">
-                     Hoje
-                    </Text>
-                </TouchableOpacity>
-                </View>
-            )} */}
-       
+    // <ScrollView className={`flex-1 bg-red-700`}>
+      <View className='flex-1'>
+          <CalendarProvider 
+            date={vm.initialDate}
+            onDateChanged={vm.handleDayPress}
+            style={{ borderRadius:12, paddingLeft: 0, paddingRight: 0 }}
+          >
+          
+              <View 
+                className="bg-transparent rounded-[20px] shadow-sm  h-[800px]"
+              >
+                <ExpandableCalendar 
+                  firstDay={1} 
+                  style={{borderRadius:12, }}
+                  // Usamos o nosso componente de dia quadrado em vez do padrão
+                  dayComponent={renderCustomDay}
+                  // ⚠️ ADICIONE ESTA LINHA: É ela que avisa o dayComponent quem está selecionado
+                  disableWeekScroll
+                  // ⚠️ A SOLUÇÃO AQUI: Impede o calendário de fechar sozinho ao clicar num dia
+                  // Retorna true se o calendario estiver aberto e false caso não
+                  onCalendarToggled={vm.handleCalendarToggled}
+                  theme={{
+                      // Cor dos dias normais do mês atual
+                      dayTextColor: colors.textPrimary,
+                      // Cor dos dias de fora do mês (opacos)
+                      textDisabledColor: colors.neutral,
+                      
+                      // Cor exclusiva para o dia de "Hoje"
+                      todayTextColor: colors.background, 
+                      // Cor de fundo do dia de hoje
+                      todayBackgroundColor: colors.primaryBlue,
+                      // Cor de fundo do dia selecionado
+                      selectedDayBackgroundColor: colors.textPrimary,
+                      // Cor do texto do dia selecionado
+                      selectedDayTextColor: colors.background,
+                      // Customizando a tipografia
+                      textDayFontFamily: 'Roboto_400Regular',
+                      textMonthFontFamily: 'Roboto_700Bold',
+                      textDayHeaderFontFamily: 'Roboto_700Bold',
+                      
+                      // Cores do cabeçalho
+                      monthTextColor: colors.textPrimary,
+                      arrowColor: colors.textPrimary,
+                      // expandableKnobColor: colors.neutral,
+                  }}
+                  disablePan={false} 
+                  />
+                  <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom:200}} showsVerticalScrollIndicator={false}>
+                    {vm.mockDailyAgendas.map((dia) => (
+                      <DailyAgendaAccordion key={dia.id} agenda={dia} />
+                    ))}
+                  </ScrollView>
+              </View>
+          
+          </CalendarProvider>
+
+          {/* 2. NOSSA LISTA DE AGENDAMENTOS (Para teste visual) */}
+        <View className="px-5 mt-6">
+          <Text className="text-lg font-robotoBold text-textPrimary mb-4">
+            Agendamentos do dia
+          </Text>
+
+          {/* O .map() vai criar um AppointmentCard para cada item do nosso mockAppointments */}
+            
         </View>
-      </CalendarProvider>
+
+        
+
+      </View>
+    // </ScrollView>
+      
 
   );
 }

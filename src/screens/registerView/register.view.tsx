@@ -6,7 +6,7 @@ import { useColorScheme } from "nativewind";
 import ButtonComponent from "~/components/buttons/Button";
 
 import { Theme } from "~/styles/colors";
-import useRegisterViewModel from "~/viewModels/registerViewModel/register.viewModel";
+import useRegisterViewModel from "./useRegisterViewModel";
 
 import ArrowLeft from '~/assets/svg/ArrowLeft.svg'
 import { TextInputController } from "~/components/inputs/textInput/TextInputController";

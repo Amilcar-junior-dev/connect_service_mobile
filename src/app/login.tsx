@@ -1,6 +1,6 @@
 
-import useLoginViewModel from "~/viewModels/loginViewModel/login.viewModel";
-import {LoginView} from "~/views/loginView/login.view";
+import useLoginViewModel from "~/screens/loginView/useLoginViewModel";
+import {LoginView} from "~/screens/loginView/login.view";
 
 
 export default function Login(){

@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-import { CustomTabBar } from '~/views/navigation/tabBar/tabBar.view';
+import { CustomTabBar } from '~/screens/navigation/tabBar/tabBar.view';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { JSX } from 'react/jsx-runtime';
 
