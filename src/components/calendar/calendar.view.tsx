@@ -1,9 +1,18 @@
 // src/components/calendar/calendar.view.tsx
-import React, { useCallback, useRef } from 'react';
-import { TouchableOpacity, View, Text, ScrollView } from 'react-native';
+import { useCallback, useRef } from 'react';
+import { TouchableOpacity, View, Text, ScrollView,  } from 'react-native';
+
+import Animated, { 
+  useAnimatedScrollHandler, 
+  useSharedValue, 
+  withTiming 
+} from 'react-native-reanimated';
+
 import { CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { useCalendarViewModel } from './useCalendarViewModel';
+
+import { useTabBar } from '~/contexts/TabBarContext';
 
 import Today from '~/assets/svg/Today.svg';
 import { DailyAgendaAccordion } from '../dailyAgendaAccordion/DailyAgendaAccordion';
@@ -18,15 +27,45 @@ LocaleConfig.locales['pt-br'] = {
 LocaleConfig.defaultLocale = 'pt-br';
 
 export  function ExpandableCalendarScreen() {
-    const { colors } = useActiveTheme();
-    const vm = useCalendarViewModel();
 
-  // Referência para controlar o calendário manualmente
-  const calendarRef = useRef<any>(null);
-
-  // Função para abrir/fechar quando clicar na nossa bolinha
+  const { tabBarOffset } = useTabBar(); // Pegamos a conexão com a barra
+  const lastScrollY = useSharedValue(0); // Memória para saber se está subindo ou descendo
+  const { colors } = useActiveTheme();
+  const vm = useCalendarViewModel();
 
 
+  // O "Espião" corrigido para acumular o scroll lento
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      const currentY = event.contentOffset.y;
+
+      //contentSize (tamanho de todos os cards somados)
+      const contentHeight = event.contentSize.height;
+      //layoutMeasurement (tamanho da tela disponível) para saber se a tela é "rolável" ou não.
+      const screenHeight = event.layoutMeasurement.height;
+
+      // 1. A MÁGICA AQUI: Se a altura de todos os cards juntos for MENOR 
+      // ou igual ao tamanho da tela, não tem scroll real. Então ignora a TabBar!
+      if (contentHeight <= screenHeight) return;
+      
+      // Ignora o "pulo" elástico do scroll no iOS quando chega no topo
+      if (currentY < 0) return; 
+
+      // Calculamos a diferença exata desde a última vez que a barra se mexeu
+      const scrollDifference = currentY - lastScrollY.value;
+
+      // Se rolou mais de 15 pixels PARA BAIXO (Lendo a lista) -> ESCONDE
+      if (scrollDifference > 15) {
+        tabBarOffset.value = withTiming(150, { duration: 300 }); 
+        lastScrollY.value = currentY; // Só reseta a âncora quando a ação acontece!
+      } 
+      // Se rolou mais de 15 pixels PARA CIMA (Voltando) -> MOSTRA
+      else if (scrollDifference < -15) {
+        tabBarOffset.value = withTiming(0, { duration: 300 });
+        lastScrollY.value = currentY; // Só reseta a âncora quando a ação acontece!
+      }
+    },
+  });
     
   const renderCustomDay = useCallback((props: any) => {
     // A biblioteca avisa o estado pelo contexto!
@@ -120,11 +159,20 @@ export  function ExpandableCalendarScreen() {
                   }}
                   disablePan={false} 
                   />
-                  <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom:200}} showsVerticalScrollIndicator={false}>
+                  <Animated.ScrollView 
+                    className={`flex-1`} 
+                    contentContainerStyle={{paddingBottom:200}} 
+                    showsVerticalScrollIndicator={false}
+                    onScroll={scrollHandler}
+                    scrollEventThrottle={16}
+
+                    // bounces={false} // Remove o efeito de elastico quando faz o scroll com os cards fechados.
+                    // overScrollMode="never"
+                  >
                     {vm.mockDailyAgendas.map((dia) => (
                       <DailyAgendaAccordion key={dia.id} agenda={dia} />
                     ))}
-                  </ScrollView>
+                  </Animated.ScrollView>
               </View>
           
           </CalendarProvider>

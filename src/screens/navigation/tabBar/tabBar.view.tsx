@@ -14,16 +14,27 @@ import Calendar from '~/assets/svg/Calendar.svg'
 import Services from '~/assets/svg/Services.svg'
 import Financial from '~/assets/svg/Financial.svg'
 import More from '~/assets/svg/More.svg'
+import { useTabBar } from '~/contexts/TabBarContext';
 
 export function CustomTabBar({
   state,
   navigation,
 }: BottomTabBarProps) {
-
+  // 1. Pegamos a variável global de deslocamento
+  const { tabBarOffset } = useTabBar();
+  
   const { colorScheme } = useColorScheme();
   const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
   const { width } = Dimensions.get('window');
+
+  // 2. Criamos o estilo animado para a TabBar inteira!
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      // Quando o offset for 0, ela fica no lugar. Quando for 150, ela desce!
+      transform: [{ translateY: tabBarOffset.value }],
+    };
+  });
 
   const totalWidth = width * 0.7;
   const tabWidth = totalWidth / state.routes.length;
@@ -55,8 +66,8 @@ export function CustomTabBar({
   }));
 
   return (
-    <View
-      style={[activeTheme.vars, { width: totalWidth }]}
+    <Animated.View
+      style={[activeTheme.vars, { width: totalWidth }, containerAnimatedStyle]}
       className={`absolute bottom-10 self-center h-16 bg-tab rounded-[30px] flex-row items-center shadow-lg`}
     >
       <Animated.View
@@ -97,6 +108,6 @@ export function CustomTabBar({
           </TouchableOpacity>
         );
       })}
-    </View>
+    </Animated.View>
   );
 }
