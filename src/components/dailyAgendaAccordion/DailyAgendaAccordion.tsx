@@ -27,10 +27,8 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
     <View className={`w-full flex-col mt-3`}>
       
       {/* --- CABEÇALHO DO ACORDEON (A linha que você desenhou) --- */}
-      <View className="w-full flex-row h-10 rounded-md bg-white">
-        
-        {/* Barrinha lateral rosa */}
-        <View className="w-1 h-full rounded-tl-md rounded-bl-md bg-fuchsia-600" />
+      <View className="w-full flex-row h-10 rounded-md bg-tabBar/5" >
+        <View className="w-1 h-full rounded-tl-md rounded-bl-md bg-tabBar" />
         
         {/* Área clicável que expande a sanfona */}
         <TouchableOpacity
@@ -39,12 +37,12 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
           className="w-11/12 h-full flex-row"
         >
           {/* Data e Setinha */}
-          <View className="w-7/12 px-2 h-full items-center flex-row">
-            <Text className="font-robotoBold text-sm text-textPrimary" numberOfLines={1}> 
+          <View className="w-7/12 px-2 h-full items-center flex-row justify-between">
+            <Text className="font-robotoBold text-sm text-ink" numberOfLines={1}> 
               {agenda.formattedDate}
             </Text>
             <Arrow 
-              height={15} width={15} color={colors.textPrimary} 
+              height={15} width={15} color={colors.ink} 
               style={{
                 marginLeft: 5,
                 // A MÁGICA VISUAL: A seta aponta para o lado se fechado, e para baixo se aberto!
@@ -55,15 +53,15 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
 
           {/* Quantidade de Eventos */}
           <View className="w-2/12 flex-row items-center justify-center">
-              <Text className="font-robotoBold text-sm text-textPrimary"> 
+              <Text className="font-robotoBold text-sm text-ink"> 
                 {agenda.totalEvents} 
               </Text>
-              <Event height={15} width={15} color={colors.textPrimary} style={{ marginLeft: 2 }}/>
+              <Event height={15} width={15} color={colors.ink} style={{ marginLeft: 2 }}/>
           </View>
 
           {/* Valor Financeiro Formatado */}
           <View className="w-3/12 flex-row items-center justify-center">
-            <Text className="font-robotoBold text-sm text-textPrimary"> 
+            <Text className="font-robotoBold text-sm text-ink"> 
               {vm.formattedValue} 
             </Text>
           </View>
@@ -74,7 +72,7 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
           onPress={vm.handleAddPress}
           className="w-1/12 h-full items-center justify-center"
         >
-            <Plus height={12} width={12} color={colors.textPrimary}/>
+            <Plus height={12} width={12} color={colors.ink}/>
         </TouchableOpacity>
       </View>
 

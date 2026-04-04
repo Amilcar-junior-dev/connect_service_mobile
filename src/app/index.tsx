@@ -9,5 +9,5 @@ export default function RootLayout() {
     return <Redirect href="/(private)/(tabs)/home" />;
   }
 
-  return <Redirect href="/login" />;
+  return <Redirect href="/home" />;
 }

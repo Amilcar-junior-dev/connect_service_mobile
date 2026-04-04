@@ -1,6 +1,6 @@
 // src/components/calendar/calendar.view.tsx
-import { useCallback, useRef } from 'react';
-import { TouchableOpacity, View, Text, ScrollView,  } from 'react-native';
+import { useCallback, } from 'react';
+import { TouchableOpacity, View, Text,   } from 'react-native';
 
 import Animated, { 
   useAnimatedScrollHandler, 
@@ -8,14 +8,17 @@ import Animated, {
   withTiming 
 } from 'react-native-reanimated';
 
-import { CalendarProvider, ExpandableCalendar, LocaleConfig, WeekCalendar } from 'react-native-calendars';
+import { CalendarProvider, ExpandableCalendar, LocaleConfig,  } from 'react-native-calendars';
+
+import { ScrollView } from 'react-native-gesture-handler';
+
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { useCalendarViewModel } from './useCalendarViewModel';
 
 import { useTabBar } from '~/contexts/TabBarContext';
 
-import Today from '~/assets/svg/Today.svg';
 import { DailyAgendaAccordion } from '../dailyAgendaAccordion/DailyAgendaAccordion';
+import {  DayState,  ExactDayProps } from './expandableCalendar.scheme';
 // Configuração básica
 LocaleConfig.locales['pt-br'] = {
   monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -26,11 +29,16 @@ LocaleConfig.locales['pt-br'] = {
 };
 LocaleConfig.defaultLocale = 'pt-br';
 
+
+
+
+
 export  function ExpandableCalendarScreen() {
 
   const { tabBarOffset } = useTabBar(); // Pegamos a conexão com a barra
   const lastScrollY = useSharedValue(0); // Memória para saber se está subindo ou descendo
   const { colors } = useActiveTheme();
+  const AnimatedGHScrollView = Animated.createAnimatedComponent(ScrollView);
   const vm = useCalendarViewModel();
 
 
@@ -67,65 +75,94 @@ export  function ExpandableCalendarScreen() {
     },
   });
     
-  const renderCustomDay = useCallback((props: any) => {
+  const renderCustomDay = useCallback((props: ExactDayProps) => {
     // A biblioteca avisa o estado pelo contexto!
     const { date, state, onPress } = props;
 
     // O CalendarProvider gerencia quem está selecionado nativamente
-    const isSelected = state === 'selected'; 
-    const isToday = state === 'today';
-    const isDisabled = state === 'disabled';
+    const isSelected = state == DayState.SELECTED; 
+    const isToday = state == DayState.TODAY
+    const isDisabled = state == DayState.DISABLED;
+
+    const dayStyles = {
+      selected: { bg: colors.ink, text: 'text-surface', border: 'border border-ink' },
+      today:    { bg: colors.accent, text: 'text-surface', border: 'border border-accent' },
+      disabled: { bg: colors.divider, text: 'text-stone', border: 'border border-stone' },
+      inactive: { bg: colors.tintBlue, text: 'text-ink', border: 'border border-ink' },
+      default:  { bg: colors.tintBlue, text: 'text-ink', border: 'border border-ink' },
+    };
+
+    const currentStyle = dayStyles[state || 'default'];
 
     let bgClass = 'bg-transparent'; 
-    let textClass = 'text-textPrimary'; 
-    let borderClass = 'border border-textPrimary';
+    let textClass = 'text-ink'; 
+    let borderClass = 'border border-ink';
 
     if (isSelected) {
-      bgClass = 'bg-textPrimary'; 
-      textClass = 'text-background'; 
-      borderClass = 'border border-textPrimary';
+      bgClass = 'bg-ink'; 
+      textClass = 'text-surface'; 
+      borderClass = 'border border-ink';
     } else if (isToday) {
-      bgClass = 'bg-primaryBlue'; 
-      textClass = 'text-background'; 
-      borderClass = 'border border-primaryBlue';
+      bgClass = 'bg-accent'; 
+      textClass = 'text-surface'; 
+      borderClass = 'border border-accent';
     } else if (!isDisabled && !isToday) {
-      bgClass = 'bg-lightBlue';
+      bgClass = 'bg-tintBlue';
     } else if (isDisabled) {
-      textClass = 'text-neutral';
-      borderClass = 'border border-neutral';
-      bgClass = 'bg-border';
+      textClass = 'text-stone';
+      borderClass = 'border border-stone';
+      bgClass = 'bg-divider';
     }
 
     return (
       <TouchableOpacity
-        onPress={() => onPress(date)} 
+        onPress={() => onPress?.(date)} 
         activeOpacity={0.7}
         className={`w-9 h-9 items-center justify-center rounded-lg shadow-sm ${bgClass} ${borderClass}`}
       >
         <Text className={`${textClass} text-sm font-robotoMedium`}>
-          {date.day}
+          {date?.day}
         </Text>
       </TouchableOpacity>
+      // <TouchableOpacity
+      //   onPress={() => onPress?.(date )} 
+      //   activeOpacity={0.7}
+      //   // 3. Injeta as classes diretamente aqui de forma muito mais limpa!
+      //   className={`w-9 h-9 items-center justify-center rounded-lg shadow-sm ${currentStyle.bg} ${currentStyle.border}`}
+      // >
+      //   <Text className={`${currentStyle.text} text-sm font-robotoMedium`}>
+      //     {date?.day}
+      //   </Text>
+      // </TouchableOpacity>
     );
   }, []); // Array VAZIO!
+  
+
+
 
   return (
     // ⚠️ O SEGREDO AQUI: Tiramos o flex: 1 e forçamos uma altura fixa de 350 pixels 
     // com um fundo vermelho só para você enxergar a caixa dele!
-    // <ScrollView className={`flex-1 bg-red-700`}>
-      <View className='flex-1'>
+      <View className='flex-1 '
+      >
           <CalendarProvider 
             date={vm.initialDate}
             onDateChanged={vm.handleDayPress}
-            style={{ borderRadius:12, paddingLeft: 0, paddingRight: 0 }}
+            style={{borderRadius:12, paddingLeft: 0, paddingRight: 0,
+              // height:800,
+
+             }}
           >
           
-              <View 
-                className="bg-transparent rounded-[20px] shadow-sm  h-[800px]"
-              >
+               <View 
+                className="bg-transparent rounded-[20px]"
+                style={{
+                  height:800
+                }}
+              > 
                 <ExpandableCalendar 
                   firstDay={1} 
-                  style={{borderRadius:12, }}
+                  style={{borderRadius:12,}}
                   // Usamos o nosso componente de dia quadrado em vez do padrão
                   dayComponent={renderCustomDay}
                   // ⚠️ ADICIONE ESTA LINHA: É ela que avisa o dayComponent quem está selecionado
@@ -135,34 +172,38 @@ export  function ExpandableCalendarScreen() {
                   onCalendarToggled={vm.handleCalendarToggled}
                   theme={{
                       // Cor dos dias normais do mês atual
-                      dayTextColor: colors.textPrimary,
+                      dayTextColor: colors.ink,
                       // Cor dos dias de fora do mês (opacos)
-                      textDisabledColor: colors.neutral,
+                      textDisabledColor: colors.stone,
                       
                       // Cor exclusiva para o dia de "Hoje"
-                      todayTextColor: colors.background, 
+                      todayTextColor: colors.surface, 
                       // Cor de fundo do dia de hoje
-                      todayBackgroundColor: colors.primaryBlue,
+                      todayBackgroundColor: colors.accent,
                       // Cor de fundo do dia selecionado
-                      selectedDayBackgroundColor: colors.textPrimary,
+                      selectedDayBackgroundColor: colors.ink,
                       // Cor do texto do dia selecionado
-                      selectedDayTextColor: colors.background,
+                      selectedDayTextColor: colors.surface,
                       // Customizando a tipografia
                       textDayFontFamily: 'Roboto_400Regular',
                       textMonthFontFamily: 'Roboto_700Bold',
                       textDayHeaderFontFamily: 'Roboto_700Bold',
                       
                       // Cores do cabeçalho
-                      monthTextColor: colors.textPrimary,
-                      arrowColor: colors.textPrimary,
-                      // expandableKnobColor: colors.neutral,
+                      monthTextColor: colors.ink,
+                      arrowColor: colors.ink,
+                      // expandableKnobColor: colors.stone,
                   }}
                   disablePan={false} 
                   />
-                  <Animated.ScrollView 
+                  {/* NÃO CRIAR ESSE COMPONENTE AGORA*/}
+                  <AnimatedGHScrollView
                     className={`flex-1`} 
-                    contentContainerStyle={{paddingBottom:200}} 
+                    contentContainerStyle={{paddingBottom:200, 
+                      // zIndex:1000
+                    }} 
                     showsVerticalScrollIndicator={false}
+                    // nestedScrollEnabled
                     onScroll={scrollHandler}
                     scrollEventThrottle={16}
 
@@ -172,25 +213,11 @@ export  function ExpandableCalendarScreen() {
                     {vm.mockDailyAgendas.map((dia) => (
                       <DailyAgendaAccordion key={dia.id} agenda={dia} />
                     ))}
-                  </Animated.ScrollView>
-              </View>
+                  </AnimatedGHScrollView>
+              </View> 
           
           </CalendarProvider>
-
-          {/* 2. NOSSA LISTA DE AGENDAMENTOS (Para teste visual) */}
-        <View className="px-5 mt-6">
-          <Text className="text-lg font-robotoBold text-textPrimary mb-4">
-            Agendamentos do dia
-          </Text>
-
-          {/* O .map() vai criar um AppointmentCard para cada item do nosso mockAppointments */}
-            
-        </View>
-
-        
-
       </View>
-    // </ScrollView>
       
 
   );

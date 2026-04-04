@@ -68,7 +68,7 @@ export function CustomTabBar({
   return (
     <Animated.View
       style={[activeTheme.vars, { width: totalWidth }, containerAnimatedStyle]}
-      className={`absolute bottom-10 self-center h-16 bg-tab rounded-[30px] flex-row items-center shadow-lg`}
+      className={`absolute bottom-10 self-center h-16 bg-tabBar rounded-[30px] flex-row items-center shadow-lg`}
     >
       <Animated.View
         style={[
@@ -80,7 +80,7 @@ export function CustomTabBar({
           },
           animatedStyle,
         ]}
-        className={`bg-primaryBlue rounded-full`}
+        className={`bg-accent rounded-full`}
       />
 
       {state.routes.map((route, index) => {
@@ -103,7 +103,7 @@ export function CustomTabBar({
             <Icon
               width={24}
               height={24}
-              color={ activeTheme.colors.neutral }
+              color={ activeTheme.colors.stone }
             />
           </TouchableOpacity>
         );

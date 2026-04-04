@@ -16,7 +16,9 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
   const vm = useAppointmentCardViewModel(appointment);
 
   return (
-    <View className={`w-full flex-row items-center bg-[#DCE4E8] rounded-lg p-3 mt-2`}>
+    <View className={`w-full flex-row items-center bg-surface rounded-lg p-3 mt-2`}
+      // style={{ backgroundColor: vm.statusColor+30 }} 
+    >
       
       {/* 1. Pílula de Status (Canto esquerdo) */}
       <View 
@@ -31,13 +33,13 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
       {/* 2. Informações do Cliente e Serviço */}
       <View className={`flex-[2] justify-center`}>
         <Text 
-          className={`text-base font-robotoBold text-textPrimary ${vm.isCanceled ? 'line-through opacity-50' : ''}`}
+          className={`text-base font-robotoBold text-ink ${vm.isCanceled ? 'line-through opacity-50' : ''}`}
           numberOfLines={1}
         >
           {appointment.clientName}
         </Text>
         <Text 
-          className={`text-sm font-robotoRegular text-textPrimary opacity-70 mt-0.5`}
+          className={`text-sm font-robotoRegular text-ink opacity-70 mt-0.5`}
           numberOfLines={1}
         >
           {appointment.serviceName}
@@ -46,27 +48,27 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
 
       {/* 3. Horário (Centro) */}
       <View className={`flex-[2] items-center justify-center`}>
-        <Text className={`text-base font-robotoMedium text-textPrimary ${vm.isCanceled ? 'opacity-50' : ''}`}>
+        <Text className={`text-base font-robotoMedium text-ink ${vm.isCanceled ? 'opacity-50' : ''}`}>
           {appointment.startTime} às {appointment.endTime}
         </Text>
       </View>
 
       {/* 4. Ações: Editar e Excluir (Direita) */}
+      <View 
+          className={`p-1`}
+      >
+        <Text className={`text-base font-robotoMedium text-ink ${vm.isCanceled ? 'opacity-50' : ''}`}>
+          {vm.formattedAppoitmentValue}
+        </Text>
+      </View>
       <View className={`flex-[1] flex-row items-center justify-end gap-3`}>
-        <TouchableOpacity 
-            onPress={vm.handleEdit}
-            activeOpacity={0.7}
-            className={`p-1`}
-        >
-          <EditIcon height={15} width={15} color={colors.textPrimary} />
-        </TouchableOpacity>
 
         <TouchableOpacity 
             onPress={vm.handleDelete}
             activeOpacity={0.7}
             className={`p-1`}
         >
-          <TrashIcon height={20} width={20} color={colors.textPrimary} />
+          <TrashIcon height={20} width={20} color={colors.ink} />
         </TouchableOpacity>
       </View>
 

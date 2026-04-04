@@ -9,6 +9,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { useColorScheme } from 'nativewind'
 import { Theme } from '~/styles/colors'
 import '~/styles/global.css'
+import { View } from 'react-native'
+
+
 
 export default function RouteLayout() {
   const [fontsLoaded] = useFonts({
@@ -25,11 +28,12 @@ export default function RouteLayout() {
   }
 
   return (
-    <GestureHandlerRootView style={[{ flex: 1 }, activeTheme.vars]}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="login" options={{ headerShown: false }} />
-        <Stack.Screen name="register" options={{ headerShown: false }} />
-      </Stack>
+    <GestureHandlerRootView style={[{ flex: 1 }]}>
+      <View style={[{flex:1},activeTheme.vars ]}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+        </Stack>
+      </View>
     </GestureHandlerRootView>
   )
 }

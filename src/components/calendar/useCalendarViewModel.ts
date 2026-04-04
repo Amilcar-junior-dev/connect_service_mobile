@@ -31,8 +31,8 @@ export function useCalendarViewModel() {
     {
       id: '2026-12-19',
       formattedDate: 'Sexta-feira, 19 de Dezembro',
-      totalEvents: 15, // Conforme você pediu para o teste visual
-      totalValue: 590.00, // Conforme você pediu para o teste visual
+      totalEvents: 5, 
+      totalValue: 425.00, 
       appointments: [
         {
           id: '1',
@@ -60,33 +60,69 @@ export function useCalendarViewModel() {
           endTime: '14:15',
           price: 15.00,
           status: 'canceled', 
+        },
+        {
+          id: '4',
+          clientName: 'Felipe Santos',
+          serviceName: 'Corte Degradê',
+          startTime: '15:00',
+          endTime: '15:45',
+          price: 45.00,
+          status: 'completed', 
+        },
+        {
+          id: '5',
+          clientName: 'Camila Rocha',
+          serviceName: 'Design de Sobrancelha',
+          startTime: '16:00',
+          endTime: '16:30',
+          price: 35.00,
+          status: 'pending', 
         }
       ]
     },
     {
       id: '2026-12-20',
       formattedDate: 'Sábado, 20 de Dezembro',
-      totalEvents: 2,
-      totalValue: 180.00,
+      totalEvents: 4,
+      totalValue: 330.00,
       appointments: [
         {
-          id: '4',
+          id: '6',
           clientName: 'João Silva',
           serviceName: 'Corte Social',
           startTime: '10:00',
           endTime: '10:45',
           price: 50.00,
-          status: 'completed', // Status verdinho
+          status: 'completed',
         },
         {
-          id: '5',
+          id: '7',
           clientName: 'Maria Oliveira',
-          serviceName: 'Manicure',
+          serviceName: 'Unhas de Gel',
           startTime: '11:00',
-          endTime: '12:00',
+          endTime: '12:30',
           price: 130.00,
-          status: 'pending', // Status amarelo/laranja
-        }
+          status: 'pending',
+        },
+        {
+          id: '8',
+          clientName: 'Thiago Martins',
+          serviceName: 'Barboterapia',
+          startTime: '13:00',
+          endTime: '13:45',
+          price: 60.00,
+          status: 'confirmed', 
+        },
+        {
+          id: '9',
+          clientName: 'Letícia Lima',
+          serviceName: 'Hidratação Profunda',
+          startTime: '14:30',
+          endTime: '15:30',
+          price: 90.00,
+          status: 'canceled',
+        },
       ]
     }
   ];

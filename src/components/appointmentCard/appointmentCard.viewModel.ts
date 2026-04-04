@@ -26,9 +26,15 @@ export function useAppointmentCardViewModel(appointment: Appointment) {
     console.log('Abrir alerta de confirmação para excluir:', appointment.id);
   };
 
+  const formattedAppoitmentValue = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(appointment?.price);
+
   return {
     statusColor,
     isCanceled,
+    formattedAppoitmentValue,
     handleEdit,
     handleDelete,
   };

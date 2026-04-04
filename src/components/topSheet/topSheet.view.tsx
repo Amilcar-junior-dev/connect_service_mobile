@@ -1,4 +1,4 @@
-import { View, Dimensions, Text, TouchableOpacity } from "react-native";
+import { View, Dimensions, Text, TouchableOpacity, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
@@ -33,7 +33,7 @@ export function TopSheet({ translateY }: TopSheetProps) {
   const {colors} = useActiveTheme()
   
   const statusBarHeight = insets.top;
-  const EXPANDED_HEIGHT = height * 0.25;
+  const EXPANDED_HEIGHT = height * (Platform.OS === 'android' ? 0.27 :  0.25); // Define o tamanho que o TopSheet irá deslizar na tela, neste caso até 25% do tamanho
   const COLLAPSED_HEIGHT = 110;
 
   const MAX_TRANSLATE_Y = 0;
@@ -71,23 +71,28 @@ export function TopSheet({ translateY }: TopSheetProps) {
       ]
     };
   });
-  const headerAnimatedStyle = useAnimatedStyle(() => {
+  const headerAnimatedStyle = useAnimatedStyle(()=> {
+        
+    const dinamicRange = height * 0.12
+
     const translateYHeader = interpolate(
-      translateY.value,
-      [MIN_TRANSLATE_Y, MAX_TRANSLATE_Y],
-      [110, 0],
-      Extrapolation.CLAMP
-    );
-  
+        translateY.value,
+        [MIN_TRANSLATE_Y, MAX_TRANSLATE_Y],
+        [dinamicRange, 0],
+        Extrapolation.CLAMP
+    )
+
     return {
-      transform: [{ translateY: translateYHeader }],
-    };
-  });
+        transform: [{translateY: translateYHeader}]
+    } 
+})
 
   const gesture = Gesture.Pan()
+    // Salva a posição exata do elemento no momento em que o usuário toca na tela
     .onStart(() => {
       context.value = translateY.value;
     })
+    // Atualiza a posição em tempo real acompanhando o dedo, respeitando os limites (MIN e MAX)
     .onUpdate((event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
       const nextTranslateY = context.value + event.translationY;
 
@@ -96,6 +101,7 @@ export function TopSheet({ translateY }: TopSheetProps) {
         Math.min(MAX_TRANSLATE_Y, nextTranslateY)
       );
     })
+    // Ao soltar o dedo, calcula a metade do caminho e "puxa" com efeito mola para o limite mais próximo
     .onEnd(() => {
       const midpoint = (MIN_TRANSLATE_Y + MAX_TRANSLATE_Y) / 2;
 
@@ -112,31 +118,31 @@ export function TopSheet({ translateY }: TopSheetProps) {
 
   const ResumeFinancial = [
     {
-      icon: <WeekTag color={colors.textPrimary}/>,
+      icon: <WeekTag color={colors.ink}/>,
       colorId: 1,
       label: 'Proj. semana',
       value: 'R$ 580,00'
     },
     {
-      icon: <DolarTag color={colors.darkGreen}/>,
+      icon: <DolarTag color={colors.forest}/>,
       colorId: 2,
       label: 'Efet. Semana',
       value: 'R$ 580,00'
     },
     {
-      icon: <MonthTag color={colors.textPrimary}/>,
+      icon: <MonthTag color={colors.ink}/>,
       colorId: 1,
       label: 'Proj. no Mês',
       value: 'R$ 580,00'
     },
     {
-      icon: <DolarTag color={colors.darkGreen}/>,
+      icon: <DolarTag color={colors.forest}/>,
       colorId: 2,
       label: 'Efet. no Mês',
       value: 'R$ 580,00'
     },
     {
-      icon: <RealTag color={colors.textPrimary}/>,
+      icon: <RealTag color={colors.ink}/>,
       colorId: 1,
       label: 'Desp. no Mês',
       value: 'R$ 580,00'
@@ -146,56 +152,71 @@ export function TopSheet({ translateY }: TopSheetProps) {
   ];
 
   return (
-      <Animated.View
-        style={[  animatedStyle,{ height: EXPANDED_HEIGHT, paddingTop: statusBarHeight },]}
-        className={`absolute  top-0 px-1 left-0 right-0 bg-white rounded-b-[30px] shadow-lg `}
+    <View
+      className={`absolute top-0 left-0 right-0 z-10`}
+      pointerEvents={`box-none`}
+      style={{backgroundColor: 'red'}}
+    >
+      <Animated.View 
+          style={[animatedStyle, {height: EXPANDED_HEIGHT, paddingTop: statusBarHeight  }]}
+          className={`absolute top-0 px-1 left-0 right-0 bg-surface rounded-b-[30px] shadow-lg`}
       >
-        <GestureDetector gesture={gesture}>
-            <View className={`items-center py-3 absolute -bottom-8 self-center`}>
-              <View className={`w-3.5 h-3.5 bg-gray-300 rounded-full`} />
-            </View>
-        </GestureDetector>
-        <View className={`w-full h-full pb-2 relative  rounded-b-[15px]`}>
-          <Animated.View
-            style={headerAnimatedStyle}
-            className="w-full h-14 flex-row"
-          >
-           <View className={`w-[20%] h-full items-center justify-center `}> 
-            <Text className={`text-textPrimary text-sm font-roboto`}>Logo</Text>
-           </View>
-           <View className={`w-[60%] h-full `}> 
-            <Text className={`font-robotoRegular text-xl text-textPrimary`}>
-             Connect Service
-            </Text>
-           </View>
-           <View className={`w-[20%] h-full items-end `}> 
-            <TouchableOpacity className={`mr-3`}>
-              <Notification
-                color={colors.textPrimary}
-              />
-            </TouchableOpacity>
-           </View>
-          </Animated.View>
-          <Animated.View
-            style={financialAnimatedStyle}
-            className="flex-row flex-wrap"
-          >
-            {
-              ResumeFinancial?.map((resume, index)=>(
-                <View key={index} className={`w-1/2 flex-row mb-1 items-center`}>
-                  <View  className={`w-8 h-8 rounded-full items-center justify-center ${resume.colorId == 1 ?  `bg-lightBlue` : `bg-lightGreen`}`}>
-                    {resume?.icon}
+          <GestureDetector gesture={gesture} >
+              <View className={`items-center py-3 absolute -bottom-8 self-center`}>
+                  <View className={`w-3.5 h-3.5 rounded-full bg-divider`} />
+              </View>
+          </GestureDetector>
+
+          <View className={`w-full h-full pb-2 relative rounded-b-[15px]`}>
+
+              <Animated.View className={`w-full h-14 flex-row`}
+                  style={headerAnimatedStyle}
+              >
+                  <View className={`w-[20%] h-full  items-center justify-center `}>
+                      <View className={`w-[45px] h-[45px] rounded-full items-center justify-center bg-tintBlue`}>
+                          
+                      </View>
                   </View>
-                  <View className={`flex-1 flex-row flex-wrap`}>
-                    <Text className={`text-[12px] font-robotoRegular`}>  {resume.label+': ' }
-                      <Text className={`font-robotoBold`}>{resume.value}</Text> 
-                    </Text>
+                  <View className={`w-[60%] h-full `}>
+                      <Text className={`text-xl text-ink`}>
+                          Connect Service
+                      </Text>
                   </View>
-                </View>
-              ))
-            }
-          </Animated.View>
-        </View>  
+                  <View className={`w-[20%] h-full items-end `}>
+                      <TouchableOpacity onPress={()=> console.log('clicou no icone de notificação')}>
+                          <Notification color={colors.ink} height={20} width={20}/>
+                      </TouchableOpacity>
+                  </View>
+              </Animated.View>
+              <Animated.View className={`flex-row flex-wrap`}
+                  style={financialAnimatedStyle}
+              >
+                  {
+                      ResumeFinancial.map((resume, index)=>(
+                          <View className={`w-1/2 flex-row mb-1 items-center`}
+                              key={index}
+                          >
+                              <View className={`w-8 h-8 rounded-full items-center justify-center ${resume.colorId == 1 ? `bg-tintBlue` : `bg-tintGreen`}`}>
+                                  {resume?.icon}
+                              </View>
+                              <View className={`flex-1 flex-row flex-wrap`} >
+                                  <Text className={`text-[12px] text-ink `}>
+                                      {resume?.label+":"}
+                                      <Text className={`text-[12px]`}>
+                                          {resume?.value}
+                                      </Text>
+                                  </Text>
+                              </View>
+
+                          </View>
+                      ))
+                  }
+
+              </Animated.View>
+
+          </View>
       </Animated.View>
+
+    </View>
   );
 }

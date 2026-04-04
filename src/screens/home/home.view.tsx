@@ -7,7 +7,7 @@ import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanima
 
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { TopSheet } from '~/components/topSheet/topSheet.view';
-import { ExpandableCalendarScreen } from '~/components/calendar/calendar.view';
+import { ExpandableCalendarScreen } from '~/components/calendar/ExpandableCalendar.view';
 
 export const HomeView: React.FC = () => {
     const theme = useActiveTheme();
@@ -30,14 +30,14 @@ export const HomeView: React.FC = () => {
 
     return (
         <LinearGradient
-            colors={[theme.colors.primaryBlue, theme.colors.background]}
-            style={{ flex: 1 }}
+
+            colors={[theme.colors.accent, theme.colors.surface]}
+            style={[{ flex: 1 }]}
         >
             <SafeAreaView className="flex-1">
                 {/* Passamos o translateY como propriedade para o TopSheet */}
                 <TopSheet translateY={translateY} />
                 
-                {/* View animada que segura o calendário e o resto da tela */}
                 <Animated.View 
                     className={`px-2`}
                     style={[
