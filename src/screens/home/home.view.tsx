@@ -1,6 +1,6 @@
 // src/views/home/home.view.tsx
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions,  } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
@@ -8,6 +8,8 @@ import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanima
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { TopSheet } from '~/components/topSheet/topSheet.view';
 import { ExpandableCalendarScreen } from '~/components/calendar/ExpandableCalendar.view';
+import { FloatingMenu } from '~/components/floatingMenu/FloatingMenu.view';
+
 
 export const HomeView: React.FC = () => {
     const theme = useActiveTheme();
@@ -28,9 +30,9 @@ export const HomeView: React.FC = () => {
         };
     });
 
+
     return (
         <LinearGradient
-
             colors={[theme.colors.accent, theme.colors.surface]}
             style={[{ flex: 1 }]}
         >
@@ -48,6 +50,7 @@ export const HomeView: React.FC = () => {
                 >
                     <ExpandableCalendarScreen />
                 </Animated.View>
+                <FloatingMenu />
             </SafeAreaView>
         </LinearGradient>
     );

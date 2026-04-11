@@ -12,6 +12,7 @@ import Arrow from '~/assets/svg/ArrowLeft.svg';
 import Plus from '~/assets/svg/Plus.svg';
 import Event from '~/assets/svg/Event.svg';
 import { AppointmentCard } from '../appointmentCard/Appointment.view';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 interface DailyAgendaAccordionProps {
   agenda: DailyAgenda;
@@ -21,6 +22,15 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
   const { colors } = useActiveTheme();
   // Inicializamos o ViewModel passando a agenda que recebemos por Props
   const vm = useDailyAgendaViewModel(agenda);
+
+  const AnimatedArrowStyle = useAnimatedStyle(()=>{
+    return {
+      transform: [
+        {rotate: withTiming(vm.isExpanded ? '90deg' : '-90deg' , {duration:300})}
+      ]
+    }
+  },[vm.isExpanded])
+
 
   return (
     // Transformei em flex-col porque o acordeon vai expandir para baixo
@@ -41,14 +51,10 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
             <Text className="font-robotoBold text-sm text-ink" numberOfLines={1}> 
               {agenda.formattedDate}
             </Text>
-            <Arrow 
-              height={15} width={15} color={colors.ink} 
-              style={{
-                marginLeft: 5,
-                // A MÁGICA VISUAL: A seta aponta para o lado se fechado, e para baixo se aberto!
-                transform: [{ rotate: vm.isExpanded ? '90deg' : '-90deg' }]
-              }}
-            />
+            <Animated.View style={[{ marginLeft: 5,},AnimatedArrowStyle]}>
+              
+              <Arrow  height={15} width={15} color={colors.ink}  />
+            </Animated.View>
           </View>
 
           {/* Quantidade de Eventos */}

@@ -143,7 +143,7 @@ export  function ExpandableCalendarScreen() {
   return (
     // ⚠️ O SEGREDO AQUI: Tiramos o flex: 1 e forçamos uma altura fixa de 350 pixels 
     // com um fundo vermelho só para você enxergar a caixa dele!
-      <View className='flex-1 '
+      <View className='flex-1 bg-red-600'
       >
           <CalendarProvider 
             date={vm.initialDate}
@@ -154,7 +154,7 @@ export  function ExpandableCalendarScreen() {
              }}
           >
           
-               <View 
+              <View 
                 className="bg-transparent rounded-[20px]"
                 style={{
                   height:800
@@ -195,27 +195,25 @@ export  function ExpandableCalendarScreen() {
                       // expandableKnobColor: colors.stone,
                   }}
                   disablePan={false} 
-                  />
-                  {/* NÃO CRIAR ESSE COMPONENTE AGORA*/}
-                  <AnimatedGHScrollView
-                    className={`flex-1`} 
-                    contentContainerStyle={{paddingBottom:200, 
-                      // zIndex:1000
-                    }} 
-                    showsVerticalScrollIndicator={false}
-                    // nestedScrollEnabled
-                    onScroll={scrollHandler}
-                    scrollEventThrottle={16}
+                />
+                <AnimatedGHScrollView
+                  className={`flex-1`} 
+                  contentContainerStyle={{paddingBottom:200, 
+                    // zIndex:1000
+                  }} 
+                  showsVerticalScrollIndicator={false}
+                  // nestedScrollEnabled
+                  onScroll={scrollHandler}
+                  scrollEventThrottle={16}
 
-                    // bounces={false} // Remove o efeito de elastico quando faz o scroll com os cards fechados.
-                    // overScrollMode="never"
-                  >
-                    {vm.mockDailyAgendas.map((dia) => (
-                      <DailyAgendaAccordion key={dia.id} agenda={dia} />
-                    ))}
-                  </AnimatedGHScrollView>
+                  // bounces={false} // Remove o efeito de elastico quando faz o scroll com os cards fechados.
+                  // overScrollMode="never"
+                >
+                  {vm.mockDailyAgendas.map((dia) => (
+                    <DailyAgendaAccordion key={dia.id} agenda={dia} />
+                  ))}
+                </AnimatedGHScrollView>
               </View> 
-          
           </CalendarProvider>
       </View>
       
