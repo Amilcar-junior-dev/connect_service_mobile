@@ -1,0 +1,1 @@
+export  type TabRouteName = 'home' | 'services' | 'financial' | 'more';

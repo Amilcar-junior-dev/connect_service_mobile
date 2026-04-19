@@ -5,7 +5,7 @@ import ButtonComponent from "~/components/buttons/Button";
 
 import { useColorScheme } from "nativewind";
 import { Theme } from "~/styles/colors";
-import useLoginViewModel from "~/viewModels/loginViewModel/login.viewModel";
+import useLoginViewModel from "./useLoginViewModel";
 import { router } from "expo-router";
 import { TextInputController } from "~/components/inputs/textInput/TextInputController";
 
