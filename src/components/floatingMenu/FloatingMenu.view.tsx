@@ -12,26 +12,11 @@ import Line from '~/assets/svg/Line.svg';
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { useFloatingMenuViewModel } from './floatingMenu.viewModel';
 
-const { height, width } = Dimensions.get('window');
 
-// Removida a prop blurTargetRef pois não será mais necessária
 export function FloatingMenu() {
   const { colors } = useActiveTheme();
   const vm = useFloatingMenuViewModel();
 
-  // 1. Overlay Unificado (Serve para iOS e Android)
-  const backdropStyle = useAnimatedStyle(() => {
-    return {
-      // Anima a opacidade de 0 a 0.6 (60% escuro)
-      opacity: interpolate(vm.animationProgress.value, [0, 1], [0, 0.6], Extrapolation.CLAMP),
-    };
-  });
-
-  const mainButtonStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ rotate: `${interpolate(vm.animationProgress.value, [0, 1], [0, 45])}deg` }]
-    };
-  });
 
   const menuActions = [
     { id: 'despesa', label: 'Despesa', icon:<Line height={15} width={15} color={colors.ink}/> , width: 110 },
@@ -48,7 +33,7 @@ export function FloatingMenu() {
         style={[
           StyleSheet.absoluteFill,
           { backgroundColor: colors.deepSurface, zIndex: 10 }, // Fundo preto
-          backdropStyle
+          vm.backdropStyle
         ]}
         pointerEvents={vm.isOpen ? 'auto' : 'none'}
         onTouchStart={vm.toggleMenu} 
@@ -76,7 +61,7 @@ export function FloatingMenu() {
                       pointerEvents={vm.isOpen ? 'auto' : 'none'}
                   >
                       <TouchableOpacity activeOpacity={0.7} className="flex-row items-center" onPress={() => vm.handleActionPress(action.id)}>
-                              <View className="bg-ink/50 rounded-full mr-3 items-center justify-center shadow-sm elevation-md h-9" style={{ width: action.width }}>
+                              <View className="bg-ink/90 rounded-full mr-3 items-center justify-center shadow-sm elevation-md h-9" style={{ width: action.width }}>
                                   <Text className="text-surface font-bold text-sm">{action.label}</Text>
                               </View>
                               <View className="w-16 items-center">
@@ -96,7 +81,7 @@ export function FloatingMenu() {
               className="w-16 h-16 rounded-full items-center justify-center shadow-lg"
               style={{ backgroundColor: colors.accent }} 
           >
-              <Animated.View style={mainButtonStyle}>
+              <Animated.View style={vm.mainButtonStyle}>
                   <Plus width={28} height={28} color={colors.ink} />
               </Animated.View>
           </TouchableOpacity>

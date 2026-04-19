@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 export function useFloatingMenuViewModel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,6 +21,21 @@ export function useFloatingMenuViewModel() {
     }
   };
 
+  // 1. Overlay Unificado (Serve para iOS e Android)
+  const backdropStyle = useAnimatedStyle(() => {
+    return {
+      // Anima a opacidade de 0 a 0.6 (60% escuro)
+      opacity: interpolate(animationProgress.value, [0, 1], [0, 0.6], Extrapolation.CLAMP),
+    };
+  });
+
+  const mainButtonStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotate: `${interpolate(animationProgress.value, [0, 1], [0, 45])}deg` }]
+    };
+  });
+
+
   // Nossas ações do menu
 
 
@@ -33,6 +48,8 @@ export function useFloatingMenuViewModel() {
   return {
     isOpen,
     animationProgress,
+    backdropStyle,
+    mainButtonStyle,
     toggleMenu,
     handleActionPress,
   };

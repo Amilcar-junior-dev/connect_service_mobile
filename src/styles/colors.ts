@@ -33,6 +33,7 @@ export const Theme = {
       accentDeep: "rgba(75 91 152)",
       deepSurface: "rgb(39, 35, 61)",
       divider: "rgba(244 244 244)",
+      
     },
   },
   dark: {

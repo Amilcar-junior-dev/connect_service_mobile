@@ -44,7 +44,7 @@ export function CustomTabBar({
   const translateX = useSharedValue(0);
 
   const RouteIcons = {
-    home: Calendar,
+    home: Calendar ,
     services: Services,
     financial: Financial,
     more: More,
@@ -103,7 +103,7 @@ export function CustomTabBar({
             <Icon
               width={24}
               height={24}
-              color={ activeTheme.colors.stone }
+              color={'#FFFFFF'}
             />
           </TouchableOpacity>
         );
