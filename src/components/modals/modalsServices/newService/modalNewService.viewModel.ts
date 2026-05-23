@@ -26,7 +26,6 @@ export function useModalNewServiceViewModel() {
     };
   
     const onSubmit = methods.handleSubmit(
-      // 1. Quando tudo está CERTO
       (data) => {
         const dataSubmite = {
           ...data,
@@ -35,7 +34,6 @@ export function useModalNewServiceViewModel() {
         console.log('✅ Dados prontos para salvar: ', dataSubmite);
 
       },
-      // 2. Quando o Zod BARRAR algo (Opcional, mas ótimo para debugar)
       (erros) => {
         console.log('❌ O Zod bloqueou o envio! Motivo:', erros);
       }
@@ -46,12 +44,12 @@ export function useModalNewServiceViewModel() {
     const handleSelectOrEditImage = async () => {
       const uri = await pickImage();
       if (uri) {
-        setCoverImage(uri); // Salva a imagem na tela
+        setCoverImage(uri);
       }
     };
   
     const handleRemoveImage = () => {
-      setCoverImage(''); // Limpa a imagem
+      setCoverImage('');
     };
   
   

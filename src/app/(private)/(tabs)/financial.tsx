@@ -7,10 +7,9 @@ export default function Index(){
 
     const {colorScheme} = useColorScheme();
     const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
-      console.log("🚀 ~ index.tsx:8 ~ RootLayout ~ colorScheme:", colorScheme)
-    //   const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
-   
+    
+
     return (
         <View  style={[activeTheme.vars]}  className={`flex-1 bg-surface pl-4 pr-4 `}>
             <SafeAreaView className={`flex-1`}>

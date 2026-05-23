@@ -36,7 +36,6 @@ export default function RouteLayout() {
           <Stack.Screen name="login" options={{ headerShown: false }} />
         </Stack>
         <GlobalModalManager />
-        {/* <ModalNewService /> */}
       </View>
     </GestureHandlerRootView>
   )

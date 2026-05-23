@@ -38,33 +38,19 @@ export const Theme = {
   },
   dark: {
     vars: vars({
-      // Fundo vira o azul marinho escuro elegante
       "--color-surface": "21 35 59", 
-      // Cinza de bordas vira um cinza/azulado mais profundo (Slate 700)
       "--color-stone": "51 65 85", 
-      // TabBar já era bem escura, mantivemos a mesma pegada
      "--color-tab-bar": "8 14 24",
-      // Texto principal vira um gelo quase branco
       "--color-ink": "241 245 249", 
-      // Texto secundário vira um cinza médio/claro (Slate 400)
       "--color-muted": "148 163 184", 
-      // Vermelho fica um pouco mais brilhante/suave (Red 400)
       "--color-danger": "248 113 113", 
-      // Laranja/Amarelo ganha mais brilho (Amber 400)
       "--color-warning": "251 191 36", 
-      // A cor da marca (Azul claro) se mantém pois brilha bem no escuro
       "--color-accent": "109 198 227", 
-      // Fundo de cards azuis vira um azul translúcido e profundo
       "--color-tint-blue": "30 58 95", 
-      // Fundo de cards verdes vira um verde musgo translúcido
       "--color-tint-green": "20 60 50", 
-      // Textos verdes que eram escuros viram um verde menta claro
       "--color-forest": "110 210 170", 
-      // Roxo escuro vira um índigo mais claro e vibrante
       "--color-accent-deep": "129 140 248", 
-      // Fundo profundo fica um azul "quase preto" para contrastar com a surface
       "--color-deep-surface": "15 23 42", 
-      // Divisórias viram linhas finas azul-acinzentadas
       "--color-divider": "30 41 59", 
     }),
     colors: {

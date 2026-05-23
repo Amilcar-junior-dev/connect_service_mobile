@@ -33,13 +33,12 @@ export function TopSheet({ translateY }: TopSheetProps) {
   const {colors} = useActiveTheme()
   
   const statusBarHeight = insets.top;
-  const EXPANDED_HEIGHT = height * (Platform.OS === 'android' ? 0.27 :  0.25); // Define o tamanho que o TopSheet irá deslizar na tela, neste caso até 25% do tamanho
+  const EXPANDED_HEIGHT = height * (Platform.OS === 'android' ? 0.27 :  0.25);
   const COLLAPSED_HEIGHT = 130;
 
   const MAX_TRANSLATE_Y = 0;
   const MIN_TRANSLATE_Y = -(EXPANDED_HEIGHT - COLLAPSED_HEIGHT);
 
-  // const translateY = useSharedValue(MIN_TRANSLATE_Y);
   const context = useSharedValue(0);
 
   const financialAnimatedStyle = useAnimatedStyle(() => {
@@ -88,11 +87,9 @@ export function TopSheet({ translateY }: TopSheetProps) {
 })
 
   const gesture = Gesture.Pan()
-    // Salva a posição exata do elemento no momento em que o usuário toca na tela
     .onStart(() => {
       context.value = translateY.value;
     })
-    // Atualiza a posição em tempo real acompanhando o dedo, respeitando os limites (MIN e MAX)
     .onUpdate((event: GestureUpdateEvent<PanGestureHandlerEventPayload>) => {
       const nextTranslateY = context.value + event.translationY;
 
@@ -101,7 +98,6 @@ export function TopSheet({ translateY }: TopSheetProps) {
         Math.min(MAX_TRANSLATE_Y, nextTranslateY)
       );
     })
-    // Ao soltar o dedo, calcula a metade do caminho e "puxa" com efeito mola para o limite mais próximo
     .onEnd(() => {
       const midpoint = (MIN_TRANSLATE_Y + MAX_TRANSLATE_Y) / 2;
 

@@ -6,7 +6,7 @@ import {
   ScrollViewProps, 
   View 
 } from 'react-native';
-import { useActiveTheme } from '~/hooks/colorScheme'; // O hook que você já tem
+import { useActiveTheme } from '~/hooks/colorScheme';
 
 interface FormScrollContainerProps extends ScrollViewProps {
   children: ReactNode;

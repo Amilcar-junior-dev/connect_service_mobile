@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Animated, { useAnimatedStyle, interpolate, Extrapolation } from 'react-native-reanimated';
 
-// SVGs
 import Plus from '~/assets/svg/Plus.svg'; 
 import Agend from '~/assets/svg/AgendList.svg'; 
 import Contact from '~/assets/svg/Contact.svg'; 
@@ -31,19 +30,16 @@ export function FloatingMenu() {
 
   return (
     <>
-      {/* ----------------- OVERLAY UNIFICADO ----------------- */}
       <Animated.View
         style={[
           StyleSheet.absoluteFill,
-          { backgroundColor: colors.deepSurface, zIndex: 10 }, // Fundo preto
+          { backgroundColor: colors.deepSurface, zIndex: 10 },
           vm.backdropStyle
         ]}
         pointerEvents={vm.isOpen ? 'auto' : 'none'}
         onTouchStart={vm.toggleMenu} 
       />
-      {/* ----------------------------------------------------- */}
 
-      {/* CONTAINER DOS BOTÕES */}
       <View className="absolute bottom-28 right-5 items-end justify-end " style={{ zIndex: 10 }}>
           
           {menuActions.map((action, index) => {
@@ -77,7 +73,6 @@ export function FloatingMenu() {
               );
           })}
 
-          {/* BOTÃO PRINCIPAL (+) */}
           <TouchableOpacity
               activeOpacity={0.9}
               onPress={vm.toggleMenu}

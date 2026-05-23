@@ -8,7 +8,6 @@ import { currencyMaskDef } from '~/utils/masks';
 
 
 
-// 1. O Componente Base
 function CustomTextInput({ 
   name, 
   className, 
@@ -65,11 +64,11 @@ function CustomTextInput({
               onFocus={() => setIsFocused(true)}
               
               onChangeText={(masked, unmasked) => {
-                onChange(masked); // Salvamos o valor com máscara no React Hook Form
+                onChange(masked);
               }}
               
               value={value}
-              mask={getMask()} // ⬅️ Injeta a máscara aqui
+              mask={getMask()}
               keyboardType={maskType === 'currency' || maskType === 'phone' ? 'numeric' : rest.keyboardType}
               {...rest}
             />
@@ -84,6 +83,4 @@ function CustomTextInput({
   );
 }
 
-// 3. A MÁGICA DA PERFORMANCE: memo() evita que esse input renderize 
-// quando você estiver digitando em OUTRO input.
 export const TextInputComponent = memo(CustomTextInput);

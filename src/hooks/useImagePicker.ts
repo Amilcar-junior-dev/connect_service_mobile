@@ -1,11 +1,9 @@
-// src/hooks/useImagePicker.ts
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 
 export function useImagePicker() {
   const pickImage = async () => {
     try {
-      // 1. Permissão amigável
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (!permissionResult.granted) {
@@ -13,12 +11,11 @@ export function useImagePicker() {
         return null;
       }
 
-      // 2. Abertura e Compressão
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsEditing: false, // Deixa o usuário cortar a foto
-        aspect: [1, 1], // Quadrado
-        quality: 0.7, // Comprime 30% sem perder qualidade visual
+        allowsEditing: false,
+        aspect: [1, 1],
+        quality: 0.7,
         
       });
 
@@ -26,7 +23,6 @@ export function useImagePicker() {
 
       const file = result?.assets?.[0];
       
-      // 3. Trava de 5MB
       if (file.fileSize && file.fileSize > 5 * 1024 * 1024) {
         Alert.alert('Ops!', 'A imagem é muito grande. Escolha uma foto de até 5MB.');
         return null;

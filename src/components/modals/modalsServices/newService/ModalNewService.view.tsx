@@ -2,7 +2,6 @@ import React, { memo, } from 'react';
 import { View, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-// Importe a sua ViewModel e o seu Form (ajuste os caminhos se precisar)
 import { useModalNewServiceViewModel } from './modalNewService.viewModel';
 
 import SearchImage from '~/assets/svg/SearchImage.svg';
@@ -18,7 +17,6 @@ import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInpu
 
 import { SERVICE_COLORS } from '~/styles/colors';
 
-// Tipagem que espera aquele Record<string, unknown> do Zustand
 interface ServiceModalProps {
   data?: Record<string, unknown> | null;
 }
@@ -126,25 +124,23 @@ export function ModalNewService({ data }: ServiceModalProps) {
   return (
     <Modalize
       ref={vm.modalRef}
-      modalHeight={MAX_MODAL_HEIGHT} // ⬅️ Trava o crescimento em 90% da tela
+      modalHeight={MAX_MODAL_HEIGHT}
       handlePosition="inside"
       keyboardAvoidingBehavior="padding"
       tapGestureEnabled={false}
       panGestureEnabled={false}
       closeOnOverlayTap={false}
       withHandle={false}
-      // ⬅️ 1. Arredonda o topo com valor de 15
       modalStyle={{
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
-        backgroundColor: '#FFFFFF', // Lembre-se de colocar a cor do seu theme aqui
+        backgroundColor: '#FFFFFF',
       }}
-      // ⬅️ 2. Configurações do Scroll interno nativo da Modalize
       scrollViewProps={{
         showsVerticalScrollIndicator: false,
-        keyboardShouldPersistTaps: 'handled', // ⬅️ Garante que clicar fora feche o teclado
+        keyboardShouldPersistTaps: 'handled',
         contentContainerStyle: { 
-          paddingBottom: 100, // ⬅️ Trazemos o padding de 80 do seu antigo FormScrollContainer
+          paddingBottom: 100,
           paddingTop: 20,
         },
       }}

@@ -1,7 +1,7 @@
 import { TextInputProps } from "react-native";
 
 export interface TextInputComponentProps extends TextInputProps {
-    name: string; // Única coisa obrigatória agora!
+    name: string;
     label: string;
     isRequire?: boolean 
     labelClass?: string

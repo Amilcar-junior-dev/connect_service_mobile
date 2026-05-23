@@ -9,7 +9,6 @@ import Phone from '~/assets/svg/Phone.svg';
 import { useThemeColor } from "../hooks/useColors";
 
 export const MapIcons = {
-    // apple: (color:ThemeColor)=> <Email color={useThemeColor(color)}  height={heightIcon} width={widthIcon}/>,
     email:(color:ThemeColor, heightIcon = 22, widthIcon = 22)=>  <Email color={color}  height={heightIcon} width={widthIcon}/>,
     password:(color:ThemeColor, heightIcon = 22, widthIcon = 22)=>  <Password color={color} height={heightIcon} width={widthIcon} />,
     phone:(color:ThemeColor, heightIcon = 22, widthIcon = 22)=>  <Phone color={color} height={heightIcon} width={widthIcon} />,
