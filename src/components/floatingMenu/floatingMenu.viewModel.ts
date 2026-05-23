@@ -39,7 +39,7 @@ export function useFloatingMenuViewModel() {
   // Nossas ações do menu
 
 
-  const handleActionPress = (actionId: string) => {
+  const handleActionPress = (actionId: ()=> void) => {
     console.log('Clicou em:', actionId);
     toggleMenu(); // Fecha o menu após clicar
     // Aqui no futuro você navega ou abre o modal respectivo

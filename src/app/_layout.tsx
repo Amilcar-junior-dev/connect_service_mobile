@@ -10,6 +10,8 @@ import { useColorScheme } from 'nativewind'
 import { Theme } from '~/styles/colors'
 import '~/styles/global.css'
 import { View } from 'react-native'
+import { GlobalModalManager } from '~/components/modals/GlobalModalManager'
+import { ModalNewService } from '~/components/modals/modalsServices/newService/ModalNewService.view'
 
 
 
@@ -33,6 +35,8 @@ export default function RouteLayout() {
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="login" options={{ headerShown: false }} />
         </Stack>
+        <GlobalModalManager />
+        {/* <ModalNewService /> */}
       </View>
     </GestureHandlerRootView>
   )

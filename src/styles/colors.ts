@@ -86,5 +86,11 @@ export const Theme = {
   },
 };
 
+export const SERVICE_COLORS = [
+  "#3B82F6", "#2563EB", "#0EA5E9", "#22C55E",
+  "#16A34A", "#14B8A6", "#969E9E", "#6366F1",
+  "#8B5CF6", "#F59E0B", "#EF4444", "#EC4899",
+];
+
 export const lightColors = Theme.light.colors;
 export const darkColors = Theme.dark.colors;

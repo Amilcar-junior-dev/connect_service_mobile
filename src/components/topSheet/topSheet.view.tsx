@@ -34,7 +34,7 @@ export function TopSheet({ translateY }: TopSheetProps) {
   
   const statusBarHeight = insets.top;
   const EXPANDED_HEIGHT = height * (Platform.OS === 'android' ? 0.27 :  0.25); // Define o tamanho que o TopSheet irá deslizar na tela, neste caso até 25% do tamanho
-  const COLLAPSED_HEIGHT = 110;
+  const COLLAPSED_HEIGHT = 130;
 
   const MAX_TRANSLATE_Y = 0;
   const MIN_TRANSLATE_Y = -(EXPANDED_HEIGHT - COLLAPSED_HEIGHT);
