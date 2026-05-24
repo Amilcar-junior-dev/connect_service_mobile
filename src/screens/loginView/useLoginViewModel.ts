@@ -26,11 +26,7 @@ export default function useLoginViewModel() {
   });
 
   const onSubmit = handleSubmit(async loginData => {
-    console.log('🚀 ~ useLoginViewModel ~ loginData:', loginData);
-    const { email, password } = loginData;
     router.push('/(private)/home');
-
-    // Adicionar chamada de endpoint aqui
   });
 
   return {

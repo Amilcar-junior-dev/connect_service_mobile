@@ -3,7 +3,6 @@ import { useActiveTheme } from '~/hooks/colorScheme';
 import { Appointment } from '~/models/appointment.model';
 import { useAppointmentCardViewModel } from '~/components/appointmentCard/appointmentCard.viewModel';
 
-// Ícones (Ajuste os caminhos se necessário)
 import EditIcon from '~/assets/svg/Edit.svg';
 import TrashIcon from '~/assets/svg/Trash.svg';
 
@@ -16,21 +15,13 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
   const vm = useAppointmentCardViewModel(appointment);
 
   return (
-    <View className={`w-full flex-row items-center bg-surface rounded-lg p-3 mt-2`}
-      // style={{ backgroundColor: vm.statusColor+30 }} 
-    >
+    <View className={`w-full flex-row items-center bg-surface rounded-lg p-3 mt-2`}>
       
-      {/* 1. Pílula de Status (Canto esquerdo) */}
       <View 
         className={`w-1.5 h-full rounded-full mr-3`} 
         style={{ backgroundColor: vm.statusColor }} 
       />
-      {/* <View 
-        className={`w-1.5 h-4 rounded-tl-lg rounded-b-lg rounded-r-none absolute left-0 top-0`} 
-        style={{ backgroundColor: vm.statusColor }} 
-      /> */}
 
-      {/* 2. Informações do Cliente e Serviço */}
       <View className={`flex-[2] justify-center`}>
         <Text 
           className={`text-base font-robotoBold text-ink ${vm.isCanceled ? 'line-through opacity-50' : ''}`}
@@ -46,14 +37,12 @@ export function AppointmentCard({ appointment }: AppointmentCardProps) {
         </Text>
       </View>
 
-      {/* 3. Horário (Centro) */}
       <View className={`flex-[2] items-center justify-center`}>
         <Text className={`text-base font-robotoMedium text-ink ${vm.isCanceled ? 'opacity-50' : ''}`}>
           {appointment.startTime} às {appointment.endTime}
         </Text>
       </View>
 
-      {/* 4. Ações: Editar e Excluir (Direita) */}
       <View 
           className={`p-1`}
       >

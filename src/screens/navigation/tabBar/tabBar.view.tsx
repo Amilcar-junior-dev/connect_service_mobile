@@ -20,7 +20,6 @@ export function CustomTabBar({
   state,
   navigation,
 }: BottomTabBarProps) {
-  // 1. Pegamos a variável global de deslocamento
   const { tabBarOffset } = useTabBar();
   
   const { colorScheme } = useColorScheme();
@@ -28,10 +27,8 @@ export function CustomTabBar({
 
   const { width } = Dimensions.get('window');
 
-  // 2. Criamos o estilo animado para a TabBar inteira!
   const containerAnimatedStyle = useAnimatedStyle(() => {
     return {
-      // Quando o offset for 0, ela fica no lugar. Quando for 150, ela desce!
       transform: [{ translateY: tabBarOffset.value }],
     };
   });

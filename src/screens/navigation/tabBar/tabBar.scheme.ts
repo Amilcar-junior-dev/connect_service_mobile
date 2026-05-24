@@ -1,1 +1,1 @@
-export  type TabRouteName = 'home' | 'services' | 'financial' | 'more';
+export  type TabRouteName = 'home' | 'services' | 'financial' |'more';

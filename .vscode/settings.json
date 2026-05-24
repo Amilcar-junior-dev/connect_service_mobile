@@ -8,7 +8,9 @@
   },
   "tailwindCSS.classAttributes": [
     "class",
-    "className"
+    "className",
+    "containerClass",
+    "labelClass"
   ],
   "tailwindCSS.experimental.classRegex": [
     ["className\\s*=\\s*[\"'`]([^\"'`]*)[\"'`]", "([a-zA-Z0-9\\-:/\\s]+)"]
