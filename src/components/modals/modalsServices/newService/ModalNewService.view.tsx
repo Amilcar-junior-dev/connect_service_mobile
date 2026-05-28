@@ -46,6 +46,7 @@ const ServiceForm = memo(function ServiceForm({
             placeholder="Digite aqui o nome do seu serviço"
             isRequire
             labelClass="text-lg"
+            leftIcon='Calendar'
             containerClass="mt-2"
         />
 

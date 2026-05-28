@@ -2,9 +2,11 @@ import React from 'react';
 import { ModalType, useModalStore } from '~/store/useModalStore';
 import { useShallow } from 'zustand/react/shallow';
 import { ModalNewService } from './modalsServices/newService/ModalNewService.view';
+import { ModalNewClient } from './modalNewClient/ModalNewClient.view';
+
 const MODAL_REGISTRY: Record<NonNullable<ModalType>, React.ElementType> = {
   SERVICE: ModalNewService,
-  CLIENT: () => null,
+  CLIENT: ModalNewClient,
   FILTER: () => null,
 };
 
@@ -15,7 +17,6 @@ export function GlobalModalManager() {
       modalData: state.modalData,
     }))
   );
-  console.log("🚀 ~ GlobalModalManager.tsx:24 ~ GlobalModalManager ~ activeModal:", activeModal)
 
   if (!activeModal) return null;
 

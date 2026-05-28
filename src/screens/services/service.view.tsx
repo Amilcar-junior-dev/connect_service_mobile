@@ -25,17 +25,15 @@ export default function ServiceScreen(){
     const vm = useServiceScreenViewModel();
     const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
-    console.log('TELA RE RENDERIZADA')
-   
     return (
        
-            <View  style={[activeTheme.vars]}  className={`flex-1 bg-surface pl-4 pr-4 `}>
-                <SafeAreaView className={`flex-1`}>
-                  
-            
-                        
-                </SafeAreaView>
-            </View>
+        <View  style={[activeTheme.vars]}  className={`flex-1 bg-surface pl-4 pr-4 `}>
+            <SafeAreaView className={`flex-1`}>
+                
+        
+                    
+            </SafeAreaView>
+        </View>
 
 
     )
