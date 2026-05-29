@@ -8,7 +8,7 @@ import SearchImage from '~/assets/svg/SearchImage.svg';
 import Edit from '~/assets/svg/Edit.svg';
 import Trash from '~/assets/svg/Trash.svg';
 import Close from '~/assets/svg/Close.svg'
-import WithoutImage from '~/assets/svg/withoutImage.svg';
+import WithoutImage from '~/assets/svg/WithoutImage.svg';
 
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { CardServicePreview } from '~/components/cardServicePreview/CardServicePreview';
@@ -46,7 +46,6 @@ const ServiceForm = memo(function ServiceForm({
             placeholder="Digite aqui o nome do seu serviço"
             isRequire
             labelClass="text-lg"
-            leftIcon='Calendar'
             containerClass="mt-2"
         />
 
