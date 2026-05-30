@@ -35,40 +35,7 @@ export default function ServiceScreen(){
        
         <View  style={[activeTheme.vars]}  className={`flex-1 bg-surface pl-4 pr-4 `}>
             <SafeAreaView className={`flex-1`}>
-                <CustomSelectDropdownComponent 
-                    label="Tipo de usuário"
-                    placeholder="Selecione uma opção"
-                    leftIcon="User"
-                    rightActionIcon="Contact"
-                    onRightActionPress={() => openModal("CLIENT")}
-                    options={[
-                        { id: 1, label: 'Usuário' },
-                        { id: 2, label: 'Admin' },
-                        { id: 3, label: 'Convidado' },
-                    ]}
-                    onSelect={(item) => setSelectedUserType(item)}
-                    selectedValue={selectedUserType }
-                    labelClass="text-left"
-                    isRequire
-                />
-                <View className="w-full justify-between flex-row ">
-                    <View className="w-[48%]">
-                        <TimeSelectDropdown 
-                            label="Tempo de serviço" 
-                            hours={selectedServiceTime?.hours} minutes={selectedServiceTime?.minutes} 
-                           onTimeChange={()=>{} }         
-                        />
-                    </View>
-                    <View className="w-[48%]">
-                        <TimeSelectDropdown 
-                            label="Tempo de serviço" 
-                            hours={selectedServiceTime?.hours} minutes={selectedServiceTime?.minutes} 
-                            onTimeChange={()=>{} }                
-                        />
-                    </View>
-                </View>
-               
-        
+            
                     
             </SafeAreaView>
         </View>
