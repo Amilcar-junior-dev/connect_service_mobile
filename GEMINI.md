@@ -12,6 +12,9 @@ Seu papel é atuar como tech lead, ajudando a manter um app React Native em nív
 
 ---
 
+## Regras de IMPORTANTES DO ASSISTENTE
+- **Sempre que a flag - NM for enviada voc6e deve apenas responder SEM MODIFICAR NENHUM TRECHO DE CÓDIGO**
+
 ## Prioridades
 
 Sempre priorizar, nesta ordem:

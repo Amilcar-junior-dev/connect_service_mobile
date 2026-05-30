@@ -7,6 +7,7 @@ import { useServiceScreenViewModel } from "./serviceScreen.viewModel";
 import { CustomSelectDropdownComponent } from "~/components/inputs/selectInput/CustomSelectDropdown.view";
 import { CustomSelectOption } from "~/components/inputs/selectInput/customSelectDropdown.scheme";
 import { useModalStore } from "~/store/useModalStore";
+import { TimeSelectDropdown } from "~/components/inputs/timeSelect/TimeSelectDropdown.view";
 
 
 
@@ -28,6 +29,7 @@ export default function ServiceScreen(){
     const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
     const [ selectedUserType, setSelectedUserType ] = useState<CustomSelectOption>({ id:1,label: '' });
+    const [ selectedServiceTime, setSelectedServiceTime ] = useState<any>({ hours: 0, minutes: 0});
 
     return (
        
@@ -49,6 +51,23 @@ export default function ServiceScreen(){
                     labelClass="text-left"
                     isRequire
                 />
+                <View className="w-full justify-between flex-row ">
+                    <View className="w-[48%]">
+                        <TimeSelectDropdown 
+                            label="Tempo de serviço" 
+                            hours={selectedServiceTime?.hours} minutes={selectedServiceTime?.minutes} 
+                           onTimeChange={()=>{} }         
+                        />
+                    </View>
+                    <View className="w-[48%]">
+                        <TimeSelectDropdown 
+                            label="Tempo de serviço" 
+                            hours={selectedServiceTime?.hours} minutes={selectedServiceTime?.minutes} 
+                            onTimeChange={()=>{} }                
+                        />
+                    </View>
+                </View>
+               
         
                     
             </SafeAreaView>

@@ -88,7 +88,9 @@ const CustomSelectDropdown = ({
           </Text>
 
         
-          { IconOptions['ArrowDown']}
+          <Animated.View style={vm?.arrowStyle}>
+            <ArrowDown color={colors.muted} />
+          </Animated.View>
         </TouchableOpacity>
 
         {rightActionIcon && (
@@ -101,46 +103,44 @@ const CustomSelectDropdown = ({
         )}
       </View>
 
-      {vm.isOpen && (
-        <Animated.View 
-          style={vm.dropdownStyle}
-          className={`mt-2 bg-surface rounded-xl border border-divider shadow-lg overflow-hidden origin-top`}
-        >
-          <View className={`flex-row items-center px-4 py-2 border-b border-divider`}>
-            <View className={`flex-1 border-b border-ink`}>
-              <TextInput
-                placeholder="Pesquisar ..."
-                className={` font-robotoRegular text-ink`}
-                value={vm.searchQuery}
-                onChangeText={vm?.setSearchQuery}
-                autoFocus
-              />
-            </View>
-            <Search width={18} height={18} color={colors.muted} />
+      <Animated.View 
+        style={vm.dropdownStyle}
+        className={`mt-2 bg-surface rounded-xl border border-divider shadow-lg overflow-hidden origin-top`}
+      >
+        <View className={`flex-row items-center px-4 py-2 border-b border-divider`}>
+          <View className={`flex-1 border-b border-ink`}>
+            <TextInput
+              placeholder="Pesquisar ..."
+              className={` font-robotoRegular text-ink`}
+              value={vm.searchQuery}
+              onChangeText={vm?.setSearchQuery}
+              autoFocus
+            />
           </View>
+          <Search width={18} height={18} color={colors.muted} />
+        </View>
 
-          <FlatList
-            data={vm.filteredOptions}
-            keyExtractor={(item) => item?.id?.toString()!}
-            getItemLayout={(_, index) => (
-              { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
-            )}
-            initialNumToRender={8}
-            maxToRenderPerBatch={8}
-            windowSize={5}
-            removeClippedSubviews={true}
-            ListEmptyComponent={
-              <Text className={`text-muted font-robotoMedium text-center mt-2 flex-1 `}>
-                {`Item não encontrado, tente uma nova busca.`}
-              </Text>
-            }
-            className={`max-h-60 px-2 pb-2`}
-            renderItem={({ item }) => (
-              <CardUser name={item?.label} onPress={()=>vm.handleSelect(item)} key={item?.id}/>
-            )}
-          />
-        </Animated.View>
-      )}
+        <FlatList
+          data={vm.filteredOptions}
+          keyExtractor={(item) => item?.id?.toString()!}
+          getItemLayout={(_, index) => (
+            { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
+          )}
+          initialNumToRender={8}
+          maxToRenderPerBatch={8}
+          windowSize={5}
+          removeClippedSubviews={true}
+          ListEmptyComponent={
+            <Text className={`text-muted font-robotoMedium text-center mt-2 flex-1 `}>
+              {`Item não encontrado, tente uma nova busca.`}
+            </Text>
+          }
+          className={`max-h-60 px-2 pb-2`}
+          renderItem={({ item }) => (
+            <CardUser name={item?.label} onPress={()=>vm.handleSelect(item)} key={item?.id}/>
+          )}
+        />
+      </Animated.View>
     </View>
   );
 };

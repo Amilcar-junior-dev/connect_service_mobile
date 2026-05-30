@@ -29,6 +29,9 @@ export function useCustomPickerViewModel({ options, onSelect }: Partial<CustomSe
             });
         }
     }, [isOpen]);
+    const arrowStyle = useAnimatedStyle(() => ({
+        transform: [{ rotate: withTiming(isOpen ? '180deg' : '0deg', { duration: 500 }) }],
+    }));
 
     useEffect(() => {
         return () => cancelAnimation(animation);
@@ -70,5 +73,6 @@ export function useCustomPickerViewModel({ options, onSelect }: Partial<CustomSe
         filteredOptions,
         handleSelect,
         dropdownStyle,
+        arrowStyle,
     };
 }
