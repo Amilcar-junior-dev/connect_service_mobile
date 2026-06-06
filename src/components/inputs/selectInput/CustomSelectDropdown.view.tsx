@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, FlatList, Image } from 'react-
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import { CustomSelectDropdownProps, IconProps, PickerIconNames } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, CustomSelectOption, IconProps, PickerIconNames } from './customSelectDropdown.scheme';
 import { useCustomPickerViewModel } from './customSelectDropdown.viewModel';
 
 // SVGs
@@ -12,21 +12,21 @@ import Contact from '~/assets/svg/Contact.svg';
 import ArrowDown from '~/assets/svg/ArrowDown.svg';
 import Search from '~/assets/svg/Search.svg';
 import Services from '~/assets/svg/Services.svg';
-
+import Check from '~/assets/svg/Check.svg';
 
 import { CardUser } from '~/components/cardUser/CardUser.view';
 import { useModalStore } from '~/store/useModalStore';
-// import ChevronDown from '~/assets/svg/ChevronDown.svg';
-// import UserPlus from '~/assets/svg/UserPlus.svg';
 
-
-
-
+interface LocalIconProps {
+  width?: number;
+  heigth?: number;
+}
 
 const CustomSelectDropdown = ({
   label,
   placeholder = 'Selecione uma opção',
   leftIcon = 'Contact',
+  cardIcon ,
   rightActionIcon,
   onRightActionPress,
   options,
@@ -36,22 +36,46 @@ const CustomSelectDropdown = ({
   labelClass,
   isRequire = false,
   error,
+  typeDropdown = 'select',
+  multiLabelSingular = 'item',
+  multiLabelPlural = 'itens',
 }: CustomSelectDropdownProps) => {
 
 
   const { colors } = useActiveTheme();
-  const vm = useCustomPickerViewModel({ options, onSelect });
+  const vm = useCustomPickerViewModel({ options, onSelect, typeDropdown, selectedValue });
   
   const ITEM_HEIGHT = 56;
 
   const IconOptions = {
-    User:({width = 15, heigth = 15}: IconProps)=>  <User color={colors?.ink} width={width} height={heigth}/>,
-    Contact:({width = 15, heigth = 15}: IconProps)=>  <Contact color={colors?.ink}  width={width} height={heigth}/>,
-    ArrowDown:({width = 15, heigth = 15}: IconProps)=>  <ArrowDown color={colors?.muted} width={width} height={heigth}/>,
-    Services:({width = 15, heigth = 15}: IconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
-    Search:({width = 15, heigth = 15}: IconProps)=>  null,
-    ChevronDown:({width = 15, heigth = 15}: IconProps)=>  null,
-    UserPlus:({width = 15, heigth = 15}: IconProps)=>  null,
+    User:({width = 15, heigth = 15}: LocalIconProps)=>  <User color={colors?.ink} width={width} height={heigth}/>,
+    Contact:({width = 15, heigth = 15}: LocalIconProps)=>  <Contact color={colors?.ink}  width={width} height={heigth}/>,
+    ArrowDown:({width = 15, heigth = 15}: LocalIconProps)=>  <ArrowDown color={colors?.muted} width={width} height={heigth}/>,
+    Services:({width = 15, heigth = 15}: LocalIconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
+    Search:({width = 15, heigth = 15}: LocalIconProps)=>  null,
+    ChevronDown:({width = 15, heigth = 15}: LocalIconProps)=>  null,
+    UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
+  };
+
+  const hasSelectedValue = typeDropdown === 'checkBox'
+    ? (Array?.isArray(selectedValue) && selectedValue?.length > 0)
+    : !!selectedValue;
+
+  const getPlaceholderText = () => {
+    if (typeDropdown === 'checkBox') {
+      const count = Array?.isArray(selectedValue) ? selectedValue?.length : 0;
+      if (count === 0) return placeholder;
+      if (count === 1) return `1 ${multiLabelSingular} selecionado`;
+      return `${count} ${multiLabelPlural} selecionados`;
+    }
+    const singleVal = selectedValue as CustomSelectOption | null;
+    return singleVal?.label || placeholder;
+  };
+
+  const getSelectedImage = () => {
+    if (typeDropdown === 'checkBox') return null;
+    const singleVal = selectedValue as CustomSelectOption | null;
+    return singleVal?.img;
   };
 
   return (
@@ -62,23 +86,23 @@ const CustomSelectDropdown = ({
 
       <View className={`flex-row items-center gap-2`}>
         <TouchableOpacity
-          onPress={vm.toggleOpen}
+          onPress={vm?.toggleOpen}
           activeOpacity={0.7}
           className={cn(
             `flex-1 h-12 flex-row items-center px-4 rounded-lg border bg-surface`,
-            error ? `border-danger` : vm.isOpen ? `border-tabBar` : `border-stone`
+            error ? `border-danger` : vm?.isOpen ? `border-tabBar` : `border-stone`
           )}
         >
-          {leftIcon && !selectedValue?.img && (
+          {leftIcon && !getSelectedImage() && (
             <View className={`mr-2 w-6 items-center`}>
-              {IconOptions[leftIcon]({width: 25, heigth: 25})}
+              {IconOptions?.[leftIcon]?.({width: 25, heigth: 25})}
             </View>
           )}
 
-          {selectedValue?.img && (
+          {getSelectedImage() && (
             <View className={`mr-2 w-6 items-center`}>
               <Image
-                source={{ uri: selectedValue?.img }}
+                source={{ uri: getSelectedImage()! }}
                 className={`w-6 h-6 rounded-full`}
                 resizeMode="cover"
               />
@@ -88,15 +112,15 @@ const CustomSelectDropdown = ({
           <Text 
             className={cn(
               `flex-1 font-robotoRegular`,
-              selectedValue ? `text-ink` : `text-muted`
+              hasSelectedValue ? `text-ink` : `text-muted`
             )}
           >
-            {selectedValue?.label || placeholder}
+            {getPlaceholderText()}
           </Text>
 
         
           <Animated.View style={vm?.arrowStyle}>
-            <ArrowDown color={colors.muted} />
+            <ArrowDown color={colors?.muted} />
           </Animated.View>
         </TouchableOpacity>
 
@@ -105,13 +129,13 @@ const CustomSelectDropdown = ({
             onPress={onRightActionPress}
             className={`bg-accent p-3 rounded-full shadow-sm active:opacity-80 items-center justify-center`}
           >
-            { IconOptions[rightActionIcon]({width: 15, heigth: 15})}
+            { IconOptions?.[rightActionIcon]?.({width: 15, heigth: 15})}
           </TouchableOpacity>
         )}
       </View>
 
       <Animated.View 
-        style={[vm.dropdownStyle ]}
+        style={[vm?.dropdownStyle ]}
         className={`mt-2 w-full bg-surface rounded-xl border border-divider shadow-lg overflow-hidden`}
       >
         <View className={`flex-row items-center px-4 py-2 border-b border-divider`}>
@@ -119,16 +143,16 @@ const CustomSelectDropdown = ({
             <TextInput
               placeholder="Pesquisar ..."
               className={` font-robotoRegular text-ink`}
-              value={vm.searchQuery}
+              value={vm?.searchQuery}
               onChangeText={vm?.setSearchQuery}
               autoFocus
             />
           </View>
-          <Search width={18} height={18} color={colors.muted} />
+          <Search width={18} height={18} color={colors?.muted} />
         </View>
 
         <FlatList
-          data={vm.filteredOptions}
+          data={vm?.filteredOptions}
           keyExtractor={(item) => item?.id?.toString()!}
           getItemLayout={(_, index) => (
             { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
@@ -143,9 +167,48 @@ const CustomSelectDropdown = ({
             </Text>
           }
           className={`max-h-60 px-2 pb-2`}
-          renderItem={({ item }) => (
-            <CardUser name={item?.label} onPress={()=>vm.handleSelect(item)} key={item?.id}/>
-          )}
+          renderItem={({ item }) => {
+            const isSelected = typeDropdown === 'checkBox'
+              ? (Array?.isArray(selectedValue) && selectedValue?.some((x: any) => x?.id === item?.id))
+              : (selectedValue && !Array?.isArray(selectedValue) && (selectedValue as any)?.id === item?.id);
+
+            return (
+              <TouchableOpacity
+                onPress={() => vm?.handleSelect?.(item)}
+                activeOpacity={0.7}
+                className={cn(
+                  `flex-row items-center justify-between p-3 rounded-lg border border-divider mb-1 bg-surface`,
+                  isSelected ? `bg-accent/5 border-accent` : ``
+                )}
+              >
+                <View className={`flex-row items-center flex-1`}>
+                  {
+                    cardIcon && (
+                      <View className={`w-8 h-8 rounded-full items-center justify-center mr-3`}>
+                        { IconOptions?.[cardIcon]({ width: 16, heigth: 16 })}
+                      </View>
+                    )
+                  }
+                  <Text className={`text-ink font-robotoMedium text-base flex-1`}>
+                    {item?.label}
+                  </Text>
+                </View>
+
+                {typeDropdown === 'checkBox' && (
+                  <View 
+                    className={cn(
+                      `w-6 h-6 rounded border-2 items-center justify-center relative`,
+                      isSelected ? `border-accent` : `border-stone`
+                    )}
+                  >
+                    {isSelected && (
+                      <Check color={colors?.accent} width={15} height={15}/>
+                    )}
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          }}
         />
       </Animated.View>
     </View>

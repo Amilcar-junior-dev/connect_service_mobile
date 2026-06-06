@@ -14,6 +14,7 @@ Este arquivo serve como memória persistente para as sessões de desenvolvimento
   - Uso estrito de TypeScript sem `any`.
   - Sintaxe de template string \`\` em `className`.
   - Operador de encadeamento opcional `?.` em absolutamente qualquer acesso com ponto (`.`).
+- **Registro de Decisões Arquitetônicas (ADR)**: Criado o arquivo `.sdd/decisions.md` para documentar decisões estruturais do projeto. A primeira decisão (ADR 001) oficializa a evolução do `CustomSelectDropdown` para suportar seleção simples (`select`) ou múltipla com checkboxes (`checkBox`) de maneira genérica, mantendo as regras de negócio de somatórios nas Views consumidoras.
 
 ---
 

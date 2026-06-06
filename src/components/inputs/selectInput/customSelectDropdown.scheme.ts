@@ -13,12 +13,16 @@ export interface CustomSelectDropdownProps {
     label: string;
     placeholder?: string;
     leftIcon?: PickerIconNames;
+    cardIcon?: PickerIconNames;
     rightIcon?: PickerIconNames
     rightActionIcon?: PickerIconNames;
     onRightActionPress?: () => void;
     options: CustomSelectOption[];
-    onSelect: (item: CustomSelectOption) => void;
-    selectedValue?: CustomSelectOption | null;
+    onSelect: (item: any) => void;
+    selectedValue?: CustomSelectOption | CustomSelectOption[] | null;
+    typeDropdown?: 'select' | 'checkBox';
+    multiLabelSingular?: string;
+    multiLabelPlural?: string;
     containerClass?: string;
     labelClass?: string;
     isRequire?: boolean;

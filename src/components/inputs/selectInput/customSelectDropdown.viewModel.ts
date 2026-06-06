@@ -10,7 +10,7 @@ import {
 } from 'react-native-reanimated';
 import { CustomSelectDropdownProps } from './customSelectDropdown.scheme';
 
-export function useCustomPickerViewModel({ options, onSelect }: Partial<CustomSelectDropdownProps>) {
+export function useCustomPickerViewModel({ options, onSelect, typeDropdown = 'select', selectedValue }: Partial<CustomSelectDropdownProps>) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -60,10 +60,22 @@ export function useCustomPickerViewModel({ options, onSelect }: Partial<CustomSe
     }, [filteredOptions]);
 
     const handleSelect = useCallback((item: any) => {
-        onSelect?.(item);
-        setIsOpen(false);
-        setSearchQuery('');
-    }, [onSelect]);
+        if (typeDropdown === 'checkBox') {
+            const currentSelected = Array?.isArray(selectedValue) ? selectedValue : [];
+            const isAlreadySelected = currentSelected?.some((x: any) => x?.id === item?.id);
+            let newSelected;
+            if (isAlreadySelected) {
+                newSelected = currentSelected?.filter((x: any) => x?.id !== item?.id);
+            } else {
+                newSelected = [...currentSelected, item];
+            }
+            onSelect?.(newSelected);
+        } else {
+            onSelect?.(item);
+            setIsOpen(false);
+            setSearchQuery('');
+        }
+    }, [onSelect, typeDropdown, selectedValue]);
 
     return {
         isOpen,
