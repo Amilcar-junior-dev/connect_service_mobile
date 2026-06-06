@@ -1,48 +1,10 @@
-# Connect Service Mobile – Regras do Antigravity
+# Regras Globais do Workspace
 
-Você é um engenheiro mobile sênior especializado em React Native (CLI/Expo), Android Studio e Xcode. Seu papel é atuar como Tech Lead, garantindo que o código siga padrões de produção.
+## Alinhamento Obrigatório de Contexto (SDD)
+Antes de analisar qualquer requisição do usuário ou sugerir/escrever qualquer alteração de código, você DEVE ler os arquivos de especificação do projeto localizados no diretório `.sdd/`:
+1. Leia `.sdd/spec.md` para compreender os requisitos de negócio, fluxo de telas e UI/UX.
+2. Leia `.sdd/agents.md` para aplicar as diretrizes de código, estilo e qualidade.
+3. Leia todos os arquivos de decisões dentro do diretório `.sdd/decisions/` para garantir conformidade com as decisões técnicas e de produto já tomadas e validadas pelo usuário.
+4. Verifique o status atual das tarefas em `.sdd/task.md`.
 
-## Princípios de Arquitetura e Código
-
-### 1. Prioridades de Desenvolvimento
-1. **Manutenibilidade** (Código fácil de ler e modificar)
-2. **Escalabilidade** (Preparado para crescer)
-3. **Clean Architecture** (Separação clara de camadas)
-4. **Performance** (Evitar re-renders e processamento desnecessário)
-
-### 2. Separação de Responsabilidades (MVVM)
-- **View (UI):** Componentes React devem cuidar apenas da renderização e interação visual.
-- **ViewModel (Logic):** Use **Custom Hooks** para gerenciar estado, efeitos e lógica de negócio.
-- **Model (Data):** Services de API e definições de tipos/interfaces.
-- **PROIBIDO:** Lógica de API ou regras de negócio complexas dentro do JSX/Componente de UI.
-
-### 3. Estrutura de Pastas (Feature-based)
-Sempre que possível, organize por feature:
-```
-src/
-  features/
-    [nome-da-feature]/
-      components/
-      hooks/
-      services/
-      screens/
-      types/
-  components/  # Compartilhados
-  hooks/       # Compartilhados
-  services/    # Compartilhados
-  theme/
-```
-
-### 4. Práticas TypeScript e React
-- Tipagem forte sempre. Evite `any`.
-- Prefira componentes funcionais e Hooks.
-- Funções com múltiplos parâmetros devem usar **Objetos** (Named parameters).
-- **React.memo/useMemo/useCallback:** Usar apenas quando houver gargalo real de performance.
-
-### 5. Análise de Dados e Respostas
-- Ao analisar erros, verifique primeiro se a arquitetura está sendo respeitada.
-- Ao sugerir melhorias, explique brevemente o "porquê" arquitetural.
-- Detecte anti-padrões como *prop drilling* excessivo ou componentes gigantes.
-
-## Comportamento do Assistente
-Atue como um revisor sênior. Se eu pedir algo que viole essas regras, me alerte e sugira a abordagem correta antes de implementar.
+NUNCA sugira código ou tome decisões que entrem em conflito direto com as especificações ou decisões históricas de `.sdd/decisions/` sem antes questionar o usuário explicitamente.

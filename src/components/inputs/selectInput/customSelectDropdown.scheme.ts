@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown';
+export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services';
 
 export interface CustomSelectOption {
     label: string;
@@ -23,4 +23,9 @@ export interface CustomSelectDropdownProps {
     labelClass?: string;
     isRequire?: boolean;
     renderItem?: (item: CustomSelectOption) => ReactNode;
+    error?: string;
+}
+export interface IconProps {
+    width?: number;
+    heigth?: number;
 }

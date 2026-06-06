@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, FlatList, Image } from 'react-
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import { CustomSelectDropdownProps, PickerIconNames } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, IconProps, PickerIconNames } from './customSelectDropdown.scheme';
 import { useCustomPickerViewModel } from './customSelectDropdown.viewModel';
 
 // SVGs
@@ -11,10 +11,15 @@ import User from '~/assets/svg/User.svg';
 import Contact from '~/assets/svg/Contact.svg';
 import ArrowDown from '~/assets/svg/ArrowDown.svg';
 import Search from '~/assets/svg/Search.svg';
+import Services from '~/assets/svg/Services.svg';
+
+
 import { CardUser } from '~/components/cardUser/CardUser.view';
 import { useModalStore } from '~/store/useModalStore';
 // import ChevronDown from '~/assets/svg/ChevronDown.svg';
 // import UserPlus from '~/assets/svg/UserPlus.svg';
+
+
 
 
 
@@ -30,6 +35,7 @@ const CustomSelectDropdown = ({
   containerClass,
   labelClass,
   isRequire = false,
+  error,
 }: CustomSelectDropdownProps) => {
 
 
@@ -39,12 +45,13 @@ const CustomSelectDropdown = ({
   const ITEM_HEIGHT = 56;
 
   const IconOptions = {
-    User:  <User color={colors.ink} />,
-    Contact:  <Contact color={colors.ink} />,
-    ArrowDown:  <ArrowDown color={colors.muted} />,
-    Search:  null,
-    ChevronDown:  null,
-    UserPlus:  null,
+    User:({width = 15, heigth = 15}: IconProps)=>  <User color={colors?.ink} width={width} height={heigth}/>,
+    Contact:({width = 15, heigth = 15}: IconProps)=>  <Contact color={colors?.ink}  width={width} height={heigth}/>,
+    ArrowDown:({width = 15, heigth = 15}: IconProps)=>  <ArrowDown color={colors?.muted} width={width} height={heigth}/>,
+    Services:({width = 15, heigth = 15}: IconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
+    Search:({width = 15, heigth = 15}: IconProps)=>  null,
+    ChevronDown:({width = 15, heigth = 15}: IconProps)=>  null,
+    UserPlus:({width = 15, heigth = 15}: IconProps)=>  null,
   };
 
   return (
@@ -59,12 +66,12 @@ const CustomSelectDropdown = ({
           activeOpacity={0.7}
           className={cn(
             `flex-1 h-12 flex-row items-center px-4 rounded-lg border bg-surface`,
-            vm.isOpen ? `border-tabBar` : `border-stone`
+            error ? `border-danger` : vm.isOpen ? `border-tabBar` : `border-stone`
           )}
         >
           {leftIcon && !selectedValue?.img && (
             <View className={`mr-2 w-6 items-center`}>
-              {IconOptions[leftIcon]}
+              {IconOptions[leftIcon]({width: 25, heigth: 25})}
             </View>
           )}
 
@@ -98,14 +105,14 @@ const CustomSelectDropdown = ({
             onPress={onRightActionPress}
             className={`bg-accent p-3 rounded-full shadow-sm active:opacity-80 items-center justify-center`}
           >
-            { IconOptions[rightActionIcon]}
+            { IconOptions[rightActionIcon]({width: 15, heigth: 15})}
           </TouchableOpacity>
         )}
       </View>
 
       <Animated.View 
-        style={vm.dropdownStyle}
-        className={`mt-2 bg-surface rounded-xl border border-divider shadow-lg overflow-hidden origin-top`}
+        style={[vm.dropdownStyle ]}
+        className={`mt-2 w-full bg-surface rounded-xl border border-divider shadow-lg overflow-hidden`}
       >
         <View className={`flex-row items-center px-4 py-2 border-b border-divider`}>
           <View className={`flex-1 border-b border-ink`}>
