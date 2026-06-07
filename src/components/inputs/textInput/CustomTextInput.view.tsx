@@ -74,9 +74,9 @@ function CustomTextInput({
 
             <View
               className={cn(
-                'flex-row w-full px-4 rounded-lg border bg-surface',
-                rest.multiline ? 'h-24 py-2' : 'h-12 items-center',
-                error ? 'border-danger' : isFocused ? 'border border-tabBar' : 'border-gray-300',
+                `flex-row w-full px-4 rounded-lg border bg-stone/20`,
+                rest.multiline ? `h-24 py-2` : `h-12 items-center`,
+                error ? `border-danger` : isFocused ? `border border-tabBar` : `border-gray-300`,
                 className 
               )}
             >
@@ -91,7 +91,7 @@ function CustomTextInput({
                 onBlur={() => { onBlur(); setIsFocused(false); }}
                 onFocus={() => setIsFocused(true)}
                 
-                onChangeText={(masked, unmasked) => {
+                onChangeText={(masked ) => {
                   onChange(masked);
                 }}
                 

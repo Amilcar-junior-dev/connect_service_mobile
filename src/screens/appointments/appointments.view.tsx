@@ -16,6 +16,8 @@ import { cn } from "~/utils/cx";
 import { useAppointmentViewModel } from "./appointmentsViewModel";
 import { TextInputComponent } from "~/components/inputs/textInput/CustomTextInput.view";
 
+import ArrowBack from "~/assets/svg/ArrowLeft.svg"
+
 
 
 export default function ApointmentScreen() {
@@ -85,10 +87,18 @@ export default function ApointmentScreen() {
         <FormProvider {...vm.methods}>
             <View style={[vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
                 <SafeAreaView className={`flex-1`}>
-                    <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom: 50}} showsVerticalScrollIndicator={false}>
+                    <View className={`w-full flex-row items-center justify-center relative`}>
+                        <TouchableOpacity className={`absolute left-0`}>
+                            <ArrowBack color={colors.ink} width={20} height={20}/>
+                        </TouchableOpacity>
+                        <Text className={`text-lg font-semibold`}>Novo Agendamento</Text>
+                    </View>
+
+                    <ScrollView className={`flex-1 mt-4`} contentContainerStyle={{paddingBottom: 50}} showsVerticalScrollIndicator={false}>
                             <Controller
                                 control={vm.methods?.control}
                                 name="client"
+                                rules={{ required: "Selecione um cliente" }}
                                 render={({ field: { onChange }, fieldState: { error } }) => (
                                     <CustomSelectDropdownComponent 
                                         label="Cliente"
@@ -109,8 +119,12 @@ export default function ApointmentScreen() {
                             <Controller
                                 control={vm.methods?.control}
                                 name="services"
+                                rules={{ 
+                                    required: "Selecione pelo menos um serviço",
+                                    validate: (value) => (value && value?.length > 0) || "Selecione pelo menos um serviço"
+                                }}
                                 render={({ field: { onChange }, fieldState: { error } }) => (
-                                    <View className={`mb-4`}>
+                                    <View>
                                         <CustomSelectDropdownComponent 
                                             label="Serviço"
                                             placeholder="Adicionar um Serviço"
@@ -142,9 +156,9 @@ export default function ApointmentScreen() {
                                                     return (
                                                         <View 
                                                             key={item?.id} 
-                                                            className={`relative bg-surface p-4 rounded-xl border border-divider mb-3 shadow-sm `}
+                                                            className={`relative bg-surface p-4 rounded-lg border border-divider mb-3 shadow-sm `}
                                                         >
-                                                            <View className={`absolute left-0 top-0 bottom-0 w-1.5 bg-accent`} />
+                                                            <View className={`absolute -left-1 top-0 bottom-0 w-1.5 bg-accent rounded-l-xl`} />
                                                             
                                                             <TouchableOpacity
                                                                 onPress={() => {
@@ -210,7 +224,7 @@ export default function ApointmentScreen() {
                                                      openModal('SELECT_DATE_TIME', {
                                                          totalDuration,
                                                          onSelect: (date: string, time: string) => {
-                                                             vm.setValue("date", date);
+                                                             vm.setValue("date", date, { shouldValidate: true });
                                                              vm.setValue("time", time, { shouldValidate: true });
                                                          }
                                                      });
@@ -222,7 +236,7 @@ export default function ApointmentScreen() {
                                                  )}
                                              >
                                                  <View className={`mr-3`}>
-                                                     <CalendarIcon color={error ? colors.danger : colors.ink} width={20} height={20} />
+                                                     <CalendarIcon color={ colors.ink} width={20} height={20} />
                                                  </View>
                                                  <Text className={cn(
                                                      `text-base`,
@@ -241,7 +255,7 @@ export default function ApointmentScreen() {
                                 control={vm.methods?.control}
                                 name="repeat"
                                 render={({ field: { onChange }, fieldState: { error } }) => (
-                                    <View className={`mb-4`}>
+                                    <View>
                                         <CustomSelectDropdownComponent 
                                             label="Repetir"
                                             placeholder="Adicionar um Serviço"
@@ -255,63 +269,6 @@ export default function ApointmentScreen() {
                                             multiLabelPlural="dias"
                                             error={error?.message}
                                         />
-
-                                        {/* Selected Services Container */}
-                                        {services?.length > 0 && (
-                                            <View className={`bg-stone/10 p-3 rounded-2xl mb-4 border border-divider`}>
-                                                {services?.map((item: CustomSelectOption) => {
-                                                    const formattedPrice = item?.price?.toLocaleString?.('pt-BR', {
-                                                        style: 'currency',
-                                                        currency: 'BRL',
-                                                    });
-                                                    const durationText = `${item?.duration?.hours ? `${item?.duration?.hours} h ` : ''}${item?.duration?.minutes ? `${item?.duration?.minutes} min` : ''}`;
-
-                                                    return (
-                                                        <View 
-                                                            key={item?.id} 
-                                                            className={`relative bg-surface p-4 rounded-xl border border-divider mb-3 shadow-sm `}
-                                                        >
-                                                            <View className={`absolute left-0 top-0 bottom-0 w-1.5 bg-accent`} />
-                                                            
-                                                            <TouchableOpacity
-                                                                onPress={() => {
-                                                                    const updated = services?.filter((s: CustomSelectOption) => s?.id !== item?.id);
-                                                                    vm.setValue?.("services", updated);
-                                                                }}
-                                                                className={`absolute -top-2 -left-2 border-2 border-danger bg-surface rounded-full p-1 z-10 active:opacity-80`}
-                                                            >
-                                                                <Close color={colors?.danger} width={8} height={8} />
-                                                            </TouchableOpacity>
-
-                                                            <View className={`flex-row justify-between items-center pl-2`}>
-                                                                <View className={`flex-1 mr-2`}>
-                                                                    <Text className={`text-ink text-base font-bold mb-1`}>
-                                                                        {item?.label}
-                                                                    </Text>
-                                                                    <Text className={`text-ink text-sm font-semibold`}>
-                                                                        {formattedPrice}
-                                                                    </Text>
-                                                                </View>
-                                                                <View className={`items-end`}>
-                                                                    <Text className={`text-muted text-xs`}>
-                                                                        Tempo Estimado: <Text className={`text-ink font-bold`}>{durationText}</Text>
-                                                                    </Text>
-                                                                </View>
-                                                            </View>
-                                                        </View>
-                                                    );
-                                                })}
-
-                                                <View className={`flex-row justify-between items-center pt-2 border-t border-divider px-2`}>
-                                                    <Text className={`text-ink text-sm font-bold`}>
-                                                        Tempo Total: {totalDuration?.hours ? `${totalDuration?.hours} Hr(s) ` : ''}{totalDuration?.minutes ? `${totalDuration?.minutes} min` : ''}
-                                                    </Text>
-                                                    <Text className={`text-ink text-sm font-bold`}>
-                                                        R$: {totalPrice?.toFixed?.(2)?.replace?.('.', ',')}
-                                                    </Text>
-                                                </View>
-                                            </View>
-                                        )}
                                     </View>
                                 )}
                             />
@@ -341,13 +298,12 @@ export default function ApointmentScreen() {
                                   placeholder="Digite aqui alguma observação"
                                   multiline
                                   maxLength={200}
-                                  containerClass={`mt-4`}
                               />
 
                              {/* Botão de Salvar Agendamento */}
                              <TouchableOpacity
                                  onPress={vm.onSubmit}
-                                 className={`bg-tintBlue mt-6 h-12 items-center justify-center rounded-xl mb-10 s`}
+                                 className={`bg-tintBlue h-12 items-center justify-center rounded-xl mb-10 s`}
                              >
                                  <Text className={`font-bold text-ink text-base`}>
                                      Salvar Agendamento

@@ -208,6 +208,7 @@ const CustomSelectDropdown = ({
           )}
         </ScrollView>
       </Animated.View>
+      {error && <Text className={`text-xs text-danger mt-1`}>{error}</Text>}
     </View>
   );
 };
