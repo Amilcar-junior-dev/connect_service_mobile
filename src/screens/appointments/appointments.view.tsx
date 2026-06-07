@@ -14,6 +14,7 @@ import { AppointmentFormValues } from "./appointmentScreen.scheme";
 import dayjs from "dayjs";
 import { cn } from "~/utils/cx";
 import { useAppointmentViewModel } from "./appointmentsViewModel";
+import { TextInputComponent } from "~/components/inputs/textInput/CustomTextInput.view";
 
 
 
@@ -23,15 +24,9 @@ export default function ApointmentScreen() {
 
     const vm = useAppointmentViewModel()
 
-
-
-    
-
     const selectedClient = vm.watch?.("client");
     const services = vm.watch?.("services") || [];
     const repeat = vm.watch?.("repeat");
-
-   
 
     const clientsList = useMemo<CustomSelectOption[]>(() => [
         { id: 1, label: 'Roberto Carlos' },
@@ -255,7 +250,6 @@ export default function ApointmentScreen() {
                                             onSelect={onChange}
                                             selectedValue={repeat}
                                             labelClass="text-left"
-                                            isRequire
                                             typeDropdown="checkBox"
                                             multiLabelSingular="dia"
                                             multiLabelPlural="dias"
@@ -339,6 +333,16 @@ export default function ApointmentScreen() {
                                      />
                                  )}
                              />
+
+                              {/* Nota */}
+                              <TextInputComponent
+                                  name="notes"
+                                  label="Nota"
+                                  placeholder="Digite aqui alguma observação"
+                                  multiline
+                                  maxLength={200}
+                                  containerClass={`mt-4`}
+                              />
 
                              {/* Botão de Salvar Agendamento */}
                              <TouchableOpacity

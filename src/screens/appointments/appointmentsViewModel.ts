@@ -14,6 +14,7 @@ export function useAppointmentViewModel() {
             time: null,
             reminder: null,
             repeat: null,
+            notes: "",
         }
     });
 
@@ -25,7 +26,7 @@ export function useAppointmentViewModel() {
             console.log("✅ Agendamento pronto para salvar:", data);
             Alert.alert(
                 "Agendamento Confirmado",
-                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}\nLembrete: ${data.reminder?.label || 'Não definido'}`
+                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}\nLembrete: ${data.reminder?.label || 'Não definido'}\nNota: ${data.notes || 'Nenhuma'}`
             );
         },
         (errors) => {

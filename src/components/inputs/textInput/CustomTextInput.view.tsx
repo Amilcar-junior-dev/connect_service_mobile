@@ -74,19 +74,20 @@ function CustomTextInput({
 
             <View
               className={cn(
-                'h-12 flex-row w-full px-4 rounded-lg border bg-surface',
-                error ? 'border-red-500' : isFocused ? 'border border-tabBar' : 'border-gray-300',
+                'flex-row w-full px-4 rounded-lg border bg-surface',
+                rest.multiline ? 'h-24 py-2' : 'h-12 items-center',
+                error ? 'border-danger' : isFocused ? 'border border-tabBar' : 'border-gray-300',
                 className 
               )}
             >
               { leftIcon && (
-                  <View className={`w-1/12 justify-center items-center`}>
+                  <View className={cn(`w-1/12 justify-center items-center`, rest.multiline ? `pt-1` : ``)}>
                     { IconOptions[leftIcon](error)}
                   </View>
                 )
               }
               <MaskInput
-                className={`w-11/12 ml-2`}
+                className={cn(`w-11/12 ml-2`, rest.multiline ? `h-full` : ``)}
                 onBlur={() => { onBlur(); setIsFocused(false); }}
                 onFocus={() => setIsFocused(true)}
                 
@@ -97,13 +98,14 @@ function CustomTextInput({
                 value={value}
                 mask={getMask()}
                 keyboardType={maskType === 'currency' || maskType === 'phone' ? 'numeric' : rest.keyboardType}
+                textAlignVertical={rest.multiline ? 'top' : 'center'}
                 {...rest}
               />
 
             </View>
             
             
-            {error && <Text className={`text-xs text-red-500 mt-1`}>{error.message}</Text>}
+            {error && <Text className={`text-xs text-danger mt-1`}>{error.message}</Text>}
             {rest.maxLength && <Text className={`text-xs  text-muted self-end  mt-2`}>{currentLength + `/${rest.maxLength}`}</Text>}
         
           </View>
