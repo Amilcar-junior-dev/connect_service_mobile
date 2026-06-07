@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 
 export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services';
+export enum typeSelectDropdown {
+    SELECT = 'select',
+    CHECKBOX = 'checkBox'
+}
 
 export interface CustomSelectOption {
     label: string;

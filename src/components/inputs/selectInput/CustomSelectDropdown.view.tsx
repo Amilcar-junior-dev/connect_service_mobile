@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, Image } from 'reac
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import { CustomSelectDropdownProps, CustomSelectOption, IconProps, PickerIconNames } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, CustomSelectOption, IconProps, PickerIconNames, typeSelectDropdown } from './customSelectDropdown.scheme';
 import { useCustomPickerViewModel } from './customSelectDropdown.viewModel';
 
 // SVGs
@@ -43,9 +43,16 @@ const CustomSelectDropdown = ({
 
 
   const { colors } = useActiveTheme();
-  const vm = useCustomPickerViewModel({ options, onSelect, typeDropdown, selectedValue });
+  const vm = useCustomPickerViewModel({ 
+    options, 
+    onSelect, 
+    typeDropdown, 
+    selectedValue,
+    placeholder,
+    multiLabelSingular,
+    multiLabelPlural,
+  });
   
-  const ITEM_HEIGHT = 56;
 
   const IconOptions = {
     User:({width = 15, heigth = 15}: LocalIconProps)=>  <User color={colors?.ink} width={width} height={heigth}/>,
@@ -57,26 +64,7 @@ const CustomSelectDropdown = ({
     UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
   };
 
-  const hasSelectedValue = typeDropdown === 'checkBox'
-    ? (Array?.isArray(selectedValue) && selectedValue?.length > 0)
-    : !!selectedValue;
 
-  const getPlaceholderText = () => {
-    if (typeDropdown === 'checkBox') {
-      const count = Array?.isArray(selectedValue) ? selectedValue?.length : 0;
-      if (count === 0) return placeholder;
-      if (count === 1) return `1 ${multiLabelSingular} selecionado`;
-      return `${count} ${multiLabelPlural} selecionados`;
-    }
-    const singleVal = selectedValue as CustomSelectOption | null;
-    return singleVal?.label || placeholder;
-  };
-
-  const getSelectedImage = () => {
-    if (typeDropdown === 'checkBox') return null;
-    const singleVal = selectedValue as CustomSelectOption | null;
-    return singleVal?.img;
-  };
 
   return (
     <View className={cn(`mb-4  w-full ${containerClass || ''}`)}>
@@ -93,16 +81,16 @@ const CustomSelectDropdown = ({
             error ? `border-danger` : vm?.isOpen ? `border-tabBar` : `border-stone`
           )}
         >
-          {leftIcon && !getSelectedImage() && (
+          {leftIcon && !vm?.getSelectedImage() && (
             <View className={`mr-2 w-6 items-center`}>
               {IconOptions?.[leftIcon]?.({width: 25, heigth: 25})}
             </View>
           )}
 
-          {getSelectedImage() && (
+          {vm?.getSelectedImage() && (
             <View className={`mr-2 w-6 items-center`}>
               <Image
-                source={{ uri: getSelectedImage()! }}
+                source={{ uri: vm?.getSelectedImage()! }}
                 className={`w-6 h-6 rounded-full`}
                 resizeMode="cover"
               />
@@ -112,10 +100,10 @@ const CustomSelectDropdown = ({
           <Text 
             className={cn(
               `flex-1 font-robotoRegular`,
-              hasSelectedValue ? `text-ink` : `text-muted`
+              vm?.hasSelectedValue ? `text-ink` : `text-muted`
             )}
           >
-            {getPlaceholderText()}
+            {vm?.getPlaceholderText()}
           </Text>
 
         

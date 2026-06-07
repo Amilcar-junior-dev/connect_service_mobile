@@ -8,9 +8,17 @@ import {
     Easing,
     Extrapolation
 } from 'react-native-reanimated';
-import { CustomSelectDropdownProps, CustomSelectOption } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, CustomSelectOption, typeSelectDropdown } from './customSelectDropdown.scheme';
 
-export function useCustomPickerViewModel({ options, onSelect, typeDropdown = 'select', selectedValue }: Partial<CustomSelectDropdownProps>) {
+export function useCustomPickerViewModel({
+    options,
+    onSelect,
+    typeDropdown = typeSelectDropdown.SELECT,
+    selectedValue,
+    placeholder,
+    multiLabelSingular,
+    multiLabelPlural,
+}: Partial<CustomSelectDropdownProps>) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -77,14 +85,39 @@ export function useCustomPickerViewModel({ options, onSelect, typeDropdown = 'se
         }
     }, [onSelect, typeDropdown, selectedValue]);
 
+    const hasSelectedValue = typeDropdown === typeSelectDropdown.CHECKBOX
+        ? (Array?.isArray(selectedValue) && selectedValue?.length > 0)
+        : !!selectedValue;
+
+    const getPlaceholderText = () => {
+        if (typeDropdown === typeSelectDropdown.CHECKBOX) {
+            const count = Array?.isArray(selectedValue) ? selectedValue?.length : 0;
+            if (count === 0) return placeholder;
+            if (count === 1) return `1 ${multiLabelSingular} selecionado`;
+            return `${count} ${multiLabelPlural} selecionados`;
+        }
+        const singleVal = selectedValue as CustomSelectOption | null;
+        return singleVal?.label || placeholder;
+    };
+
+    const getSelectedImage = () => {
+        if (typeDropdown === typeSelectDropdown.CHECKBOX) return null;
+        const singleVal = selectedValue as CustomSelectOption | null;
+        return singleVal?.img;
+    };
+
     return {
         isOpen,
-        toggleOpen,
         searchQuery,
-        setSearchQuery,
         filteredOptions,
-        handleSelect,
         dropdownStyle,
         arrowStyle,
+        hasSelectedValue,
+        toggleOpen,
+        setSearchQuery,
+        handleSelect,
+        getPlaceholderText,
+        getSelectedImage
+
     };
 }
