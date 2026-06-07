@@ -6,6 +6,7 @@ export interface AppointmentFormValues {
     date: string | null;
     time: string | null;
     reminder: CustomSelectOption | null;
+    repeat: CustomSelectOption | null;
 }
 
 export interface ServiceTime {

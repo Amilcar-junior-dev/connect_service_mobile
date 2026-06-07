@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services' | 'Reminder';
+export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services' | 'Reminder' | 'Repeat';
 export enum typeSelectDropdown {
     SELECT = 'select',
     CHECKBOX = 'checkBox',

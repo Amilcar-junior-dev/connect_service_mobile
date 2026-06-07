@@ -13,6 +13,7 @@ import { useActiveTheme } from "~/hooks/colorScheme";
 import { AppointmentFormValues } from "./appointmentScreen.scheme";
 import dayjs from "dayjs";
 import { cn } from "~/utils/cx";
+import { useAppointmentViewModel } from "./appointmentsViewModel";
 
 
 
@@ -20,37 +21,17 @@ export default function ApointmentScreen() {
     const {colors, vars} = useActiveTheme();
     const openModal = useModalStore((state) => state?.openModal);
 
+    const vm = useAppointmentViewModel()
 
 
 
-    const context = useFormContext<AppointmentFormValues>();
-    const localMethods = useForm<AppointmentFormValues>({
-        defaultValues: {
-            client: null,
-            services: [],
-            date: null,
-            time: null,
-            reminder: null,
-        }
-    });
-    const methods = context || localMethods;
-    const { watch, setValue } = methods;
+    
 
-    const selectedClient = watch?.("client");
-    const services = watch?.("services") || [];
+    const selectedClient = vm.watch?.("client");
+    const services = vm.watch?.("services") || [];
+    const repeat = vm.watch?.("repeat");
 
-    const onSubmit = methods.handleSubmit(
-        (data) => {
-            console.log("✅ Agendamento pronto para salvar:", data);
-            Alert.alert(
-                "Agendamento Confirmado",
-                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}\nLembrete: ${data.reminder?.label || 'Não definido'}`
-            );
-        },
-        (errors) => {
-            console.log("❌ Erros de validação do agendamento:", errors);
-        }
-    );
+   
 
     const clientsList = useMemo<CustomSelectOption[]>(() => [
         { id: 1, label: 'Roberto Carlos' },
@@ -70,6 +51,16 @@ export default function ApointmentScreen() {
         { id: 9, label: 'Tonalização', price: 150.00, duration: { hours: 1, minutes: 15 } },
         {id: 10, label: 'Reconstrução', price: 220.00, duration: { hours: 1, minutes: 30 } },
         { id: 11, label: 'Botox', price: 350.00, duration: { hours: 1, minutes: 30 } },
+    ], []);
+
+    const RepeatList = useMemo<CustomSelectOption[]>(() => [
+        { id: 1, label: 'Segunda-Feira', },
+        { id: 2, label: 'Terça-Feira' },
+        { id: 3, label: 'Quarta-Feira' },
+        { id: 4, label: 'Quinta-Feira' },
+        { id: 5, label: 'Sexta-Feira' },
+        { id: 6, label: 'Sábado' },
+        { id: 7, label: 'Domingo' },
     ], []);
 
     const reminderList = useMemo<CustomSelectOption[]>(() => [
@@ -96,12 +87,12 @@ export default function ApointmentScreen() {
     }, [services]);
 
     return (
-        <FormProvider {...methods}>
+        <FormProvider {...vm.methods}>
             <View style={[vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
                 <SafeAreaView className={`flex-1`}>
-                    <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom: 50}} >
+                    <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom: 50}} showsVerticalScrollIndicator={false}>
                             <Controller
-                                control={methods?.control}
+                                control={vm.methods?.control}
                                 name="client"
                                 render={({ field: { onChange }, fieldState: { error } }) => (
                                     <CustomSelectDropdownComponent 
@@ -121,7 +112,7 @@ export default function ApointmentScreen() {
                             />
 
                             <Controller
-                                control={methods?.control}
+                                control={vm.methods?.control}
                                 name="services"
                                 render={({ field: { onChange }, fieldState: { error } }) => (
                                     <View className={`mb-4`}>
@@ -163,7 +154,7 @@ export default function ApointmentScreen() {
                                                             <TouchableOpacity
                                                                 onPress={() => {
                                                                     const updated = services?.filter((s: CustomSelectOption) => s?.id !== item?.id);
-                                                                    setValue?.("services", updated);
+                                                                    vm.setValue?.("services", updated);
                                                                 }}
                                                                 className={`absolute -top-2 -left-2 border-2 border-danger bg-surface rounded-full p-1 z-10 active:opacity-80`}
                                                             >
@@ -205,11 +196,11 @@ export default function ApointmentScreen() {
 
                              {/* Seletor de Data e Hora */}
                              <Controller
-                                 control={methods.control}
+                                 control={vm.methods.control}
                                  name="date"
                                  rules={{ required: "Selecione a data e hora do agendamento",  }}
                                  render={({ field: { value: dateValue }, fieldState: { error } }) => {
-                                     const timeValue = watch("time");
+                                     const timeValue = vm.watch("time");
                                      const displayText = dateValue && timeValue 
                                         ? `${dayjs(dateValue).format('DD/MM/YYYY')} às ${timeValue}`
                                         : "Selecionar data e hora";
@@ -224,8 +215,8 @@ export default function ApointmentScreen() {
                                                      openModal('SELECT_DATE_TIME', {
                                                          totalDuration,
                                                          onSelect: (date: string, time: string) => {
-                                                             setValue("date", date);
-                                                             setValue("time", time, { shouldValidate: true });
+                                                             vm.setValue("date", date);
+                                                             vm.setValue("time", time, { shouldValidate: true });
                                                          }
                                                      });
                                                  }}
@@ -250,10 +241,90 @@ export default function ApointmentScreen() {
                                      );
                                  }}
                              />
+                             {/* Repetir */}
+                             <Controller
+                                control={vm.methods?.control}
+                                name="repeat"
+                                render={({ field: { onChange }, fieldState: { error } }) => (
+                                    <View className={`mb-4`}>
+                                        <CustomSelectDropdownComponent 
+                                            label="Repetir"
+                                            placeholder="Adicionar um Serviço"
+                                            leftIcon="Repeat"
+                                            options={RepeatList}
+                                            onSelect={onChange}
+                                            selectedValue={repeat}
+                                            labelClass="text-left"
+                                            isRequire
+                                            typeDropdown="checkBox"
+                                            multiLabelSingular="dia"
+                                            multiLabelPlural="dias"
+                                            error={error?.message}
+                                        />
+
+                                        {/* Selected Services Container */}
+                                        {services?.length > 0 && (
+                                            <View className={`bg-stone/10 p-3 rounded-2xl mb-4 border border-divider`}>
+                                                {services?.map((item: CustomSelectOption) => {
+                                                    const formattedPrice = item?.price?.toLocaleString?.('pt-BR', {
+                                                        style: 'currency',
+                                                        currency: 'BRL',
+                                                    });
+                                                    const durationText = `${item?.duration?.hours ? `${item?.duration?.hours} h ` : ''}${item?.duration?.minutes ? `${item?.duration?.minutes} min` : ''}`;
+
+                                                    return (
+                                                        <View 
+                                                            key={item?.id} 
+                                                            className={`relative bg-surface p-4 rounded-xl border border-divider mb-3 shadow-sm `}
+                                                        >
+                                                            <View className={`absolute left-0 top-0 bottom-0 w-1.5 bg-accent`} />
+                                                            
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    const updated = services?.filter((s: CustomSelectOption) => s?.id !== item?.id);
+                                                                    vm.setValue?.("services", updated);
+                                                                }}
+                                                                className={`absolute -top-2 -left-2 border-2 border-danger bg-surface rounded-full p-1 z-10 active:opacity-80`}
+                                                            >
+                                                                <Close color={colors?.danger} width={8} height={8} />
+                                                            </TouchableOpacity>
+
+                                                            <View className={`flex-row justify-between items-center pl-2`}>
+                                                                <View className={`flex-1 mr-2`}>
+                                                                    <Text className={`text-ink text-base font-bold mb-1`}>
+                                                                        {item?.label}
+                                                                    </Text>
+                                                                    <Text className={`text-ink text-sm font-semibold`}>
+                                                                        {formattedPrice}
+                                                                    </Text>
+                                                                </View>
+                                                                <View className={`items-end`}>
+                                                                    <Text className={`text-muted text-xs`}>
+                                                                        Tempo Estimado: <Text className={`text-ink font-bold`}>{durationText}</Text>
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
+                                                        </View>
+                                                    );
+                                                })}
+
+                                                <View className={`flex-row justify-between items-center pt-2 border-t border-divider px-2`}>
+                                                    <Text className={`text-ink text-sm font-bold`}>
+                                                        Tempo Total: {totalDuration?.hours ? `${totalDuration?.hours} Hr(s) ` : ''}{totalDuration?.minutes ? `${totalDuration?.minutes} min` : ''}
+                                                    </Text>
+                                                    <Text className={`text-ink text-sm font-bold`}>
+                                                        R$: {totalPrice?.toFixed?.(2)?.replace?.('.', ',')}
+                                                    </Text>
+                                                </View>
+                                            </View>
+                                        )}
+                                    </View>
+                                )}
+                            />
 
                              {/* Enviar Lembrete */}
                              <Controller
-                                 control={methods.control}
+                                 control={vm.methods.control}
                                  name="reminder"
                                  render={({ field: { onChange, value }, fieldState: { error } }) => (
                                      <CustomSelectDropdownComponent
@@ -271,7 +342,7 @@ export default function ApointmentScreen() {
 
                              {/* Botão de Salvar Agendamento */}
                              <TouchableOpacity
-                                 onPress={onSubmit}
+                                 onPress={vm.onSubmit}
                                  className={`bg-tintBlue mt-6 h-12 items-center justify-center rounded-xl mb-10 s`}
                              >
                                  <Text className={`font-bold text-ink text-base`}>

@@ -14,6 +14,7 @@ import Search from '~/assets/svg/Search.svg';
 import Services from '~/assets/svg/Services.svg';
 import Check from '~/assets/svg/Check.svg';
 import Reminder from '~/assets/svg/Reminder.svg';
+import RepeatEvent from '~/assets/svg/RepeatEvent.svg';
 
 import { CardUser } from '~/components/cardUser/CardUser.view';
 import { useModalStore } from '~/store/useModalStore';
@@ -61,6 +62,7 @@ const CustomSelectDropdown = ({
     ArrowDown:({width = 15, heigth = 15}: LocalIconProps)=>  <ArrowDown color={colors?.muted} width={width} height={heigth}/>,
     Services:({width = 15, heigth = 15}: LocalIconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
     Reminder:({width = 15, heigth = 15}: LocalIconProps)=>  <Reminder color={colors?.ink} width={width} height={heigth}/>,
+    Repeat:({width = 15, heigth = 15}: LocalIconProps)=>  <RepeatEvent color={colors?.ink} width={width} height={heigth}/>,
     Search:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     ChevronDown:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
