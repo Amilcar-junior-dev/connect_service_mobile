@@ -39,3 +39,36 @@ As modificações efetuadas foram:
   * **Comportamento Idêntico:** O comportamento de snapping das horas e minutos e a paginação das opções mantiveram-se inalterados na experiência do usuário.
 * **Contras:**
   * Para listas muito extensas (milhares de itens), a ausência de virtualização do `ScrollView` pode ser um fator relevante, porém, para o contexto de dropdowns de formulário local do app, o volume de dados é perfeitamente suportado.
+
+---
+
+## ADR 002: Posicionamento do Input de Observações (Nota) no Formulário de Agendamento
+
+* **Status**: Arquivado (Não Resolvido - Contornado por Layout)
+* **Data**: 2026-06-07
+* **Autor**: Antigravity
+
+### Contexto
+Na tela de Novo Agendamento (`src/screens/appointments/appointments.view.tsx`), há um formulário composto majoritariamente por seletores/dropdowns personalizados e um único campo de entrada de texto livre multiline no rodapé da página para inserção de observações ("Nota"). 
+
+Ao focar nesse input de texto multiline, o teclado virtual do dispositivo (tanto iOS quanto Android) cobria o campo, impossibilitando que o usuário visualizasse o que estava digitando. 
+
+### Problema
+O comportamento de auto-scroll para focar em inputs de texto dentro de `ScrollView` no React Native apresenta limitações severas quando o input possui as propriedades `multiline={true}` e `maxLength` ativas:
+1. **Comportamento Nativo do ScrollView**: O React Native desativa ou limita a rolagem automática em inputs multiline porque presume que o próprio input gerenciará a rolagem interna de seu conteúdo textual.
+2. **Componente Customizado (`CustomTextInput`)**: O uso da biblioteca `react-native-mask-input` como base de todos os inputs inseria um invólucro extra na hierarquia de views. Mesmo para inputs não mascarados (como o de notas), a biblioteca interceptava eventos de foco, digitação e cursor, impedindo que as coordenadas de layout corretas fossem propagadas ao gerenciador de rolagem nativo do `ScrollView`.
+3. **Incompatibilidade de KeyboardAvoidingView**: Tentativas de contornar o problema utilizando KeyboardAvoidingView no nível da tela introduziram problemas de layout ou barra de navegação com scroll duplo, sem resolver o problema de visibilidade do input de notas.
+
+### Decisão e Contorno (Layout)
+Como a tela de agendamento possui apenas um único campo de entrada de texto livre ("Nota") e o restante são seletores estruturados de clique, decidiu-se reposicionar o campo "Nota" para a parte superior do formulário, logo abaixo do seletor de "Cliente" (em vez de mantê-lo no rodapé abaixo de todos os outros dropdowns). 
+
+Esta abordagem contorna o problema de usabilidade:
+* **Garantia de Visibilidade**: Ao ficar no topo da tela, o input de texto está sempre visível na metade superior e nunca é coberto quando o teclado surge.
+* **Layout Simplificado**: Elimina a necessidade de layouts complexos de `KeyboardAvoidingView` ou rolagem forçada programática na tela de agendamentos.
+* **Fluxo do Usuário**: Facilita o preenchimento de notas ou detalhes adicionais sobre o cliente logo após a seleção deste.
+
+### Ações Futuras
+O bug original do teclado com `multiline` + `maxLength` + `react-native-mask-input` no rodapé da página foi marcado como **Não Resolvido**. Caso surja a necessidade futura de colocar inputs de texto livre multiline extensos na parte inferior de formulários com rolagem, os seguintes caminhos deverão ser analisados:
+1. Refatorar o `CustomTextInput` para utilizar apenas a tag nativa `<TextInput>` do React Native para qualquer entrada não mascarada (já implementado nesta sessão).
+2. Investigar se o comportamento persiste em formulários estruturados com a biblioteca `react-native-keyboard-aware-scroll-view` ou similares.
+

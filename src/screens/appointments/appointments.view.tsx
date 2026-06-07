@@ -116,6 +116,15 @@ export default function ApointmentScreen() {
                                 )}
                             />
 
+                            {/* Nota */}
+                            <TextInputComponent
+                                name="notes"
+                                label="Nota"
+                                placeholder="Digite aqui alguma observação"
+                                multiline
+                                maxLength={200}
+                            />
+
                             <Controller
                                 control={vm.methods?.control}
                                 name="services"
@@ -291,14 +300,7 @@ export default function ApointmentScreen() {
                                  )}
                              />
 
-                              {/* Nota */}
-                              <TextInputComponent
-                                  name="notes"
-                                  label="Nota"
-                                  placeholder="Digite aqui alguma observação"
-                                  multiline
-                                  maxLength={200}
-                              />
+
 
                              {/* Botão de Salvar Agendamento */}
                              <TouchableOpacity
