@@ -1,0 +1,1 @@
+export type ModalType = 'SERVICE' | 'CLIENT' | 'FILTER' | 'SELECT_DATE_TIME' | null;

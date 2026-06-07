@@ -1,16 +1,18 @@
 import { useState, useMemo } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useColorScheme } from "nativewind";
 import { Theme } from "~/styles/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CustomSelectDropdownComponent } from "~/components/inputs/selectInput/CustomSelectDropdown.view";
 import { CustomSelectOption } from "~/components/inputs/selectInput/customSelectDropdown.scheme";
 import { useModalStore } from "~/store/useModalStore";
-import { TimeSelectDropdown } from "~/components/inputs/timeSelect/TimeSelectDropdown.view";
 import { Controller, useFormContext, useForm, FormProvider } from "react-hook-form";
 import Close from "~/assets/svg/Close.svg";
+import CalendarIcon from "~/assets/svg/Calendar.svg";
 import { useActiveTheme } from "~/hooks/colorScheme";
-import { AppointmentFormValues, ServiceTime } from "./appointmentScreen.scheme";
+import { AppointmentFormValues } from "./appointmentScreen.scheme";
+import dayjs from "dayjs";
+import { cn } from "~/utils/cx";
 
 
 
@@ -19,13 +21,15 @@ export default function ApointmentScreen() {
     const openModal = useModalStore((state) => state?.openModal);
 
 
-    const [ selectedServiceTime, setSelectedServiceTime ] = useState<ServiceTime>({ hours: 0, minutes: 0 });
+
 
     const context = useFormContext<AppointmentFormValues>();
     const localMethods = useForm<AppointmentFormValues>({
         defaultValues: {
             client: null,
             services: [],
+            date: null,
+            time: null,
         }
     });
     const methods = context || localMethods;
@@ -33,6 +37,19 @@ export default function ApointmentScreen() {
 
     const selectedClient = watch?.("client");
     const services = watch?.("services") || [];
+
+    const onSubmit = methods.handleSubmit(
+        (data) => {
+            console.log("✅ Agendamento pronto para salvar:", data);
+            Alert.alert(
+                "Agendamento Confirmado",
+                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}`
+            );
+        },
+        (errors) => {
+            console.log("❌ Erros de validação do agendamento:", errors);
+        }
+    );
 
     const clientsList = useMemo<CustomSelectOption[]>(() => [
         { id: 1, label: 'Roberto Carlos' },
@@ -178,24 +195,63 @@ export default function ApointmentScreen() {
                                 )}
                             />
 
-                            <View className={`w-full justify-between flex-row`}>
-                                <View className={`w-[48%]`}>
-                                    <TimeSelectDropdown 
-                                        label="Tempo de serviço" 
-                                        hours={selectedServiceTime?.hours} 
-                                        minutes={selectedServiceTime?.minutes} 
-                                        onTimeChange={() => {}}         
-                                    />
-                                </View>
-                                <View className={`w-[48%]`}>
-                                    <TimeSelectDropdown 
-                                        label="Tempo de serviço" 
-                                        hours={selectedServiceTime?.hours} 
-                                        minutes={selectedServiceTime?.minutes} 
-                                        onTimeChange={() => {}}                
-                                    />
-                                </View>
-                            </View>
+                             {/* Seletor de Data e Hora */}
+                             <Controller
+                                 control={methods.control}
+                                 name="date"
+                                 rules={{ required: "Selecione a data e hora do agendamento" }}
+                                 render={({ field: { value: dateValue }, fieldState: { error } }) => {
+                                     const timeValue = watch("time");
+                                     const displayText = dateValue && timeValue 
+                                        ? `${dayjs(dateValue).format('DD/MM/YYYY')} às ${timeValue}`
+                                        : "Selecionar data e hora";
+
+                                     return (
+                                         <View className={`mb-4 w-full`}>
+                                             <Text className={`text-sm font-normal text-ink mb-1`}>
+                                                 Data e Hora do Agendamento *
+                                             </Text>
+                                             <TouchableOpacity
+                                                 onPress={() => {
+                                                     openModal('SELECT_DATE_TIME', {
+                                                         totalDuration,
+                                                         onSelect: (date: string, time: string) => {
+                                                             setValue("date", date);
+                                                             setValue("time", time, { shouldValidate: true });
+                                                         }
+                                                     });
+                                                 }}
+                                                 activeOpacity={0.7}
+                                                 className={cn(
+                                                     `h-12 flex-row w-full px-4 rounded-xl border bg-surface items-center`,
+                                                     error ? `border-red-500` : `border-stone`
+                                                 )}
+                                             >
+                                                 <View className={`mr-3`}>
+                                                     <CalendarIcon color={error ? colors.danger : colors.ink} width={20} height={20} />
+                                                 </View>
+                                                 <Text className={cn(
+                                                     `text-base`,
+                                                     dateValue ? `text-ink font-semibold` : `text-muted`
+                                                 )}>
+                                                     {displayText}
+                                                 </Text>
+                                             </TouchableOpacity>
+                                             {error && <Text className={`text-xs text-red-500 mt-1`}>{error.message}</Text>}
+                                         </View>
+                                     );
+                                 }}
+                             />
+
+                             {/* Botão de Salvar Agendamento */}
+                             <TouchableOpacity
+                                 onPress={onSubmit}
+                                 className={`bg-tabBar mt-6 h-12 items-center justify-center rounded-xl mb-10 shadow-sm`}
+                             >
+                                 <Text className={`font-bold text-surface text-base`}>
+                                     Salvar Agendamento
+                                 </Text>
+                             </TouchableOpacity>
 
                     </ScrollView>
                 </SafeAreaView>

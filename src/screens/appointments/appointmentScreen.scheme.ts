@@ -3,6 +3,8 @@ import { CustomSelectOption } from "~/components/inputs/selectInput/customSelect
 export interface AppointmentFormValues {
     client: CustomSelectOption | null;
     services: CustomSelectOption[];
+    date: string | null;
+    time: string | null;
 }
 
 export interface ServiceTime {

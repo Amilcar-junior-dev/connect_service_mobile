@@ -6,63 +6,63 @@ import { useModalStore } from '~/store/useModalStore';
 import { Modalize } from 'react-native-modalize';
 
 export function useModalNewServiceViewModel() {
-    const modalRef = useRef<Modalize>(null);
-    const methods = useAppForm({ schema: ExpenseSchema });
+  const modalRef = useRef<Modalize>(null);
+  const methods = useAppForm({ schema: ExpenseSchema });
 
-    const closeModal = useModalStore((state) => state.closeModal);
-    const modalVisible = useModalStore((state)=> state.activeModal)
+  const closeModal = useModalStore((state) => state.closeModal);
+  const modalVisible = useModalStore((state) => state.activeModal)
 
-    const [selectedColor, setSelectedColor] = useState<string>('#969E9E');
-    const [coverImage, setCoverImage] = useState<string>('');
-  
-    const { pickImage } = useImagePicker();
+  const [selectedColor, setSelectedColor] = useState<string>('#969E9E');
+  const [coverImage, setCoverImage] = useState<string>('');
 
-    useEffect(() => {
-      modalRef.current?.open();
-    }, []);
+  const { pickImage } = useImagePicker();
 
-    const handleClose = () => {
-      modalRef.current?.close();
-    };
-  
-    const onSubmit = methods.handleSubmit(
-      (data) => {
-        const dataSubmite = {
-          ...data,
-          cover: coverImage
-        }
-        console.log('✅ Dados prontos para salvar: ', dataSubmite);
+  useEffect(() => {
+    modalRef.current?.open();
+  }, []);
 
-      },
-      (erros) => {
-        console.log('❌ O Zod bloqueou o envio! Motivo:', erros);
+  const handleClose = () => {
+    modalRef.current?.close();
+  };
+
+  const onSubmit = methods.handleSubmit(
+    (data) => {
+      const dataSubmite = {
+        ...data,
+        cover: coverImage
       }
-    );
-  
-  
-  
-    const handleSelectOrEditImage = async () => {
-      const uri = await pickImage();
-      if (uri) {
-        setCoverImage(uri);
-      }
-    };
-  
-    const handleRemoveImage = () => {
-      setCoverImage('');
-    };
-  
-  
-    return { 
-      modalRef,
-      methods, 
-      selectedColor,
-      onSubmit,
-      setSelectedColor,
-      coverImage,
-      handleSelectOrEditImage,
-      handleRemoveImage,
-      handleClose,
-      closeModal,
-    };
+      console.log('✅ Dados prontos para salvar: ', dataSubmite);
+
+    },
+    (erros) => {
+      console.log('❌ O Zod bloqueou o envio! Motivo:', erros);
+    }
+  );
+
+
+
+  const handleSelectOrEditImage = async () => {
+    const uri = await pickImage();
+    if (uri) {
+      setCoverImage(uri);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setCoverImage('');
+  };
+
+
+  return {
+    modalRef,
+    methods,
+    selectedColor,
+    onSubmit,
+    setSelectedColor,
+    coverImage,
+    handleSelectOrEditImage,
+    handleRemoveImage,
+    handleClose,
+    closeModal,
+  };
 }
