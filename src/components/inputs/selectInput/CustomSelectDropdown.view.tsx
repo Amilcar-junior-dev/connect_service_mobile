@@ -13,6 +13,7 @@ import ArrowDown from '~/assets/svg/ArrowDown.svg';
 import Search from '~/assets/svg/Search.svg';
 import Services from '~/assets/svg/Services.svg';
 import Check from '~/assets/svg/Check.svg';
+import Reminder from '~/assets/svg/Reminder.svg';
 
 import { CardUser } from '~/components/cardUser/CardUser.view';
 import { useModalStore } from '~/store/useModalStore';
@@ -59,6 +60,7 @@ const CustomSelectDropdown = ({
     Contact:({width = 15, heigth = 15}: LocalIconProps)=>  <Contact color={colors?.ink}  width={width} height={heigth}/>,
     ArrowDown:({width = 15, heigth = 15}: LocalIconProps)=>  <ArrowDown color={colors?.muted} width={width} height={heigth}/>,
     Services:({width = 15, heigth = 15}: LocalIconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
+    Reminder:({width = 15, heigth = 15}: LocalIconProps)=>  <Reminder color={colors?.ink} width={width} height={heigth}/>,
     Search:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     ChevronDown:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
@@ -77,8 +79,8 @@ const CustomSelectDropdown = ({
           onPress={vm?.toggleOpen}
           activeOpacity={0.7}
           className={cn(
-            `flex-1 h-12 flex-row items-center px-4 rounded-lg border bg-surface`,
-            error ? `border-danger` : vm?.isOpen ? `border-tabBar` : `border-stone`
+            `flex-1 h-12 flex-row items-center px-4 rounded-lg border bg-stone/20`,
+            error ? `border-danger` : vm?.isOpen ? `border-tabBar/50` : `border-stone`
           )}
         >
           {leftIcon && !vm?.getSelectedImage() && (
@@ -182,6 +184,19 @@ const CustomSelectDropdown = ({
                     >
                       {isSelected && (
                         <Check color={colors?.accent} width={15} height={15}/>
+                      )}
+                    </View>
+                  )}
+
+                  {typeDropdown === 'radioButton' && (
+                    <View 
+                      className={cn(
+                        `w-6 h-6 rounded-full border-2 items-center justify-center`,
+                        isSelected ? `border-accent` : `border-stone`
+                      )}
+                    >
+                      {isSelected && (
+                        <View className={`w-3.5 h-3.5 rounded-full bg-accent`} />
                       )}
                     </View>
                   )}

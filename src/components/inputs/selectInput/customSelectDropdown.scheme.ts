@@ -1,9 +1,10 @@
 import { ReactNode } from 'react';
 
-export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services';
+export type PickerIconNames = 'User' | 'Contact' | 'Search' | 'ChevronDown' | 'UserPlus' | 'ArrowDown' | 'Services' | 'Reminder';
 export enum typeSelectDropdown {
     SELECT = 'select',
-    CHECKBOX = 'checkBox'
+    CHECKBOX = 'checkBox',
+    RADIOBUTTON = 'radioButton'
 }
 
 export interface CustomSelectOption {
@@ -29,7 +30,7 @@ export interface CustomSelectDropdownProps {
     options: CustomSelectOption[];
     onSelect: (item: CustomSelectOption | CustomSelectOption[] | null) => void;
     selectedValue?: CustomSelectOption | CustomSelectOption[] | null;
-    typeDropdown?: 'select' | 'checkBox';
+    typeDropdown?: 'select' | 'checkBox' | 'radioButton';
     multiLabelSingular?: string;
     multiLabelPlural?: string;
     containerClass?: string;

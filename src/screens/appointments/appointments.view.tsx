@@ -30,6 +30,7 @@ export default function ApointmentScreen() {
             services: [],
             date: null,
             time: null,
+            reminder: null,
         }
     });
     const methods = context || localMethods;
@@ -43,7 +44,7 @@ export default function ApointmentScreen() {
             console.log("✅ Agendamento pronto para salvar:", data);
             Alert.alert(
                 "Agendamento Confirmado",
-                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}`
+                `Cliente: ${data.client?.label}\nData: ${dayjs(data.date).format('DD/MM/YYYY')}\nHora: ${data.time}\nLembrete: ${data.reminder?.label || 'Não definido'}`
             );
         },
         (errors) => {
@@ -67,8 +68,15 @@ export default function ApointmentScreen() {
         { id: 7, label: 'Escova', price: 60.00, duration: { hours: 0, minutes: 45 } },
         { id: 8, label: 'Coloração', price: 180.00, duration: { hours: 1, minutes: 45 } },
         { id: 9, label: 'Tonalização', price: 150.00, duration: { hours: 1, minutes: 15 } },
-        { id: 10, label: 'Reconstrução', price: 220.00, duration: { hours: 1, minutes: 30 } },
+        {id: 10, label: 'Reconstrução', price: 220.00, duration: { hours: 1, minutes: 30 } },
         { id: 11, label: 'Botox', price: 350.00, duration: { hours: 1, minutes: 30 } },
+    ], []);
+
+    const reminderList = useMemo<CustomSelectOption[]>(() => [
+        { id: 1, label: '1 Hora antes' },
+        { id: 2, label: '2 Hora antes' },
+        { id: 3, label: '3 Hora antes' },
+        { id: 4, label: 'Não lembrar' },
     ], []);
 
     const totalDuration = useMemo(() => {
@@ -91,7 +99,7 @@ export default function ApointmentScreen() {
         <FormProvider {...methods}>
             <View style={[vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
                 <SafeAreaView className={`flex-1`}>
-                    <ScrollView className={`flex-1`} >
+                    <ScrollView className={`flex-1`} contentContainerStyle={{paddingBottom: 50}} >
                             <Controller
                                 control={methods?.control}
                                 name="client"
@@ -199,7 +207,7 @@ export default function ApointmentScreen() {
                              <Controller
                                  control={methods.control}
                                  name="date"
-                                 rules={{ required: "Selecione a data e hora do agendamento" }}
+                                 rules={{ required: "Selecione a data e hora do agendamento",  }}
                                  render={({ field: { value: dateValue }, fieldState: { error } }) => {
                                      const timeValue = watch("time");
                                      const displayText = dateValue && timeValue 
@@ -223,8 +231,8 @@ export default function ApointmentScreen() {
                                                  }}
                                                  activeOpacity={0.7}
                                                  className={cn(
-                                                     `h-12 flex-row w-full px-4 rounded-xl border bg-surface items-center`,
-                                                     error ? `border-red-500` : `border-stone`
+                                                     `h-12 flex-row w-full px-4 rounded-xl border bg-stone/20 items-center`,
+                                                     error ? `border-danger` : `border-stone`
                                                  )}
                                              >
                                                  <View className={`mr-3`}>
@@ -237,18 +245,36 @@ export default function ApointmentScreen() {
                                                      {displayText}
                                                  </Text>
                                              </TouchableOpacity>
-                                             {error && <Text className={`text-xs text-red-500 mt-1`}>{error.message}</Text>}
+                                             {error && <Text className={`text-xs text-danger border-danger mt-1`}>{error.message}</Text>}
                                          </View>
                                      );
                                  }}
                              />
 
+                             {/* Enviar Lembrete */}
+                             <Controller
+                                 control={methods.control}
+                                 name="reminder"
+                                 render={({ field: { onChange, value }, fieldState: { error } }) => (
+                                     <CustomSelectDropdownComponent
+                                         label="Enviar lembrete"
+                                         placeholder="Selecione um lembrete"
+                                         leftIcon="Reminder"
+                                         options={reminderList}
+                                         onSelect={onChange}
+                                         selectedValue={value}
+                                         typeDropdown="radioButton"
+                                         error={error?.message}
+                                     />
+                                 )}
+                             />
+
                              {/* Botão de Salvar Agendamento */}
                              <TouchableOpacity
                                  onPress={onSubmit}
-                                 className={`bg-tabBar mt-6 h-12 items-center justify-center rounded-xl mb-10 shadow-sm`}
+                                 className={`bg-tintBlue mt-6 h-12 items-center justify-center rounded-xl mb-10 s`}
                              >
-                                 <Text className={`font-bold text-surface text-base`}>
+                                 <Text className={`font-bold text-ink text-base`}>
                                      Salvar Agendamento
                                  </Text>
                              </TouchableOpacity>

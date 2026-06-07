@@ -4,7 +4,7 @@ Este arquivo registra as decisões arquiteturais relacionadas à interface, inte
 
 ---
 
-## ADR 003: Configuração de Animação e Duração de Abertura de Modais
+## ADR 001: Configuração de Animação e Duração de Abertura de Modais
 
 * **Status**: Aprovado
 * **Data**: 2026-06-07

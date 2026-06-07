@@ -38,3 +38,36 @@ No ViewModel (`customSelectDropdown.viewModel.ts`), ao detectar o tipo `'checkBo
   * **Consistência Visual:** Mesma base estética (animações, caixas, bordas) em todos os seletores do aplicativo.
 * **Contras:**
   * Pequeno acréscimo de complexidade nas definições de tipos do dropdown (atenuado com tipagem explícita e interfaces TypeScript).
+
+---
+
+## ADR 004: Suporte ao tipo `radioButton` no `CustomSelectDropdown` (com ícone `Reminder`)
+
+* **Status**: Aprovado
+* **Data**: 2026-06-07
+* **Autor**: Antigravity
+
+### Contexto
+Surgiu a necessidade de adicionar uma nova interface de seleção exclusiva do tipo "Radio Button" (ex: para a seleção de lembretes "Enviar lembrete"). Esse seletor precisa:
+1. Comportar-se como seleção única (diferente da seleção múltipla `checkBox`).
+2. Utilizar uma representação visual clássica de botão de rádio (círculo com borda que se preenche com uma marcação circular interna quando ativa).
+3. Utilizar o ícone de lembrete (`Reminder.svg`) nos seletores e componentes.
+
+### Decisão
+Evoluímos o componente genérico `CustomSelectDropdown` para suportar o tipo `typeDropdown: 'radioButton'`.
+
+As modificações realizadas foram:
+* Em [customSelectDropdown.scheme.ts](file:///Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/components/inputs/selectInput/customSelectDropdown.scheme.ts):
+  - Adicionado `'Reminder'` ao tipo `PickerIconNames`.
+  - Adicionado `RADIOBUTTON = 'radioButton'` ao enum `typeSelectDropdown`.
+  - Atualizado `typeDropdown` nas propriedades para suportar `'radioButton'`.
+* Em [CustomSelectDropdown.view.tsx](file:///Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/components/inputs/selectInput/CustomSelectDropdown.view.tsx):
+  - Importado o SVG `Reminder.svg` e mapeado nas `IconOptions`.
+  - Adicionado o bloco condicional para renderizar o círculo do Radio Button (`typeDropdown === 'radioButton'`), estilizado com bordas arredondadas circulares (`rounded-full`) e preenchimento interno em `accent` quando selecionado.
+
+### Consequências
+* **Prós:**
+  - **Reuso Ampliado**: O mesmo componente agora suporta todos os três principais tipos de seleção de formulário (`select`, `checkBox` e `radioButton`).
+  - **Consistência de Comportamento**: O comportamento de fechar ao selecionar, buscar e limpar buscas segue o padrão de seleção única já otimizado na ViewModel.
+* **Contras:**
+  - Nenhuma desvantagem significativa, uma vez que a lógica da ViewModel reutiliza a seleção única nativa.

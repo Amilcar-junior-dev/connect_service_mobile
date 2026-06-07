@@ -4,7 +4,7 @@ Este arquivo registra as decisões arquiteturais relacionadas à resolução de 
 
 ---
 
-## ADR 002: Correção de VirtualizedLists Aninhadas em ScrollViews Verticais
+## ADR 001: Correção de VirtualizedLists Aninhadas em ScrollViews Verticais
 
 * **Status**: Aprovado
 * **Data**: 2026-06-06
