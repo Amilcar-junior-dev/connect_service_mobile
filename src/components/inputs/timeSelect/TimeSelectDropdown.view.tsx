@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
@@ -18,14 +18,6 @@ const TimeSelectDropdownComponent = ({
 }: TimeSelectDropdownProps) => {
   const { colors } = useActiveTheme();
   const vm = useTimeSelectViewModel({ hours, minutes, onTimeChange });
-
-  const renderPickerItem = ({ item }: { item: number }) => (
-    <View style={{ height: ITEM_HEIGHT }} className={`items-center justify-center w-full`}>
-      <Text className={`text-lg font-robotoMedium text-ink`}>
-        {vm.formatValue(item)}
-      </Text>
-    </View>
-  );
 
   return (
     <View className={cn(`mb-4 w-full`, containerClass)}>
@@ -67,18 +59,22 @@ const TimeSelectDropdownComponent = ({
                 className={`absolute w-10/12 border border-accent rounded-md bg-accent/5`} 
               />
 
-                <FlatList
-                  data={vm.hoursArray}
-                  keyExtractor={(item) => `h-${item}`}
-                  renderItem={renderPickerItem}
+                <ScrollView
                   showsVerticalScrollIndicator={false}
                   snapToInterval={ITEM_HEIGHT}
                   decelerationRate="fast"
                   onMomentumScrollEnd={(e) => vm.handleScroll(e, 'hours')}
-                  getItemLayout={vm.getItemLayout}
-                  initialScrollIndex={hours}
-                  contentContainerStyle={{ paddingVertical: ITEM_HEIGHT,  }}
-                />
+                  contentContainerStyle={{ paddingVertical: ITEM_HEIGHT }}
+                  contentOffset={{ x: 0, y: hours * ITEM_HEIGHT }}
+                >
+                  {vm.hoursArray.map((item) => (
+                    <View key={`h-${item}`} style={{ height: ITEM_HEIGHT }} className={`items-center justify-center w-full`}>
+                      <Text className={`text-lg font-robotoMedium text-ink`}>
+                        {vm.formatValue(item)}
+                      </Text>
+                    </View>
+                  ))}
+                </ScrollView>
               
             </View>
               
@@ -96,18 +92,22 @@ const TimeSelectDropdownComponent = ({
                 className={`absolute w-10/12 border border-accent rounded-md bg-accent/5`} 
               />
 
-              <FlatList
-                data={vm.minutesArray}
-                keyExtractor={(item) => `m-${item}`}
-                renderItem={renderPickerItem}
+              <ScrollView
                 showsVerticalScrollIndicator={false}
                 snapToInterval={ITEM_HEIGHT}
                 decelerationRate="fast"
                 onMomentumScrollEnd={(e) => vm.handleScroll(e, 'minutes')}
-                getItemLayout={vm.getItemLayout}
-                initialScrollIndex={minutes}
                 contentContainerStyle={{ paddingVertical: ITEM_HEIGHT }}
-              />
+                contentOffset={{ x: 0, y: minutes * ITEM_HEIGHT }}
+              >
+                {vm.minutesArray.map((item) => (
+                  <View key={`m-${item}`} style={{ height: ITEM_HEIGHT }} className={`items-center justify-center w-full`}>
+                    <Text className={`text-lg font-robotoMedium text-ink`}>
+                      {vm.formatValue(item)}
+                    </Text>
+                  </View>
+                ))}
+              </ScrollView>
             </View>
           </View>
         </View>

@@ -8,7 +8,7 @@ import {
     Easing,
     Extrapolation
 } from 'react-native-reanimated';
-import { CustomSelectDropdownProps } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, CustomSelectOption } from './customSelectDropdown.scheme';
 
 export function useCustomPickerViewModel({ options, onSelect, typeDropdown = 'select', selectedValue }: Partial<CustomSelectDropdownProps>) {
     const [isOpen, setIsOpen] = useState(false);
@@ -59,13 +59,13 @@ export function useCustomPickerViewModel({ options, onSelect, typeDropdown = 'se
         };
     }, [filteredOptions]);
 
-    const handleSelect = useCallback((item: any) => {
+    const handleSelect = useCallback((item: CustomSelectOption) => {
         if (typeDropdown === 'checkBox') {
             const currentSelected = Array?.isArray(selectedValue) ? selectedValue : [];
-            const isAlreadySelected = currentSelected?.some((x: any) => x?.id === item?.id);
-            let newSelected;
+            const isAlreadySelected = currentSelected?.some((x: CustomSelectOption) => x?.id === item?.id);
+            let newSelected: CustomSelectOption[];
             if (isAlreadySelected) {
-                newSelected = currentSelected?.filter((x: any) => x?.id !== item?.id);
+                newSelected = currentSelected?.filter((x: CustomSelectOption) => x?.id !== item?.id);
             } else {
                 newSelected = [...currentSelected, item];
             }

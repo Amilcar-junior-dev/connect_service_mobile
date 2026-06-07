@@ -6,6 +6,11 @@ export interface CustomSelectOption {
     label: string;
     id: string | number;
     img?: string;
+    price?: number;
+    duration?: {
+        hours: number;
+        minutes: number;
+    };
     [key: string]: any;
 }
 
@@ -18,7 +23,7 @@ export interface CustomSelectDropdownProps {
     rightActionIcon?: PickerIconNames;
     onRightActionPress?: () => void;
     options: CustomSelectOption[];
-    onSelect: (item: any) => void;
+    onSelect: (item: CustomSelectOption | CustomSelectOption[] | null) => void;
     selectedValue?: CustomSelectOption | CustomSelectOption[] | null;
     typeDropdown?: 'select' | 'checkBox';
     multiLabelSingular?: string;

@@ -1,5 +1,5 @@
 import React, { memo, ReactNode } from 'react';
-import { View, Text, TouchableOpacity, TextInput, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Image } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
@@ -151,65 +151,57 @@ const CustomSelectDropdown = ({
           <Search width={18} height={18} color={colors?.muted} />
         </View>
 
-        <FlatList
-          data={vm?.filteredOptions}
-          keyExtractor={(item) => item?.id?.toString()!}
-          getItemLayout={(_, index) => (
-            { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index }
-          )}
-          initialNumToRender={8}
-          maxToRenderPerBatch={8}
-          windowSize={5}
-          removeClippedSubviews={true}
-          ListEmptyComponent={
+        <ScrollView className={`max-h-60 px-2 pb-2`}>
+          {vm?.filteredOptions?.length === 0 ? (
             <Text className={`text-muted font-robotoMedium text-center mt-2 flex-1 `}>
               {`Item não encontrado, tente uma nova busca.`}
             </Text>
-          }
-          className={`max-h-60 px-2 pb-2`}
-          renderItem={({ item }) => {
-            const isSelected = typeDropdown === 'checkBox'
-              ? (Array?.isArray(selectedValue) && selectedValue?.some((x: any) => x?.id === item?.id))
-              : (selectedValue && !Array?.isArray(selectedValue) && (selectedValue as any)?.id === item?.id);
+          ) : (
+            vm?.filteredOptions?.map((item) => {
+              const isSelected = typeDropdown === 'checkBox'
+                ? (Array?.isArray(selectedValue) && selectedValue?.some((x: CustomSelectOption) => x?.id === item?.id))
+                : (selectedValue && !Array?.isArray(selectedValue) && (selectedValue as CustomSelectOption)?.id === item?.id);
 
-            return (
-              <TouchableOpacity
-                onPress={() => vm?.handleSelect?.(item)}
-                activeOpacity={0.7}
-                className={cn(
-                  `flex-row items-center justify-between p-3 rounded-lg border border-divider mb-1 bg-surface`,
-                  isSelected ? `bg-accent/5 border-accent` : ``
-                )}
-              >
-                <View className={`flex-row items-center flex-1`}>
-                  {
-                    cardIcon && (
-                      <View className={`w-8 h-8 rounded-full items-center justify-center mr-3`}>
-                        { IconOptions?.[cardIcon]({ width: 16, heigth: 16 })}
-                      </View>
-                    )
-                  }
-                  <Text className={`text-ink font-robotoMedium text-base flex-1`}>
-                    {item?.label}
-                  </Text>
-                </View>
-
-                {typeDropdown === 'checkBox' && (
-                  <View 
-                    className={cn(
-                      `w-6 h-6 rounded border-2 items-center justify-center relative`,
-                      isSelected ? `border-accent` : `border-stone`
-                    )}
-                  >
-                    {isSelected && (
-                      <Check color={colors?.accent} width={15} height={15}/>
-                    )}
+              return (
+                <TouchableOpacity
+                  key={item?.id}
+                  onPress={() => vm?.handleSelect?.(item)}
+                  activeOpacity={0.7}
+                  className={cn(
+                    `flex-row items-center justify-between p-3 rounded-lg border border-divider mb-1 bg-surface`,
+                    isSelected ? `bg-accent/5 border-accent` : ``
+                  )}
+                >
+                  <View className={`flex-row items-center flex-1`}>
+                    {
+                      cardIcon && (
+                        <View className={`w-8 h-8 rounded-full items-center justify-center mr-3`}>
+                          { IconOptions?.[cardIcon]({ width: 16, heigth: 16 })}
+                        </View>
+                      )
+                    }
+                    <Text className={`text-ink font-robotoMedium text-base flex-1`}>
+                      {item?.label}
+                    </Text>
                   </View>
-                )}
-              </TouchableOpacity>
-            );
-          }}
-        />
+
+                  {typeDropdown === 'checkBox' && (
+                    <View 
+                      className={cn(
+                        `w-6 h-6 rounded border-2 items-center justify-center relative`,
+                        isSelected ? `border-accent` : `border-stone`
+                      )}
+                    >
+                      {isSelected && (
+                        <Check color={colors?.accent} width={15} height={15}/>
+                      )}
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            })
+          )}
+        </ScrollView>
       </Animated.View>
     </View>
   );

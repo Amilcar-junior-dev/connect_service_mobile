@@ -62,7 +62,7 @@ export function useTimeSelectViewModel({ hours, minutes, onTimeChange }: Partial
 
     const formatValue = (val: number) => val.toString().padStart(2, '0');
 
-    const getItemLayout = (_: any, index: number) => ({
+    const getItemLayout = (_: ArrayLike<number> | null | undefined, index: number) => ({
         length: ITEM_HEIGHT,
         offset: ITEM_HEIGHT * index,
         index,

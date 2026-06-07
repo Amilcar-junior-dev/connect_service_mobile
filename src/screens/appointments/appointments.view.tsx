@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { useColorScheme } from "nativewind";
 import { Theme } from "~/styles/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,17 +9,20 @@ import { useModalStore } from "~/store/useModalStore";
 import { TimeSelectDropdown } from "~/components/inputs/timeSelect/TimeSelectDropdown.view";
 import { Controller, useFormContext, useForm, FormProvider } from "react-hook-form";
 import Close from "~/assets/svg/Close.svg";
+import { useActiveTheme } from "~/hooks/colorScheme";
+import { AppointmentFormValues, ServiceTime } from "./appointmentScreen.scheme";
+
+
 
 export default function ApointmentScreen() {
-    const { colorScheme } = useColorScheme();
+    const {colors, vars} = useActiveTheme();
     const openModal = useModalStore((state) => state?.openModal);
 
-    const activeTheme = colorScheme === "dark" ? Theme?.dark : Theme?.light;
 
-    const [ selectedServiceTime, setSelectedServiceTime ] = useState<any>({ hours: 0, minutes: 0 });
+    const [ selectedServiceTime, setSelectedServiceTime ] = useState<ServiceTime>({ hours: 0, minutes: 0 });
 
-    const context = useFormContext();
-    const localMethods = useForm({
+    const context = useFormContext<AppointmentFormValues>();
+    const localMethods = useForm<AppointmentFormValues>({
         defaultValues: {
             client: null,
             services: [],
@@ -53,7 +56,7 @@ export default function ApointmentScreen() {
 
     const totalDuration = useMemo(() => {
         let totalMinutes = 0;
-        services?.forEach((s: any) => {
+        services?.forEach((s: CustomSelectOption) => {
             const h = s?.duration?.hours || 0;
             const m = s?.duration?.minutes || 0;
             totalMinutes += h * 60 + m;
@@ -64,134 +67,137 @@ export default function ApointmentScreen() {
     }, [services]);
 
     const totalPrice = useMemo(() => {
-        return services?.reduce((sum: number, s: any) => sum + (s?.price || 0), 0) || 0;
+        return services?.reduce((sum: number, s: CustomSelectOption) => sum + (s?.price || 0), 0) || 0;
     }, [services]);
 
     return (
         <FormProvider {...methods}>
-            <View style={[activeTheme?.vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
+            <View style={[vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
                 <SafeAreaView className={`flex-1`}>
-                    <Controller
-                        control={methods?.control}
-                        name="client"
-                        render={({ field: { onChange }, fieldState: { error } }) => (
-                            <CustomSelectDropdownComponent 
-                                label="Cliente"
-                                placeholder="Selecione uma opção"
-                                leftIcon="User"
-                                rightActionIcon="Contact"
-                                onRightActionPress={() => openModal?.("CLIENT")}
-                                options={clientsList}
-                                onSelect={onChange}
-                                selectedValue={selectedClient}
-                                labelClass="text-left"
-                                isRequire
-                                error={error?.message}
+                    <ScrollView className={`flex-1`} >
+                            <Controller
+                                control={methods?.control}
+                                name="client"
+                                render={({ field: { onChange }, fieldState: { error } }) => (
+                                    <CustomSelectDropdownComponent 
+                                        label="Cliente"
+                                        placeholder="Selecione uma opção"
+                                        leftIcon="User"
+                                        rightActionIcon="Contact"
+                                        onRightActionPress={() => openModal?.("CLIENT")}
+                                        options={clientsList}
+                                        onSelect={onChange}
+                                        selectedValue={selectedClient}
+                                        labelClass="text-left"
+                                        isRequire
+                                        error={error?.message}
+                                    />
+                                )}
                             />
-                        )}
-                    />
 
-                    <Controller
-                        control={methods?.control}
-                        name="services"
-                        render={({ field: { onChange }, fieldState: { error } }) => (
-                            <View className={`mb-4`}>
-                                <CustomSelectDropdownComponent 
-                                    label="Serviço"
-                                    placeholder="Adicionar um Serviço"
-                                    leftIcon="Services"
-                                    cardIcon="Services"
-                                    rightActionIcon="Services"
-                                    onRightActionPress={() => openModal?.("SERVICE")}
-                                    options={servicesList}
-                                    onSelect={onChange}
-                                    selectedValue={services}
-                                    labelClass="text-left"
-                                    isRequire
-                                    typeDropdown="checkBox"
-                                    multiLabelSingular="serviço"
-                                    multiLabelPlural="serviços"
-                                    error={error?.message}
-                                />
+                            <Controller
+                                control={methods?.control}
+                                name="services"
+                                render={({ field: { onChange }, fieldState: { error } }) => (
+                                    <View className={`mb-4`}>
+                                        <CustomSelectDropdownComponent 
+                                            label="Serviço"
+                                            placeholder="Adicionar um Serviço"
+                                            leftIcon="Services"
+                                            cardIcon="Services"
+                                            rightActionIcon="Services"
+                                            onRightActionPress={() => openModal?.("SERVICE")}
+                                            options={servicesList}
+                                            onSelect={onChange}
+                                            selectedValue={services}
+                                            labelClass="text-left"
+                                            isRequire
+                                            typeDropdown="checkBox"
+                                            multiLabelSingular="serviço"
+                                            multiLabelPlural="serviços"
+                                            error={error?.message}
+                                        />
 
-                                {/* Selected Services Container */}
-                                {services?.length > 0 && (
-                                    <View className={`bg-stone/10 p-3 rounded-2xl mb-4 border border-divider`}>
-                                        {services?.map((item: any) => {
-                                            const formattedPrice = item?.price?.toLocaleString?.('pt-BR', {
-                                                style: 'currency',
-                                                currency: 'BRL',
-                                            });
-                                            const durationText = `${item?.duration?.hours ? `${item?.duration?.hours} h ` : ''}${item?.duration?.minutes ? `${item?.duration?.minutes} min` : ''}`;
+                                        {/* Selected Services Container */}
+                                        {services?.length > 0 && (
+                                            <View className={`bg-stone/10 p-3 rounded-2xl mb-4 border border-divider`}>
+                                                {services?.map((item: CustomSelectOption) => {
+                                                    const formattedPrice = item?.price?.toLocaleString?.('pt-BR', {
+                                                        style: 'currency',
+                                                        currency: 'BRL',
+                                                    });
+                                                    const durationText = `${item?.duration?.hours ? `${item?.duration?.hours} h ` : ''}${item?.duration?.minutes ? `${item?.duration?.minutes} min` : ''}`;
 
-                                            return (
-                                                <View 
-                                                    key={item?.id} 
-                                                    className={`relative bg-surface p-4 rounded-xl border border-divider mb-3 shadow-sm overflow-hidden`}
-                                                >
-                                                    <View className={`absolute left-0 top-0 bottom-0 w-1.5 bg-accent`} />
-                                                    
-                                                    <TouchableOpacity
-                                                        onPress={() => {
-                                                            const updated = services?.filter((s: any) => s?.id !== item?.id);
-                                                            setValue?.("services", updated);
-                                                        }}
-                                                        className={`absolute -top-1 -left-1 bg-red-500 rounded-full p-1 z-10 active:opacity-80`}
-                                                    >
-                                                        <Close color="#FFFFFF" width={8} height={8} />
-                                                    </TouchableOpacity>
+                                                    return (
+                                                        <View 
+                                                            key={item?.id} 
+                                                            className={`relative bg-surface p-4 rounded-xl border border-divider mb-3 shadow-sm `}
+                                                        >
+                                                            <View className={`absolute left-0 top-0 bottom-0 w-1.5 bg-accent`} />
+                                                            
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    const updated = services?.filter((s: CustomSelectOption) => s?.id !== item?.id);
+                                                                    setValue?.("services", updated);
+                                                                }}
+                                                                className={`absolute -top-2 -left-2 border-2 border-danger bg-surface rounded-full p-1 z-10 active:opacity-80`}
+                                                            >
+                                                                <Close color={colors?.danger} width={8} height={8} />
+                                                            </TouchableOpacity>
 
-                                                    <View className={`flex-row justify-between items-center pl-2`}>
-                                                        <View className={`flex-1 mr-2`}>
-                                                            <Text className={`text-ink text-base font-bold mb-1`}>
-                                                                {item?.label}
-                                                            </Text>
-                                                            <Text className={`text-ink text-sm font-semibold`}>
-                                                                {formattedPrice}
-                                                            </Text>
+                                                            <View className={`flex-row justify-between items-center pl-2`}>
+                                                                <View className={`flex-1 mr-2`}>
+                                                                    <Text className={`text-ink text-base font-bold mb-1`}>
+                                                                        {item?.label}
+                                                                    </Text>
+                                                                    <Text className={`text-ink text-sm font-semibold`}>
+                                                                        {formattedPrice}
+                                                                    </Text>
+                                                                </View>
+                                                                <View className={`items-end`}>
+                                                                    <Text className={`text-muted text-xs`}>
+                                                                        Tempo Estimado: <Text className={`text-ink font-bold`}>{durationText}</Text>
+                                                                    </Text>
+                                                                </View>
+                                                            </View>
                                                         </View>
-                                                        <View className={`items-end`}>
-                                                            <Text className={`text-muted text-xs`}>
-                                                                Tempo Estimado: <Text className={`text-ink font-bold`}>{durationText}</Text>
-                                                            </Text>
-                                                        </View>
-                                                    </View>
+                                                    );
+                                                })}
+
+                                                <View className={`flex-row justify-between items-center pt-2 border-t border-divider px-2`}>
+                                                    <Text className={`text-ink text-sm font-bold`}>
+                                                        Tempo Total: {totalDuration?.hours ? `${totalDuration?.hours} Hr(s) ` : ''}{totalDuration?.minutes ? `${totalDuration?.minutes} min` : ''}
+                                                    </Text>
+                                                    <Text className={`text-ink text-sm font-bold`}>
+                                                        R$: {totalPrice?.toFixed?.(2)?.replace?.('.', ',')}
+                                                    </Text>
                                                 </View>
-                                            );
-                                        })}
-
-                                        <View className={`flex-row justify-between items-center pt-2 border-t border-divider px-2`}>
-                                            <Text className={`text-ink text-sm font-bold`}>
-                                                Tempo Total: {totalDuration?.hours ? `${totalDuration?.hours} Hr(s) ` : ''}{totalDuration?.minutes ? `${totalDuration?.minutes} min` : ''}
-                                            </Text>
-                                            <Text className={`text-ink text-sm font-bold`}>
-                                                R$: {totalPrice?.toFixed?.(2)?.replace?.('.', ',')}
-                                            </Text>
-                                        </View>
+                                            </View>
+                                        )}
                                     </View>
                                 )}
-                            </View>
-                        )}
-                    />
+                            />
 
-                    <View className={`w-full justify-between flex-row`}>
-                        <View className={`w-[48%]`}>
-                            <TimeSelectDropdown 
-                                label="Tempo de serviço" 
-                                hours={selectedServiceTime?.hours} 
-                                minutes={selectedServiceTime?.minutes} 
-                                onTimeChange={() => {}}         
-                            />
-                        </View>
-                        <View className={`w-[48%]`}>
-                            <TimeSelectDropdown 
-                                label="Tempo de serviço" 
-                                hours={selectedServiceTime?.hours} 
-                                minutes={selectedServiceTime?.minutes} 
-                                onTimeChange={() => {}}                
-                            />
-                        </View>
-                    </View>
+                            <View className={`w-full justify-between flex-row`}>
+                                <View className={`w-[48%]`}>
+                                    <TimeSelectDropdown 
+                                        label="Tempo de serviço" 
+                                        hours={selectedServiceTime?.hours} 
+                                        minutes={selectedServiceTime?.minutes} 
+                                        onTimeChange={() => {}}         
+                                    />
+                                </View>
+                                <View className={`w-[48%]`}>
+                                    <TimeSelectDropdown 
+                                        label="Tempo de serviço" 
+                                        hours={selectedServiceTime?.hours} 
+                                        minutes={selectedServiceTime?.minutes} 
+                                        onTimeChange={() => {}}                
+                                    />
+                                </View>
+                            </View>
+
+                    </ScrollView>
                 </SafeAreaView>
             </View>
         </FormProvider>

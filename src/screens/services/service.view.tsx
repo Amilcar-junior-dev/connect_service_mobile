@@ -29,7 +29,7 @@ export default function ServiceScreen(){
     const activeTheme = colorScheme === "dark" ? Theme.dark : Theme.light;
 
     const [ selectedUserType, setSelectedUserType ] = useState<CustomSelectOption>({ id:1,label: '' });
-    const [ selectedServiceTime, setSelectedServiceTime ] = useState<any>({ hours: 0, minutes: 0});
+    const [ selectedServiceTime, setSelectedServiceTime ] = useState<{ hours: number; minutes: number }>({ hours: 0, minutes: 0});
 
     return (
        
