@@ -20,7 +20,7 @@ interface ModalSelectDateTimeProps {
   data?: Record<string, unknown> | null;
 }
 
-export const ModalSelectDateTime = memo(function ModalSelectDateTime({ data }: ModalSelectDateTimeProps) {
+export function ModalSelectDateTime({ data }: ModalSelectDateTimeProps) {
   const { colors } = useActiveTheme();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window');
   const vm = useModalSelectDateTimeViewModel();
@@ -69,6 +69,9 @@ export const ModalSelectDateTime = memo(function ModalSelectDateTime({ data }: M
     <Modalize
       ref={vm.modalRef}
       modalHeight={MAX_MODAL_HEIGHT}
+      openAnimationConfig={{
+        timing: { duration: 400 },
+      }}
       handlePosition="inside"
       keyboardAvoidingBehavior="padding"
       tapGestureEnabled={false}
@@ -187,4 +190,4 @@ export const ModalSelectDateTime = memo(function ModalSelectDateTime({ data }: M
       </View>
     </Modalize>
   );
-});
+}

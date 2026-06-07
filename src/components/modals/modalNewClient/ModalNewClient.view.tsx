@@ -93,6 +93,9 @@ export function ModalNewClient({ data }: ClientModalProps) {
     <Modalize
       ref={vm.modalRef}
       modalHeight={MAX_MODAL_HEIGHT}
+      openAnimationConfig={{
+        timing: { duration: 200 },
+      }}
       handlePosition="inside"
       keyboardAvoidingBehavior="padding"
       tapGestureEnabled={false}
