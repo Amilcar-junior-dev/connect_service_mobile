@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity, TextInput, ScrollView, Image } from 'reac
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import { CustomSelectDropdownProps, CustomSelectOption, IconProps, PickerIconNames, typeSelectDropdown } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, BaseSelectOption, IconProps, PickerIconNames, typeSelectDropdown } from './customSelectDropdown.scheme';
 import { useCustomPickerViewModel } from './customSelectDropdown.viewModel';
+import Category from '~/assets/svg/Category.svg';
 
 // SVGs
 import User from '~/assets/svg/User.svg';
@@ -24,7 +25,7 @@ interface LocalIconProps {
   heigth?: number;
 }
 
-const CustomSelectDropdown = ({
+const CustomSelectDropdown = <T extends BaseSelectOption>({
   label,
   placeholder = 'Selecione uma opção',
   leftIcon = 'Contact',
@@ -41,11 +42,11 @@ const CustomSelectDropdown = ({
   typeDropdown = 'select',
   multiLabelSingular = 'item',
   multiLabelPlural = 'itens',
-}: CustomSelectDropdownProps) => {
+}: CustomSelectDropdownProps<T>) => {
 
 
   const { colors } = useActiveTheme();
-  const vm = useCustomPickerViewModel({ 
+  const vm = useCustomPickerViewModel<T>({ 
     options, 
     onSelect, 
     typeDropdown, 
@@ -63,6 +64,7 @@ const CustomSelectDropdown = ({
     Services:({width = 15, heigth = 15}: LocalIconProps)=>  <Services color={colors?.ink} width={width} height={heigth}/>,
     Reminder:({width = 15, heigth = 15}: LocalIconProps)=>  <Reminder color={colors?.ink} width={width} height={heigth}/>,
     Repeat:({width = 15, heigth = 15}: LocalIconProps)=>  <RepeatEvent color={colors?.ink} width={width} height={heigth}/>,
+    Category:({width = 15, heigth = 15}: LocalIconProps)=>  <Category color={colors?.ink} width={width} height={heigth}/>,
     Search:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     ChevronDown:({width = 15, heigth = 15}: LocalIconProps)=>  null,
     UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
@@ -151,8 +153,8 @@ const CustomSelectDropdown = ({
           ) : (
             vm?.filteredOptions?.map((item) => {
               const isSelected = typeDropdown === 'checkBox'
-                ? (Array?.isArray(selectedValue) && selectedValue?.some((x: CustomSelectOption) => x?.id === item?.id))
-                : (selectedValue && !Array?.isArray(selectedValue) && (selectedValue as CustomSelectOption)?.id === item?.id);
+                ? (Array?.isArray(selectedValue) && selectedValue?.some((x: T) => x?.id === item?.id))
+                : (selectedValue && !Array?.isArray(selectedValue) && (selectedValue as T)?.id === item?.id);
 
               return (
                 <TouchableOpacity
@@ -213,4 +215,6 @@ const CustomSelectDropdown = ({
   );
 };
 
-export const CustomSelectDropdownComponent = memo(CustomSelectDropdown);
+export const CustomSelectDropdownComponent = memo(CustomSelectDropdown) as <T extends BaseSelectOption>(
+  props: CustomSelectDropdownProps<T>
+) => React.ReactElement;

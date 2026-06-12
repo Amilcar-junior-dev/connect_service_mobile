@@ -1,5 +1,5 @@
 import React, { memo, } from 'react';
-import { View, Text, TouchableOpacity, Image, Dimensions, } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Dimensions, Modal } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import { useModalNewServiceViewModel } from './modalNewService.viewModel';
@@ -12,10 +12,13 @@ import WithoutImage from '~/assets/svg/WithoutImage.svg';
 
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { CardServicePreview } from '~/components/cardServicePreview/CardServicePreview';
-import { FormProvider } from 'react-hook-form';
+import { FormProvider, Controller } from 'react-hook-form';
 import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInput.view';
 
 import { SERVICE_COLORS } from '~/styles/colors';
+import { CustomSelectDropdownComponent } from '~/components/inputs/selectInput/CustomSelectDropdown.view';
+import { BaseSelectOption } from '~/components/inputs/selectInput/customSelectDropdown.scheme';
+import ButtonComponent from '~/components/buttons/Button';
 
 interface ServiceModalProps {
   data?: Record<string, unknown> | null;
@@ -25,19 +28,20 @@ type ServiceFormProps = {
   methods: ReturnType<typeof useModalNewServiceViewModel>["methods"];
   selectedColor: string;
   setSelectedColor: (color: string) => void;
-  selectedImage: string
+  selectedImage: string;
+  categories: BaseSelectOption[];
+  onAddCategoryPress: () => void;
 };
-
-
 
 const ServiceForm = memo(function ServiceForm({
   methods,
   selectedColor,
   selectedImage,
   setSelectedColor,
+  categories,
+  onAddCategoryPress,
 }: ServiceFormProps) {
   
-
   return (
     <FormProvider {...methods}>
         <TextInputComponent
@@ -57,7 +61,28 @@ const ServiceForm = memo(function ServiceForm({
             maxLength={200}
             multiline
             labelClass="text-lg"
-            className="h-20"
+            className={`h-20`}
+        />
+
+        <Controller
+            control={methods?.control}
+            name="category"
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+                <CustomSelectDropdownComponent 
+                    label="Categoria"
+                    placeholder="Adicionar uma categoria"
+                    leftIcon={null}
+                    rightActionIcon="Category"
+                    onRightActionPress={onAddCategoryPress}
+                    options={categories}
+                    onSelect={onChange}
+                    selectedValue={value}
+                    labelClass="text-left text-lg"
+                    isRequire
+                    typeDropdown="radioButton"
+                    error={error?.message}
+                />
+            )}
         />
 
         <Text className={`self-center text-lg text-ink `}>Tempo estimado *</Text>
@@ -106,7 +131,6 @@ const ServiceForm = memo(function ServiceForm({
         <CardServicePreview color={selectedColor}  selectedImage={selectedImage} />
         
     </FormProvider>
- 
   );
 });
 
@@ -117,7 +141,6 @@ export function ModalNewService({ data }: ServiceModalProps) {
   const vm = useModalNewServiceViewModel(); 
 
   console.log(' MODAL NEW SERVICE RENDERIZADA')
-
   
   const MAX_MODAL_HEIGHT = SCREEN_HEIGHT * 0.92;
 
@@ -161,8 +184,6 @@ export function ModalNewService({ data }: ServiceModalProps) {
       }
       onClosed={()=>{vm.closeModal(), console.log('PASSOU AQUI') }}
     >
-    
-   
       
       <View    className={`flex-1 pl-4 pr-4 `}>
           
@@ -172,7 +193,7 @@ export function ModalNewService({ data }: ServiceModalProps) {
                         {vm.coverImage ? (
                             <Image 
                                 source={{ uri: vm.coverImage }} 
-                                className="w-full h-full" 
+                                className={`w-full h-full`} 
                                 resizeMode="cover" 
                             />
                         ) : (
@@ -219,16 +240,60 @@ export function ModalNewService({ data }: ServiceModalProps) {
                 selectedColor={vm.selectedColor}
                 selectedImage={vm.coverImage}
                 setSelectedColor={vm.setSelectedColor}
+                categories={vm.categories}
+                onAddCategoryPress={vm.handleOpenCategoryModal}
             />
 
-                <TouchableOpacity 
-                    onPress={()=>{ vm.onSubmit(), console.log('CLICOU NO SUBMITE')}} 
-                    className={`bg-tintBlue mt-8 h-12 items-center justify-center rounded-lg`}
-                >
-                    <Text className={`font-bold text-ink`}>Salvar Serviço</Text>    
-                </TouchableOpacity>
+            <TouchableOpacity 
+                onPress={()=>{ vm.onSubmit(), console.log('CLICOU NO SUBMITE')}} 
+                className={`bg-tintBlue mt-8 h-12 items-center justify-center rounded-lg`}
+            >
+                <Text className={`font-bold text-ink`}>Salvar Serviço</Text>    
+            </TouchableOpacity>
                 
       </View>
+
+      {/* Modal tipo Alert customizado para criação de categoria */}
+      <Modal
+        visible={vm.isCategoryModalVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={vm.handleCloseCategoryModal}
+      >
+        <View className={`flex-1 bg-black/50 justify-center items-center px-4`}>
+          <View className={`bg-surface w-full max-w-sm rounded-2xl p-2 shadow-xl border border-divider`}>
+            <Text className={`text-xl font-bold text-ink mb-4 text-center`}>Criar Nova Categoria</Text>
+            
+            <FormProvider {...vm.categoryMethods}>
+              <TextInputComponent
+                name="new_category_name"
+                label="Nome da Categoria"
+                placeholder="Digite o nome da categoria"
+                isRequire
+              />
+            </FormProvider>
+
+            <View className={`mt-4 gap-2`}>
+              {/* <ButtonComponent
+                type="secondary"
+                title="Criar categoria"
+                action={vm.handleCreateCategory}
+              /> */}
+              <TouchableOpacity className={`w-10/12 rounded-lg self-center p-2 bg-accent items-center justify-center`}
+                onPress={vm.handleCreateCategory}
+              >
+                <Text className={`text-ink font-medium text-md`}>Criar categoria</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={vm.handleCloseCategoryModal}
+                className={`p-3 items-center justify-center`}
+              >
+                <Text className={`text-muted font-medium text-lg`}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 
     </Modalize>
   );

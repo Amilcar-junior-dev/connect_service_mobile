@@ -40,3 +40,17 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
 - [ ] Criação da View de Perfil e Configurações (`more.view.tsx`)
 - [ ] Implementação de edição de dados cadastrais
 - [ ] Função de logout da aplicação
+
+## 8. Modal Novo Serviço (`src/components/modals/modalsServices/newService/ModalNewService.view.tsx`) 
+- [x] Adicionar novo select input de Categorias
+  - [x] Utilizar o componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx` como `radioButton` para demonstrar as opções de categorias
+  - [x] Ao clicar e selecionar a opção ela deve ficar selecionada no dropdown
+  - [x] O dropdown não deve ter o ícone `leftIcon`
+- [x] Certificar de que o novo campo componha o objteto final de dados de um serviço
+- [x] Habilitar o botão `rightActionIcon` para adicionar uma nova categoria caso não exista nas opções iniciais;
+  - [x] O botão deve utilizar o ícone `src/assets/svg/Category.svg` 
+    - [x] O brackground do botão e o ícone deve ter a cor padrão disponível no `CustomSelectDropdown`
+  - [x] Clicando no `rightActionIcon` deve abrir uma modal do tipo Alert ( componente do react native)
+    - [x] A modal Alert deve conter um input de texto utilizando o componente `src/components/inputs/textInput/CustomTextInput.view.tsx`
+    - [x] Abaixo deve haver um botão com o nome `Criar categoria` que utiliza o componente `TouchableOpacity` do react-native
+    - [x] Clicar em `Criar categoria` deve adicionar uma nova opção ao dropdown de seleção de categoria

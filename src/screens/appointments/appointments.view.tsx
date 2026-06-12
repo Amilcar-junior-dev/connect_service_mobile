@@ -88,9 +88,6 @@ export default function ApointmentScreen() {
             <View style={[vars]} className={`flex-1 bg-surface pl-4 pr-4`}>
                 <SafeAreaView className={`flex-1`}>
                     <View className={`w-full flex-row items-center justify-center relative`}>
-                        <TouchableOpacity className={`absolute left-0`}>
-                            <ArrowBack color={colors.ink} width={20} height={20}/>
-                        </TouchableOpacity>
                         <Text className={`text-lg font-semibold`}>Novo Agendamento</Text>
                     </View>
 

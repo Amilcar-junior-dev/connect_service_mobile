@@ -1,5 +1,5 @@
-# Regras Globais do Workspace
-
+`# Regras Globais do Workspace
+ - Sempre fale comigo utilizando portugês do Brasil ('pt-br')
 ## Alinhamento Obrigatório de Contexto (SDD)
 Antes de analisar qualquer requisição do usuário ou sugerir/escrever qualquer alteração de código, você DEVE ler os arquivos de especificação do projeto localizados no diretório `.sdd/`:
 1. Leia `.sdd/spec.md` para compreender os requisitos de negócio, fluxo de telas e UI/UX.
@@ -7,4 +7,4 @@ Antes de analisar qualquer requisição do usuário ou sugerir/escrever qualquer
 3. Leia todos os arquivos de decisões dentro do diretório `.sdd/decisions/` para garantir conformidade com as decisões técnicas e de produto já tomadas e validadas pelo usuário.
 4. Verifique o status atual das tarefas em `.sdd/task.md`.
 
-NUNCA sugira código ou tome decisões que entrem em conflito direto com as especificações ou decisões históricas de `.sdd/decisions/` sem antes questionar o usuário explicitamente.
+NUNCA sugira código ou tome decisões que entrem em conflito direto com as especificações ou decisões históricas de `.sdd/decisions/` sem antes questionar o usuário explicitamente.`

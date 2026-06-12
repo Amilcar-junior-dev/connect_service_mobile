@@ -8,9 +8,9 @@ import {
     Easing,
     Extrapolation
 } from 'react-native-reanimated';
-import { CustomSelectDropdownProps, CustomSelectOption, typeSelectDropdown } from './customSelectDropdown.scheme';
+import { CustomSelectDropdownProps, typeSelectDropdown, BaseSelectOption } from './customSelectDropdown.scheme';
 
-export function useCustomPickerViewModel({
+export function useCustomPickerViewModel<T extends BaseSelectOption>({
     options,
     onSelect,
     typeDropdown = typeSelectDropdown.SELECT,
@@ -18,7 +18,7 @@ export function useCustomPickerViewModel({
     placeholder,
     multiLabelSingular,
     multiLabelPlural,
-}: Partial<CustomSelectDropdownProps>) {
+}: Partial<CustomSelectDropdownProps<T>>) {
     const [isOpen, setIsOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -67,13 +67,13 @@ export function useCustomPickerViewModel({
         };
     }, [filteredOptions]);
 
-    const handleSelect = useCallback((item: CustomSelectOption) => {
+    const handleSelect = useCallback((item: T) => {
         if (typeDropdown === 'checkBox') {
             const currentSelected = Array?.isArray(selectedValue) ? selectedValue : [];
-            const isAlreadySelected = currentSelected?.some((x: CustomSelectOption) => x?.id === item?.id);
-            let newSelected: CustomSelectOption[];
+            const isAlreadySelected = currentSelected?.some((x: T) => x?.id === item?.id);
+            let newSelected: T[];
             if (isAlreadySelected) {
-                newSelected = currentSelected?.filter((x: CustomSelectOption) => x?.id !== item?.id);
+                newSelected = currentSelected?.filter((x: T) => x?.id !== item?.id);
             } else {
                 newSelected = [...currentSelected, item];
             }
@@ -96,13 +96,13 @@ export function useCustomPickerViewModel({
             if (count === 1) return `1 ${multiLabelSingular} selecionado`;
             return `${count} ${multiLabelPlural} selecionados`;
         }
-        const singleVal = selectedValue as CustomSelectOption | null;
+        const singleVal = selectedValue as T | null;
         return singleVal?.label || placeholder;
     };
 
     const getSelectedImage = () => {
         if (typeDropdown === typeSelectDropdown.CHECKBOX) return null;
-        const singleVal = selectedValue as CustomSelectOption | null;
+        const singleVal = selectedValue as T | null;
         return singleVal?.img;
     };
 
