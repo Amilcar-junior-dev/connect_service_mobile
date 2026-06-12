@@ -54,3 +54,18 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] A modal Alert deve conter um input de texto utilizando o componente `src/components/inputs/textInput/CustomTextInput.view.tsx`
     - [x] Abaixo deve haver um botão com o nome `Criar categoria` que utiliza o componente `TouchableOpacity` do react-native
     - [x] Clicar em `Criar categoria` deve adicionar uma nova opção ao dropdown de seleção de categoria
+
+## 9. Página de Serviços (`src/screens/services/service.view.tsx`)
+  ### A. Cabeçalho
+    - [x] Criar Cabeçalho da página com o nome `Meus Serviços`;
+  ### B. Componente de pesquisa
+    - [x] Criar componente de pesquisa;
+      - [x] Componente de pesquisa deve ser adicionado a pasta `src/components/researchBar`;
+      - [x] Background do componente deve ser na cor `divider`;
+      - [x] Deve utilizar o ícone `src/assets/svg/Search.svg` na cor `muted` e posicionado no canto direito;
+      - [x] Componente deve permitir receber uma propriedade `placeholder`opcional;
+      - [x] Placeholder padrão do componente deve ser `Pesquisar`;
+      - [x] O componente deve permitir receber uma lista de opções e devolvê-la de forma filtrada
+  ### C. Botão de Novo Serviço
+    - [x] Criar botão de novo Serviço o ícone `src/assets/svg/Plus.svg` na cor `muted`;
+    - [x] Ao clicar no botão a modal de novo serviço deve aparecer `src/components/modals/modalsServices/newService/ModalNewService.view.tsx`

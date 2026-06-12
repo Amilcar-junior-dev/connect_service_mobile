@@ -1,10 +1,15 @@
-`# Regras Globais do Workspace
- - Sempre fale comigo utilizando portugês do Brasil ('pt-br')
+# Regras Globais do Workspace
+
+- **Idioma**: Sempre fale comigo utilizando português do Brasil ('pt-br') em todas as interações.
+- **Sintaxe Crítica (className)**: Em arquivos React Native/React, para atributos `className`, **sempre** utilize a sintaxe de template string (ex: `className={``}`) em vez de strings normais.
+- **Operador de Encadeamento Opcional (`?.`)**: Toda notação que utilizar ponto (`.`) deverá utilizar o operador de encadeamento opcional (`?.`) em objetos, arrays e métodos JavaScript/TypeScript onde for suportado.
+
 ## Alinhamento Obrigatório de Contexto (SDD)
+
 Antes de analisar qualquer requisição do usuário ou sugerir/escrever qualquer alteração de código, você DEVE ler os arquivos de especificação do projeto localizados no diretório `.sdd/`:
 1. Leia `.sdd/spec.md` para compreender os requisitos de negócio, fluxo de telas e UI/UX.
 2. Leia `.sdd/agents.md` para aplicar as diretrizes de código, estilo e qualidade.
 3. Leia todos os arquivos de decisões dentro do diretório `.sdd/decisions/` para garantir conformidade com as decisões técnicas e de produto já tomadas e validadas pelo usuário.
 4. Verifique o status atual das tarefas em `.sdd/task.md`.
 
-NUNCA sugira código ou tome decisões que entrem em conflito direto com as especificações ou decisões históricas de `.sdd/decisions/` sem antes questionar o usuário explicitamente.`
+NUNCA sugira código ou tome decisões que entrem em conflito direto com as especificações ou decisões históricas de `.sdd/decisions/` sem antes questionar o usuário explicitamente.
