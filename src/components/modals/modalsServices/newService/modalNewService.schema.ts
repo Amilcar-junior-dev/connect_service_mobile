@@ -3,6 +3,10 @@ import { z } from 'zod';
 export const ExpenseSchema = z.object({
   service_name: z.string({error: 'Nome é obrigatório'}).min(3, 'Mínimo de 3 caracteres'),
   description_service: z.string({error: 'Descrição é obrigatório'}).min(1, 'Descrição obrigatório'),
+  category: z.object({
+    id: z.union([z.string(), z.number()]),
+    label: z.string(),
+  }, { message: 'Selecione uma categoria' }),
   time_hours: z.coerce
     .number({ error: "Digite um número válido" })
     .int("Não use pontos ou vírgulas, apenas horas inteiras.")

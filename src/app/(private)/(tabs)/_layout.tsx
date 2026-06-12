@@ -15,6 +15,7 @@ export default function TabLayout() {
       >
         <Tabs.Screen name="home" />
         <Tabs.Screen name="services" />
+        <Tabs.Screen name="appointment" />
         <Tabs.Screen name="financial" />
         <Tabs.Screen name="more" />
       </Tabs>

@@ -1,0 +1,81 @@
+# Checklist de Implementação: Connect Service Mobile
+
+Este checklist acompanha o progresso de desenvolvimento do aplicativo com base nas especificações do Spec-Driven Development (SDD).
+
+## 1. Infraestrutura e Configuração Base
+- [x] Configuração inicial do projeto React Native Expo (SDK 54) com TypeScript
+- [x] Roteamento estruturado com Expo Router (`src/app`)
+- [x] Configuração do NativeWind v4 (Tailwind CSS) e variáveis de tema em `src/styles`
+- [x] Definição de alias de caminhos (`~/`) no `tsconfig.json`
+
+## 2. Fluxo de Autenticação e Login
+- [x] Criação do Schema de Validação de Login (`login.scheme.ts`)
+- [x] Implementação do ViewModel de Login (`useLoginViewModel.ts`)
+- [x] Implementação da View de Login (`login.view.tsx`) com NativeWind
+- [x] Redirecionamento condicional de sessão em `src/app/index.tsx`
+
+## 3. Tela Home e Dashboard (`src/screens/home`)
+- [x] Criação do componente base `HomeView`
+- [x] Implementação do `TopSheet` animado (Reanimated) para perfil de usuário
+- [x] Integração do calendário expansível (`ExpandableCalendarScreen`)
+- [x] Implementação do Menu Flutuante (`FloatingMenu`)
+
+## 4. Agendamentos (`src/screens/appointments`)
+- [x] Criação do componente de View (`appointments.view.tsx`)
+- [ ] Criação do ViewModel associado para gerenciamento de agendamentos
+- [ ] Integração com serviço de calendário e persistência
+
+## 5. Serviços (`src/screens/services`)
+- [x] Criação do Schema de Validação de Serviços (`serviceScreen.scheme.ts`)
+- [x] Implementação do ViewModel de Serviços (`serviceScreen.viewModel.ts`)
+- [x] Implementação da View de Serviços (`service.view.tsx`)
+- [ ] Fluxo completo de cadastro, edição e exclusão de serviços
+
+## 6. Controle Financeiro e Estatísticas (`financial`)
+- [ ] Criação da View financeira (`financial.view.tsx`)
+- [ ] Criação do ViewModel de finanças para cálculo de receitas e despesas
+- [ ] Exibição de gráficos e extrato financeiro
+
+## 7. Mais / Configurações (`more`)
+- [ ] Criação da View de Perfil e Configurações (`more.view.tsx`)
+- [ ] Implementação de edição de dados cadastrais
+- [ ] Função de logout da aplicação
+
+## 8. Modal Novo Serviço (`src/components/modals/modalsServices/newService/ModalNewService.view.tsx`) 
+- [x] Adicionar novo select input de Categorias
+  - [x] Utilizar o componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx` como `radioButton` para demonstrar as opções de categorias
+  - [x] Ao clicar e selecionar a opção ela deve ficar selecionada no dropdown
+  - [x] O dropdown não deve ter o ícone `leftIcon`
+- [x] Certificar de que o novo campo componha o objteto final de dados de um serviço
+- [x] Habilitar o botão `rightActionIcon` para adicionar uma nova categoria caso não exista nas opções iniciais;
+  - [x] O botão deve utilizar o ícone `src/assets/svg/Category.svg` 
+    - [x] O brackground do botão e o ícone deve ter a cor padrão disponível no `CustomSelectDropdown`
+  - [x] Clicando no `rightActionIcon` deve abrir uma modal do tipo Alert ( componente do react native)
+    - [x] A modal Alert deve conter um input de texto utilizando o componente `src/components/inputs/textInput/CustomTextInput.view.tsx`
+    - [x] Abaixo deve haver um botão com o nome `Criar categoria` que utiliza o componente `TouchableOpacity` do react-native
+    - [x] Clicar em `Criar categoria` deve adicionar uma nova opção ao dropdown de seleção de categoria
+
+## 9. Página de Serviços (`src/screens/services/service.view.tsx`)
+  ### A. Cabeçalho
+    - [x] Criar Cabeçalho da página com o nome `Meus Serviços`;
+  ### B. Componente de pesquisa
+    - [x] Criar componente de pesquisa;
+      - [x] Componente de pesquisa deve ser adicionado a pasta `src/components/researchBar`;
+      - [x] Background do componente deve ser na cor `divider`;
+      - [x] Deve utilizar o ícone `src/assets/svg/Search.svg` na cor `muted` e posicionado no canto direito;
+      - [x] Componente deve permitir receber uma propriedade `placeholder`opcional;
+      - [x] Placeholder padrão do componente deve ser `Pesquisar`;
+      - [x] O componente deve permitir receber uma lista de opções e devolvê-la de forma filtrada
+  ### C. Botão de Novo Serviço
+    - [x] Criar botão de novo Serviço o ícone `src/assets/svg/Plus.svg` na cor `muted`;
+    - [x] Ao clicar no botão a modal de novo serviço deve aparecer `src/components/modals/modalsServices/newService/ModalNewService.view.tsx`
+  ### D. Criar botão de compartilhamento de página de agendamento
+    - [x] Criar botão utilizando o ícone `src/assets/svg/PageAgendLink.svg` na cor `muted`
+    - [x] Clicando no botão o link deve ser copiado para a área de transferência
+  ### E. Criação de container de serviços
+    - [x] Container deve receber os cards de serviços que tiverem a prop `category` como o nome da categoria. EX: Container de serviços Estética deve conter os cards de serviços que estiverem com a prop `category` marcada como `Estética`;
+    - [x] O Container deverá possuir o nome da categoria e a quantidade ( length ) de serviços cadastrados nela.
+    - [x] Container deve abrir e fechar com uma animação suave de crescimento assim como acontece no componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx`;
+      - [x] Quando estiver fechado deve usar o ícone `src/assets/svg/FolderClose.svg` na cor `ink`;
+      - [x] Quando estiver aberto deve usar o ícone `src/assets/svg/FolderOpen.svg` na cor `ink`;
+      - [x] As seta utilizada deverá ser a `src/assets/svg/ArrowDown.svg` e seguir o mesmo padrão de abertura e fechamento do componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx` mudando a posição quando estiver aberta e fechada

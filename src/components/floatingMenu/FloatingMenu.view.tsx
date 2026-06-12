@@ -20,11 +20,11 @@ export function FloatingMenu() {
 
 
   const menuActions = [
-    { action: ()=> {}, id: 'despesa', label: 'Despesa', icon:<Line height={15} width={15} color={colors.ink}/> , width: 110 },
-    { action: ()=> {}, id: 'reuniao', label: 'Reunião', icon:<Meet height={20} width={20} color={colors.ink}/> , width: 125 },
-    { action: ()=> {}, id: 'evento', label: 'Evento', icon: <Event  height={22} width={22} color={colors.ink}/>, width: 140 },
-    { action: ()=> {}, id: 'clientes', label: 'Clientes', icon: <Contact height={20} width={20} color={colors.ink}/>, width: 155 },
-    { action: ()=> {}, id: 'agendamento', label: 'Agendamento', icon:<Agend height={18} width={18}  color={colors.ink}/> , width: 170 },
+    // { action: ()=> {}, id: 'despesa', label: 'Despesa', icon:<Line height={15} width={15} color={colors.ink}/> , width: 110 },
+    // { action: ()=> {}, id: 'reuniao', label: 'Reunião', icon:<Meet height={20} width={20} color={colors.ink}/> , width: 125 },
+    // { action: ()=> {}, id: 'evento', label: 'Evento', icon: <Event  height={22} width={22} color={colors.ink}/>, width: 140 },
+    { action: ()=> openModal('CLIENT', { origin: 'Floating Menu' }), id: 'clientes', label: 'Clientes', icon: <Contact height={20} width={20} color={colors.ink}/>, width: 155 },
+    { action: ()=> {}, id: 'agendamento', label: 'Agendamento', icon:<Event  height={22} width={22} color={colors.ink}/>, width: 170 },
     { action: ()=> openModal('SERVICE', {origin: 'Floating Menu'}), id: 'servico', label: 'Serviço', icon:<Agend height={18} width={18}  color={colors.ink}/> , width: 185 },
   ];
 

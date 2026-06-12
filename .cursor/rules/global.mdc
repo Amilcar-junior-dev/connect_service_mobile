@@ -1,0 +1,26 @@
+---
+description: Regras globais de idioma, estilização e arquitetura SDD para o projeto Connect Service Mobile
+globs: *
+alwaysApply: true
+---
+# Regras Globais do Workspace (Cursor)
+
+## 1. Diretrizes de Comunicação e Idioma
+- **Idioma Obrigatório**: Fale e responda **sempre** em **Português do Brasil (pt-br)**. Nunca responda em inglês, a menos que solicitado pelo usuário.
+
+## 2. Sintaxe de Código React Native (Estrita)
+- **Sintaxe de className**: Em arquivos de estilo ou componentes React Native/React, nos atributos `className`, **sempre** utilize a sintaxe de template string (ex: `className={``}`) em vez de strings literais (`""` ou `''`).
+- **Operador de Encadeamento Opcional (`?.`)**: Toda notação que utilizar ponto (`.`) deverá utilizar o operador de encadeamento opcional (`?.`) em todos os casos aplicáveis (ex: propriedades de objetos, itens de arrays, métodos e etc.) para evitar exceções de `undefined`.
+
+## 3. Alinhamento com a Arquitetura SDD
+Antes de propor ou codificar qualquer alteração, você deve:
+1. Ler os arquivos em `.sdd/`:
+   - `.sdd/spec.md` (requisitos do projeto, rotas, fluxo de telas).
+   - `.sdd/agents.md` (diretrizes detalhadas do agente).
+   - `.sdd/task.md` (checklist de tarefas).
+2. Se houver decisões técnicas complexas a serem registradas ou seguidas, certifique-se de que estão na pasta `.sdd/decisions/`.
+3. Manter a arquitetura **MVVM por feature** na pasta `src/`:
+   - **View** em `.view.tsx`
+   - **ViewModel** em custom hooks (`use...ViewModel.ts`)
+   - **Model** em types, schemas ou services.
+4. Manter a memória persistente atualizada no arquivo `PROGRESS.md` na raiz do projeto ao fim de cada sessão.

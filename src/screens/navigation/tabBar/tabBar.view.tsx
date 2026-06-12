@@ -10,10 +10,12 @@ import { useColorScheme } from "nativewind";
 import { Theme } from "~/styles/colors";
 import { TabRouteName } from './tabBar.scheme';
 
-import Calendar from '~/assets/svg/Calendar.svg'
+import Home from '~/assets/svg/Home.svg'
 import Services from '~/assets/svg/Services.svg'
 import Financial from '~/assets/svg/Financial.svg'
 import More from '~/assets/svg/More.svg'
+import Appointment from '~/assets/svg/Calendar.svg'
+
 import { useTabBar } from '~/contexts/TabBarContext';
 
 export function CustomTabBar({
@@ -41,8 +43,9 @@ export function CustomTabBar({
   const translateX = useSharedValue(0);
 
   const RouteIcons = {
-    home: Calendar ,
+    home: Home ,
     services: Services,
+    appointment: Appointment,
     financial: Financial,
     more: More,
   } as const;

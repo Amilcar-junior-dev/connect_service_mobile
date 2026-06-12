@@ -7,6 +7,7 @@ import { useColorScheme } from "nativewind";
 import { Theme } from "~/styles/colors";
 import useLoginViewModel from "./useLoginViewModel";
 import { router } from "expo-router";
+import { CustomSelectDropdownComponent } from "~/components/inputs/selectInput/CustomSelectDropdown.view";
 
 export const LoginView: React.FC<ReturnType<typeof useLoginViewModel >> =({
     control,
@@ -20,9 +21,27 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel >> =({
     
     return (
         <View style={[activeTheme.vars]} className={`flex-1 bg-background`}>
-            <SafeAreaView className={`flex-1`}>
-             
+            <SafeAreaView className={`flex-1 bg-red-400`}>
+             <CustomSelectDropdownComponent 
+                label="Tipo de usuário"
+                placeholder="Selecione uma opção"
+                leftIcon="User"
+                rightActionIcon="UserPlus"
+                onRightActionPress={() => alert('Adicionar novo')}
+                options={[
+                    { id: 1, label: 'Usuário' },
+                    { id: 2, label: 'Admin' },
+                    { id: 3, label: 'Convidado' },
+                ]}
+                onSelect={(item) => console.log('Selecionado:', item)}
+                selectedValue={null}
+                containerClass="w-full"
+                labelClass="text-left"
+                isRequire
+             />
             </SafeAreaView>
         </View>
     )
-}
+};
+
+export default LoginView;
