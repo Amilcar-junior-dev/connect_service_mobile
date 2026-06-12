@@ -69,3 +69,13 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
   ### C. Botão de Novo Serviço
     - [x] Criar botão de novo Serviço o ícone `src/assets/svg/Plus.svg` na cor `muted`;
     - [x] Ao clicar no botão a modal de novo serviço deve aparecer `src/components/modals/modalsServices/newService/ModalNewService.view.tsx`
+  ### D. Criar botão de compartilhamento de página de agendamento
+    - [x] Criar botão utilizando o ícone `src/assets/svg/PageAgendLink.svg` na cor `muted`
+    - [x] Clicando no botão o link deve ser copiado para a área de transferência
+  ### E. Criação de container de serviços
+    - [x] Container deve receber os cards de serviços que tiverem a prop `category` como o nome da categoria. EX: Container de serviços Estética deve conter os cards de serviços que estiverem com a prop `category` marcada como `Estética`;
+    - [x] O Container deverá possuir o nome da categoria e a quantidade ( length ) de serviços cadastrados nela.
+    - [x] Container deve abrir e fechar com uma animação suave de crescimento assim como acontece no componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx`;
+      - [x] Quando estiver fechado deve usar o ícone `src/assets/svg/FolderClose.svg` na cor `ink`;
+      - [x] Quando estiver aberto deve usar o ícone `src/assets/svg/FolderOpen.svg` na cor `ink`;
+      - [x] As seta utilizada deverá ser a `src/assets/svg/ArrowDown.svg` e seguir o mesmo padrão de abertura e fechamento do componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx` mudando a posição quando estiver aberta e fechada
