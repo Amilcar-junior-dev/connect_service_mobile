@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -8,9 +8,9 @@ import Animated, {
   cancelAnimation,
 } from 'react-native-reanimated';
 import { useActiveTheme } from '~/hooks/colorScheme';
-import FolderOpen from '~/assets/svg/FolderOpen.svg';
-import FolderClose from '~/assets/svg/FolderClose.svg';
+import Tag from '~/assets/svg/Tag.svg';
 import ArrowDown from '~/assets/svg/ArrowDown.svg';
+import { SERVICE_COLORS } from '~/styles/colors';
 
 export interface CategoryContainerProps {
   title: string;
@@ -28,6 +28,15 @@ export function CategoryContainer({
   const [measuredHeight, setMeasuredHeight] = useState(0);
 
   const animation = useSharedValue(0);
+
+  const iconColor = useMemo(() => {
+    let hash = 0;
+    for (let i = 0; i < title?.length; i++) {
+      hash = title?.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math?.abs(hash) % (SERVICE_COLORS?.length || 1);
+    return SERVICE_COLORS[index] || colors?.ink;
+  }, [title, colors?.ink]);
 
   useEffect(() => {
     if (animation) {
@@ -76,27 +85,19 @@ export function CategoryContainer({
         className={`w-full flex-row items-center justify-between py-3 border-b border-stone/30`}
       >
         <View className={`flex-row items-center`}>
-          {/* Folder Icon */}
           <View className={`mr-3`}>
-            {isOpen ? (
-              <FolderOpen color={colors?.ink} width={24} height={20} />
-            ) : (
-              <FolderClose color={colors?.ink} width={24} height={20} />
-            )}
+            <Tag color={iconColor} width={22} height={22} />
           </View>
-          {/* Title & Count */}
           <Text className={`text-ink text-lg font-semibold`}>
             {title} <Text className={`text-muted font-normal`}>({count})</Text>
           </Text>
         </View>
 
-        {/* Arrow Down Icon */}
         <Animated.View style={arrowStyle}>
           <ArrowDown color={colors?.ink} width={16} height={16} />
         </Animated.View>
       </TouchableOpacity>
 
-      {/* Invisible measurement container to get natural height of children */}
       <View
         style={{ position: 'absolute', opacity: 0, left: -9999, width: '100%' }}
         pointerEvents="none"
@@ -111,7 +112,6 @@ export function CategoryContainer({
         {children}
       </View>
 
-      {/* Collapsible Content */}
       <Animated.View style={animatedContentStyle}>
         <View className={`pt-4`}>
           {children}
