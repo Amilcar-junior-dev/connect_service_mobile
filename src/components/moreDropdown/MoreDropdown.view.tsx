@@ -56,7 +56,7 @@ export function MoreDropdown({
         onPress={onPress}
         activeOpacity={0.7}
         className={cn(
-          `w-full flex-row items-center py-4 px-3 rounded-lg border-b border-transparent transition-all duration-200`,
+          `w-full flex-row items-center py-2 px-3 rounded-lg border-b border-transparent transition-all duration-200`,
           isOpen ? `bg-stone/30` : ``
         )}
       >

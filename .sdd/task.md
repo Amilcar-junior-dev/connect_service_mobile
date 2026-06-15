@@ -102,4 +102,20 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] Criação de campos de input utilizando o componente padrão `src/components/inputs/textInput/CustomTextInput.view.tsx`;
     - [x] Criação de componente reutilizável de seleção de cores;
       - [x] Atualmente o componente se encontra de forma estática em `src/components/modals/modalsServices/newService/ModalNewService.view.tsx (120)`, 
-  
+  ### D. Criação dos componentes do dropdown de Horários de atendimento
+    - [x] Cria componente toogle reutilizável para habilitar e desabilitar os horários de atendimento da semana;
+      - [x] O componente deve realizar uma animação de transição horizontal mudando o tragedo da 'bolinha interna' e da cor de fundo
+      - [x] Quando desabilitado o container do toogle deve ficar com a cor `stone` e o circulo interno na cor `tabbar`
+      - [x] Quando habilitado o container do toogle deve ficar com a cor `success`e o círuclo com a cor `stone`;
+    - [x] As opções do dias devem contemplar de segunda a domingo
+    - [x] Os inputs de horários devem demonstrar a visualização do horário e a tag AM / PM para especificar o período do dia;
+    - [x] Quando o input de hoário estiver selecionado ele deve ficar com a borda na cor `accent`
+    - [x] Ao clicar no input uma modal central deve aparecer para a seleção do horário
+      - [x] IMPORTANTE: os horários de minuto devem seguir o intervalo de 15 em 15 minutos por padrão, podendo ser configurável de acordo com a necessidade
+      - [x] Para construir a modal utilizar o componente de seleção de horários já utilizado no componente src/components/inputs/timeSelect/TimeSelectDropdown.view.tsx. Caso necessário crie um componente próprio com o seletor de horários para aproveitá-lo tanto no TImeSelectDropdown quanto em outros locais como na nossa tela more;
+    - [x] Criação de botão `Copiar para outros dias` com TouchableOpacity sendo que ao clicar nele todos os outros inputs de horários devem receber o mesmo horário do input que foi selecionado ( Hora de inicio e término) e utilizar o ícone `src/assets/svg/Copy.svg`
+  ### E. Criação dos componentes do dropdown de Funcionarios
+    - [ ] Deve utilizar o componente de pesquisa src/components/researchBar/ResearchBar.view.tsx
+    - [ ] Deve criar botão com o ícone src/assets/svg/Plus.svg e o  nome `Adicionar Funcionário`, ao clicar no botão deve-se abrir uma modal de criação de Funcionário
+    - [ ] Modal de criação de funcionario deve ter o CicrularPicker para adicionar a foto ( utilizar o componente src/components/inputs/circularImageInput/CircularImageInput.view.tsx)
+    - [ ] Dropdown deve listar card de funcioários ( utilizar o mesmo componente da listagem de pacientes)

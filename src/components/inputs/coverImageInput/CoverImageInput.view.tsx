@@ -7,14 +7,7 @@ import SearchImage from '~/assets/svg/SearchImage.svg';
 import Edit from '~/assets/svg/Edit.svg';
 import Trash from '~/assets/svg/Trash.svg';
 import { cn } from '~/utils/cx';
-
-interface CoverImageInputProps {
-  imageUri: string;
-  onChangeImage: (uri: string) => void;
-  onRemoveImage: () => void;
-  label?: string;
-  containerClass?: string;
-}
+import { CoverImageInputProps } from './coverImageInput.scheme';
 
 export function CoverImageInput({
   imageUri,

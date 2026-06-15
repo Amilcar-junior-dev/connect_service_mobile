@@ -7,19 +7,7 @@ import SearchImage from '~/assets/svg/SearchImage.svg';
 import Edit from '~/assets/svg/Edit.svg';
 import Trash from '~/assets/svg/Trash.svg';
 import { cn } from '~/utils/cx';
-
-interface CircularImageInputProps {
-  imageUri: string;
-  onChangeImage: (uri: string) => void;
-  onRemoveImage: () => void;
-  label?: string;
-  description?: string;
-  recommendation?: string;
-  containerClass?: string;
-  sizeClass?: string;
-  iconSize?: number;
-  placeholderIcon?: React.ReactNode;
-}
+import { CircularImageInputProps } from './circularImageInput.scheme';
 
 export function CircularImageInput({
   imageUri,
