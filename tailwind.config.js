@@ -4,7 +4,7 @@ module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
- theme: {
+  theme: {
     extend: {
       colors: {
         surface: "rgb(var(--color-surface) / <alpha-value>)",
@@ -14,6 +14,7 @@ module.exports = {
         muted: "rgb(var(--color-muted) / <alpha-value>)",
         danger: "rgb(var(--color-danger) / <alpha-value>)",
         warning: "rgb(var(--color-warning) / <alpha-value>)",
+        success: "rgb(var(--color-success) / <alpha-value>)",
         accent: "rgb(var(--color-accent) / <alpha-value>)",
         accentDeep: "rgb(var(--color-accent-deep) / <alpha-value>)",
         deepSurface: "rgb(var(--color-deep-surface) / <alpha-value>)",

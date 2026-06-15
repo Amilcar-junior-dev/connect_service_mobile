@@ -264,7 +264,7 @@ export default function ApointmentScreen() {
                                     <View>
                                         <CustomSelectDropdownComponent 
                                             label="Repetir"
-                                            placeholder="Adicionar um Serviço"
+                                            placeholder="Selecione um dia para repetir"
                                             leftIcon="Repeat"
                                             options={RepeatList}
                                             onSelect={onChange}

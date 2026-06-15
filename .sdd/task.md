@@ -79,3 +79,20 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
       - [x] Quando estiver fechado deve usar o ícone `src/assets/svg/FolderClose.svg` na cor `ink`;
       - [x] Quando estiver aberto deve usar o ícone `src/assets/svg/FolderOpen.svg` na cor `ink`;
       - [x] As seta utilizada deverá ser a `src/assets/svg/ArrowDown.svg` e seguir o mesmo padrão de abertura e fechamento do componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx` mudando a posição quando estiver aberta e fechada
+## 10. Página More `src/app/(private)/(tabs)/more.tsx`
+  ### A. Criação da Screen More 
+    - [x] Criar a pasta e arquivo dentro de Screen e referencia-la em  src/app/(private)/(tabs)/more.tsx;
+  ### B. Criação de dropdown para o menu da página
+    - [x] O dropdown deve permitir componentes filhos que serão responsáveis pelas opções da página more e deve seguir as seguintes regras;
+      - [x] Abrir com uma animação de altura assim como ocorre no componente `src/components/inputs/selectInput/CustomSelectDropdown.view.tsx`
+      - [x] Quando aberto o container deve ficar selecionado com a cor `stone`;
+      - [x] Apenas 1 dropdown deve ficar aberto na página ( estando um aberto, ao clicar no próximo o atual deve fechar)
+    - [x] As opções da página com o dropdown inicialmente são as seguintes:
+      - [x] Título: `Página de agendamentos` ; Ícone: `src/assets/svg/LogoConnect.svg`
+      - [x] Título: `Horário de Atendimento`; Ícone: `src/assets/svg/Clock.svg`;
+      - [x] Título: `Funcionários`; Ícone: `src/assets/svg/Peoples.svg`;
+      - [x] Título: `Integrações`; Ícone: `src/assets/svg/Integrations.svg`;
+      - [x] Título: `Compartilhar App`; Ícone: `src/assets/svg/Heart.svg`;
+      - [x] Título: `Sair`; Ícone: `src/assets/svg/Exit.svg`
+
+  
