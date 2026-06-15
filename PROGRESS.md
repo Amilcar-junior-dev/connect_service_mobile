@@ -1,6 +1,6 @@
 # PROGRESS - Estado de Contexto e Progresso do Projeto
 
-Este arquivo serve como memória persistente para as sessões de desenvolvimento do projeto `connect_service_mobile`. Ele deve ser lido no início de cada sessão e atualizado no fim.
+Este arquivo serve como memória persistente para as sesões de desenvolvimento do projeto `connect_service_mobile`. Ele deve ser lido no início de cada sessão e atualizado no fim.
 
 ---
 
@@ -29,22 +29,19 @@ Este arquivo serve como memória persistente para as sessões de desenvolvimento
 
 ## 3. Bugs e Desafios Contornados na Sessão
 
-- **Inconformidade de Agentes de IA nos Novos Chats**:
-  - **Identificado**: O arquivo `.cursorrules` possuía erros de formatação (crases nas bordas do arquivo que quebravam o interpretador de regras da IDE).
-  - **Identificado**: O arquivo `.antigravityrules` não possuía a instrução para responder em Português do Brasil (pt-br).
-  - **Identificado**: As novas versões do Cursor utilizam o formato `.cursor/rules/*.mdc` com metadados `globs` e `alwaysApply`. A pasta `.cursor/` estava vazia, impossibilitando a leitura automática das diretrizes do projeto em novos chats abertos no Cursor.
-  - **Identificado**: Não existia um padrão e diretório explícito para as decisões técnicas (`.sdd/decisions/`), o que dificultava o direcionamento dos agentes sobre onde registrar/consultar essas decisões.
+- **Inconformidade na Inicialização de Chats na IDE Antigravity**:
+  - **Identificado**: O Antigravity não consome `.antigravityrules` na raiz por padrão. O caminho oficial de regras de workspace do Antigravity é **`.agent/rules/*.md`**.
+  - **Identificado**: As crases (backticks) utilizadas cruas no markdown de regras (`className={``}`) quebravam o interpretador de markdown e coloração de sintaxe das IDEs, causando cores estranhas e erros de parse.
   - **Solução**:
-    - Corrigido o `.cursorrules` removendo as crases extras e adicionando explicitamente as regras de estilização/idioma.
-    - Atualizado o `.antigravityrules` com as mesmas diretrizes críticas.
-    - Criada a regra global `.cursor/rules/global.mdc` para compatibilidade total com as versões modernas do Cursor.
-    - Criado o diretório `.sdd/decisions/` com um arquivo `README.md` e a primeira ADR (`0001-arquitetura-base-mvvm.md`) servindo de modelo de histórico e decisões para novas instâncias de IAs.
+    - Criado o diretório oficial **`.agent/rules/`** e adicionado o arquivo **`.agent/rules/sdd-rules.md`**, garantindo que a IDE Antigravity injete e carregue automaticamente as regras globais e o fluxo do SDD a cada nova sessão.
+    - Corrigidas as crases em todos os arquivos de regras (`.cursorrules`, `.antigravityrules`, `global.mdc`), substituindo por representações escapadas em texto (`className={ \`classe-css-aqui\` }`), o que normalizou a coloração de sintaxe.
 
 ---
 
 ## 4. Próximos Passos Lógicos (Handover)
 
-1. Implementar o ViewModel da aba de agendamentos (`src/screens/appointments/useAppointmentsViewModel.ts`) para alimentar a View `appointments.view.tsx`.
-2. Completar o fluxo de cadastro e listagem na tela de Serviços (`src/screens/services/`).
-3. Criar a estrutura MVVM para a aba de Controle Financeiro (`financial`).
-4. Criar a estrutura MVVM para a aba de Perfil (`more`).
+1. Testar a inicialização de um novo chat para validar se as regras em `.agent/rules/sdd-rules.md` são carregadas e respeitadas de imediato pela IDE.
+2. Implementar o ViewModel da aba de agendamentos (`src/screens/appointments/useAppointmentsViewModel.ts`) para alimentar a View `appointments.view.tsx`.
+3. Completar o fluxo de cadastro e listagem na tela de Serviços (`src/screens/services/`).
+4. Criar a estrutura MVVM para a aba de Controle Financeiro (`financial`).
+5. Criar a estrutura MVVM para a aba de Perfil (`more`).

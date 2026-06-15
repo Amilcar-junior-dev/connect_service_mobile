@@ -9,7 +9,7 @@ alwaysApply: true
 - **Idioma Obrigatório**: Fale e responda **sempre** em **Português do Brasil (pt-br)**. Nunca responda em inglês, a menos que solicitado pelo usuário.
 
 ## 2. Sintaxe de Código React Native (Estrita)
-- **Sintaxe de className**: Em arquivos de estilo ou componentes React Native/React, nos atributos `className`, **sempre** utilize a sintaxe de template string (ex: `className={``}`) em vez de strings literais (`""` ou `''`).
+- **Sintaxe de className**: Em arquivos de estilo ou componentes React Native/React, nos atributos `className`, **sempre** utilize a sintaxe de chaves envolvendo template string (ex: className={ \`classe-css-aqui\` }) em vez de strings literais (`""` ou `''`).
 - **Operador de Encadeamento Opcional (`?.`)**: Toda notação que utilizar ponto (`.`) deverá utilizar o operador de encadeamento opcional (`?.`) em todos os casos aplicáveis (ex: propriedades de objetos, itens de arrays, métodos e etc.) para evitar exceções de `undefined`.
 
 ## 3. Alinhamento com a Arquitetura SDD

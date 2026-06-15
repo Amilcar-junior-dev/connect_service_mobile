@@ -61,6 +61,7 @@ export function useModalNewClientViewModel() {
     modalRef,
     methods,
     profileImage,
+    setProfileImage,
     onSubmit,
     handleSelectOrEditImage,
     handleRemoveImage,

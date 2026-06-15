@@ -94,5 +94,12 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
       - [x] Título: `Integrações`; Ícone: `src/assets/svg/Integrations.svg`;
       - [x] Título: `Compartilhar App`; Ícone: `src/assets/svg/Heart.svg`;
       - [x] Título: `Sair`; Ícone: `src/assets/svg/Exit.svg`
-
+  ### C. Criação dos componentes do dropdown de Página de agendamentos
+    - [x] Criação do componente de input de imagem de capa;
+      - [x] Deve utilizar o ícone  src/assets/svg/WithoutImage.svg
+      - [x] Deve utilizar Hook existente de captura de imagem `src/hooks/useImagePicker.ts`
+    - [x] Utilização do componente de imagem para adicionar o logotipo da empresa, utilizar o componente de captura de imagem já utilizado na modal de criação de novo cliente ( modalNewClient)
+    - [x] Criação de campos de input utilizando o componente padrão `src/components/inputs/textInput/CustomTextInput.view.tsx`;
+    - [x] Criação de componente reutilizável de seleção de cores;
+      - [x] Atualmente o componente se encontra de forma estática em `src/components/modals/modalsServices/newService/ModalNewService.view.tsx (120)`, 
   

@@ -17,6 +17,7 @@ import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInpu
 
 import { SERVICE_COLORS } from '~/styles/colors';
 import { CustomSelectDropdownComponent } from '~/components/inputs/selectInput/CustomSelectDropdown.view';
+import { ColorPicker } from '~/components/inputs/colorPicker/ColorPicker.view';
 import { BaseSelectOption } from '~/components/inputs/selectInput/customSelectDropdown.scheme';
 import ButtonComponent from '~/components/buttons/Button';
 
@@ -114,18 +115,11 @@ const ServiceForm = memo(function ServiceForm({
             maskType="currency"
         />
 
-        <Text className={`text-ink text-lg `}>Cor do serviço</Text>
-
-        <View className={`mt-2 flex-row w-full justify-between`}>
-            {SERVICE_COLORS.map((color, index) => (
-            <TouchableOpacity
-                key={index}
-                onPress={() => setSelectedColor(color)}
-                className={`w-7 h-7 rounded-md`}
-                style={{ backgroundColor: color }}
-            />
-            ))}
-        </View>
+        <ColorPicker
+          label="Cor do serviço"
+          selectedColor={selectedColor}
+          onSelectColor={setSelectedColor}
+        />
 
         <Text className={`text-ink text-lg mt-4 mb-4`}>Prévia</Text>
         <CardServicePreview color={selectedColor}  selectedImage={selectedImage} />
