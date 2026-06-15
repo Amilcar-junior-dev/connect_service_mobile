@@ -32,7 +32,7 @@ export const HomeView: React.FC = () => {
             colors={[theme.colors.accent, theme.colors.surface]}
             style={[{ flex: 1 }]}
         >
-            <SafeAreaView className="flex-1">
+            <SafeAreaView className={`flex-1`}>
                 <TopSheet translateY={translateY} />
                 
                 <Animated.View 

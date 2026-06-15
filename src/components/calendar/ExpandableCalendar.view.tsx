@@ -81,24 +81,24 @@ export  function ExpandableCalendarScreen() {
 
     const currentStyle = dayStyles[state || 'default'];
 
-    let bgClass = 'bg-transparent'; 
-    let textClass = 'text-ink'; 
-    let borderClass = 'border border-ink';
+    let bgClass = `bg-transparent`; 
+    let textClass = `text-ink`; 
+    let borderClass = `border border-ink`;
 
     if (isSelected) {
-      bgClass = 'bg-ink'; 
-      textClass = 'text-surface'; 
-      borderClass = 'border border-ink';
+      bgClass = `bg-ink`; 
+      textClass = `text-surface`; 
+      borderClass = `border border-ink`;
     } else if (isToday) {
-      bgClass = 'bg-accent'; 
-      textClass = 'text-surface'; 
-      borderClass = 'border border-accent';
+      bgClass = `bg-accent`; 
+      textClass = `text-surface`; 
+      borderClass = `border border-accent`;
     } else if (!isDisabled && !isToday) {
-      bgClass = 'bg-tintBlue';
+      bgClass = `bg-tintBlue`;
     } else if (isDisabled) {
-      textClass = 'text-stone';
-      borderClass = 'border border-stone';
-      bgClass = 'bg-divider';
+      textClass = `text-stone`;
+      borderClass = `border border-stone`;
+      bgClass = `bg-divider`;
     }
 
     return (
@@ -116,9 +116,8 @@ export  function ExpandableCalendarScreen() {
   
 
 
-
   return (
-      <View className='flex-1 bg-red-600'>
+      <View className={`flex-1 bg-red-600`}>
           <CalendarProvider 
             date={vm.initialDate}
             onDateChanged={vm.handleDayPress}
@@ -126,7 +125,7 @@ export  function ExpandableCalendarScreen() {
           >
           
               <View 
-                className="bg-transparent rounded-[20px]"
+                className={`bg-transparent rounded-[20px]`}
                 style={{
                   height:800
                 }}

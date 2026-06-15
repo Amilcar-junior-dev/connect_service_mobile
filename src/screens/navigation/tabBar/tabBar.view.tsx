@@ -98,7 +98,7 @@ export function CustomTabBar({
             key={route.key}
             style={{ width: tabWidth }}
             onPress={onPress}
-            className="items-center justify-center"
+            className={`items-center justify-center`}
           >
             <Icon
               width={24}
