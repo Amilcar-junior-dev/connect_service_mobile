@@ -30,8 +30,8 @@ export function useFloatingMenuViewModel() {
   });
 
 
-  const handleActionPress = (actionId: ()=> void) => {
-    console.log('Clicou em:', actionId);
+  const handleActionPress = (action: () => void) => {
+    action();
     toggleMenu();
   };
 

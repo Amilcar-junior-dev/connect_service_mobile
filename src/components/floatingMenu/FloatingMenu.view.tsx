@@ -59,7 +59,7 @@ export function FloatingMenu() {
                       style={itemAnimatedStyle}
                       pointerEvents={vm.isOpen ? 'auto' : 'none'}
                   >
-                      <TouchableOpacity activeOpacity={0.7} className="flex-row items-center" onPress={() => action.action()}>
+                      <TouchableOpacity activeOpacity={0.7} className="flex-row items-center" onPress={() => vm.handleActionPress(action.action)}>
                               <View className="bg-ink/90 rounded-full mr-3 items-center justify-center shadow-sm elevation-md h-9" style={{ width: action.width }}>
                                   <Text className="text-surface font-bold text-sm">{action.label}</Text>
                               </View>
