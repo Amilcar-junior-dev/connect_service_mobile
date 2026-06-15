@@ -30,7 +30,7 @@ const CardUserComponent = ({
         containerClass || ``
       )}
     >
-      <View>
+      <View className={`w-10 h-10 rounded-full bg-divider items-center justify-center overflow-hidden`}>
         {vm.imageUrl ? (
           <Image
             source={{ uri: vm.imageUrl }}
@@ -38,7 +38,7 @@ const CardUserComponent = ({
             resizeMode="cover"
           />
         ) : (
-          <User color={colors.ink} width={28} height={28} />
+          <User color={colors.ink} width={24} height={24} />
         )}
       </View>
 

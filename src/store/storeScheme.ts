@@ -1,1 +1,1 @@
-export type ModalType = 'SERVICE' | 'CLIENT' | 'FILTER' | 'SELECT_DATE_TIME' | null;
+export type ModalType = 'SERVICE' | 'CLIENT' | 'FILTER' | 'SELECT_DATE_TIME' | 'EMPLOYEE' | null;

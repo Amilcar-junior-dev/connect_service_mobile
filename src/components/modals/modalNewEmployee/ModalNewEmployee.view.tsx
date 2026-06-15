@@ -8,25 +8,18 @@ import {
 import { Modalize } from 'react-native-modalize';
 import { FormProvider } from 'react-hook-form';
 
-import { useModalNewClientViewModel } from './modalNewClient.viewModel';
+import { useModalNewEmployeeViewModel } from './modalNewEmployee.viewModel';
 import Close from '~/assets/svg/Close.svg';
 import { useActiveTheme } from '~/hooks/colorScheme';
 import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInput.view';
 import { CircularImageInput } from '~/components/inputs/circularImageInput/CircularImageInput.view';
+import { NewEmployeeModalProps, NewEmployeeFormProps } from './modalNewEmployee.scheme';
 
-interface ClientModalProps {
-  data?: Record<string, unknown> | null;
-}
-
-type ClientFormProps = {
-  methods: ReturnType<typeof useModalNewClientViewModel>['methods'];
-};
-
-const ClientForm = memo(function ClientForm({ methods }: ClientFormProps) {
+const EmployeeForm = memo(function EmployeeForm({ methods }: NewEmployeeFormProps) {
   return (
     <FormProvider {...methods}>
       <TextInputComponent
-        name="first_name"
+        name="name"
         label="Nome"
         placeholder="Digite aqui"
         isRequire
@@ -35,38 +28,11 @@ const ClientForm = memo(function ClientForm({ methods }: ClientFormProps) {
       />
 
       <TextInputComponent
-        name="last_name"
-        label="Sobrenome"
-        placeholder="Digite aqui"
-        labelClass={`text-lg`}
-      />
-
-      <TextInputComponent
-        name="birth_date"
-        label="Nascimento"
-        placeholder="00/00/0000"
-        labelClass={`text-lg`}
-        leftIcon="Calendar"
-        maskType="date"
-        keyboardType="numeric"
-      />
-
-      <TextInputComponent
-        name="phone"
-        label="Telefone"
-        placeholder="(00) 00000-0000"
-        labelClass={`text-lg`}
-        leftIcon="Phone"
-        maskType="phone"
-        keyboardType="numeric"
-      />
-
-      <TextInputComponent
         name="email"
         label="Email"
         placeholder="Digite aqui"
+        isRequire
         labelClass={`text-lg`}
-        leftIcon="Email"
         keyboardType="email-address"
         autoCapitalize="none"
       />
@@ -74,10 +40,10 @@ const ClientForm = memo(function ClientForm({ methods }: ClientFormProps) {
   );
 });
 
-export function ModalNewClient({ data }: ClientModalProps) {
+export function ModalNewEmployee({ data }: NewEmployeeModalProps) {
   const { colors } = useActiveTheme();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-  const vm = useModalNewClientViewModel();
+  const vm = useModalNewEmployeeViewModel();
 
   const MAX_MODAL_HEIGHT = SCREEN_HEIGHT * 0.92;
 
@@ -109,8 +75,8 @@ export function ModalNewClient({ data }: ClientModalProps) {
       }}
       HeaderComponent={
         <View className={`w-full px-5 py-12 pt-4 relative`}>
-          <Text className={`text-2xl self-center text-ink font-bold`}>
-            Novo Cliente
+          <Text className={`text-2xl self-center text-ink font-bold font-robotoBold`}>
+            Adicionar Funcionário
           </Text>
           <View className={`absolute top-4 right-5`}>
             <TouchableOpacity onPress={vm.handleClose}>
@@ -132,13 +98,14 @@ export function ModalNewClient({ data }: ClientModalProps) {
           iconSize={48}
         />
 
-        <ClientForm methods={vm.methods} />
+        <EmployeeForm methods={vm.methods} />
 
         <TouchableOpacity
           onPress={vm.onSubmit}
-          className={`bg-tabBar mt-6 h-12 items-center justify-center rounded-lg`}
+          activeOpacity={0.7}
+          className={`bg-tabBar mt-6 h-12 items-center justify-center rounded-lg active:opacity-90`}
         >
-          <Text className={`font-bold text-surface`}>Salvar</Text>
+          <Text className={`font-bold text-surface font-robotoBold text-base`}>Salvar</Text>
         </TouchableOpacity>
       </View>
     </Modalize>

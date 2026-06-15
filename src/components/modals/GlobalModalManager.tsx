@@ -4,12 +4,14 @@ import { useShallow } from 'zustand/react/shallow';
 import { ModalNewService } from './modalsServices/newService/ModalNewService.view';
 import { ModalNewClient } from './modalNewClient/ModalNewClient.view';
 import { ModalSelectDateTime } from './modalSelectDateTime/ModalSelectDateTime.view';
+import { ModalNewEmployee } from './modalNewEmployee/ModalNewEmployee.view';
 
 const MODAL_REGISTRY: Record<NonNullable<ModalType>, React.ElementType> = {
   SERVICE: ModalNewService,
   CLIENT: ModalNewClient,
   FILTER: () => null,
   SELECT_DATE_TIME: ModalSelectDateTime,
+  EMPLOYEE: ModalNewEmployee,
 };
 
 export function GlobalModalManager() {

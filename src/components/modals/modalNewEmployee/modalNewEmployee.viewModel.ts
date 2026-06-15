@@ -1,23 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { Modalize } from 'react-native-modalize';
-
 import { useAppForm } from '~/hooks/useAppForm';
 import { useImagePicker } from '~/hooks/useImagePicker';
 import { useModalStore } from '~/store/useModalStore';
+import { EmployeeSchema } from './modalNewEmployee.schema';
 
-import { ClientSchema } from './modalNewClient.schema';
-
-export function useModalNewClientViewModel() {
+export function useModalNewEmployeeViewModel() {
   const modalRef = useRef<Modalize>(null);
   const methods = useAppForm({
-    schema: ClientSchema,
+    schema: EmployeeSchema,
     defaultValues: {
-      first_name: '',
-      last_name: '',
-      birth_date: '',
-      phone: '',
+      name: '',
       email: '',
-      save_to_contacts: true,
     },
   });
 
@@ -39,10 +33,11 @@ export function useModalNewClientViewModel() {
         ...data,
         profile_photo: profileImage,
       };
-      console.log('✅ Cliente pronto para salvar:', dataSubmit);
+      console.log('✅ Funcionário pronto para salvar:', dataSubmit);
+      handleClose();
     },
     (errors) => {
-      console.log('❌ Validação do formulário:', errors);
+      console.log('❌ Validação do formulário de funcionário:', errors);
     }
   );
 
