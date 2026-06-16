@@ -26,6 +26,7 @@ export const HomeView: React.FC = () => {
         };
     });
 
+    // Log de teste para integração  Notion
 
     return (
         <LinearGradient
