@@ -25,17 +25,14 @@ export default function useLoginViewModel() {
   const onSubmit = methods.handleSubmit(async (loginData) => {
     setIsLoading(true);
     try {
-      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      // Save credentials to global state store
       setToken('mock-jwt-token-123');
       setUser({
         name: 'Usuário Teste',
         email: loginData.email,
       });
 
-      // Redirect to private area
       router.push('/(private)/(tabs)/home');
     } catch (error) {
       console.error('Error logging in:', error);

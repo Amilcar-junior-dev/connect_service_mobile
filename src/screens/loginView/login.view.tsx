@@ -27,16 +27,13 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
     <View style={[vars]} className={`flex-1 bg-surface`}>
       <SafeAreaView className={`flex-1`} edges={['top', 'bottom']}>
         <FormScrollContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingBottom: 40 }}>
-          {/* Logo Section */}
           <View className={`items-center justify-center mb-8 mt-4`}>
             <LogoConnect width={220} height={120} color={colors.ink} />
           </View>
 
-          {/* Form */}
           <FormProvider {...methods}>
             <View className={`w-full gap-y-4`}>
               
-              {/* Email field */}
               <TextInputComponent
                 name="email"
                 label="Email"
@@ -48,8 +45,6 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
                 labelClass={`font-robotoMedium`}
                 className={`flex-1 text-base text-ink font-robotoRegular`}
               />
-
-              {/* Password field */}
               <TextInputComponent
                 name="password"
                 label="Senha"
@@ -75,16 +70,14 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
                 }
               />
 
-              {/* Forgot password */}
               <TouchableOpacity
                 onPress={handleForgotPassword}
                 className={`self-end py-1`}
                 activeOpacity={0.7}
               >
-                <Text className={`text-xs font-robotoMedium text-ink/80`}>Esqueci minha senha</Text>
+                <Text className={`text-xs font-robotoMedium text-ink/80 underline`}>Esqueci minha senha</Text>
               </TouchableOpacity>
 
-              {/* Login Button */}
               <TouchableOpacity
                 onPress={onSubmit}
                 className={`w-full bg-tabBar h-12 rounded-xl items-center justify-center mt-4 shadow-sm`}
@@ -98,7 +91,6 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
                 )}
               </TouchableOpacity>
 
-              {/* Register Button */}
               <TouchableOpacity
                 onPress={() => {
                   router.push('/register');
@@ -110,14 +102,12 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
                 <Text className={`text-base font-robotoBold text-tabBar font-bold`}>Criar conta</Text>
               </TouchableOpacity>
 
-              {/* Divider */}
               <View className={`flex-row items-center my-6`}>
                 <View className={`flex-1 h-[1px] bg-stone/20`}></View>
                 <Text className={`mx-4 text-xs font-robotoMedium text-muted`}>OU</Text>
                 <View className={`flex-1 h-[1px] bg-stone/20`}></View>
               </View>
 
-              {/* Google Login Button */}
               <TouchableOpacity
                 onPress={() => {
                   console.log('Google Auth pressed');

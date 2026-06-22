@@ -30,17 +30,14 @@ export default function useRegisterViewModel() {
   const onSubmit = methods.handleSubmit(async (registerData) => {
     setIsLoading(true);
     try {
-      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      // Save credentials to global state store
       setToken('mock-jwt-token-123');
       setUser({
         name: 'Novo Usuário',
         email: registerData.email,
       });
 
-      // Redirect to private area
       router.push('/(private)/(tabs)/home');
     } catch (error) {
       console.error('Error registering user:', error);

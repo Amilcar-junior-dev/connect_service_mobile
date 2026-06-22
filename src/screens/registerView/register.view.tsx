@@ -27,19 +27,15 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
     <View style={[vars]} className={`flex-1 bg-surface`}>
       <SafeAreaView className={`flex-1`} edges={['top', 'bottom']}>
         <FormScrollContainer contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingHorizontal: 24, paddingBottom: 40 }}>
-          {/* Logo Section */}
           <View className={`items-center justify-center mb-8 mt-4`}>
             <LogoConnect width={220} height={120} color={colors.ink} />
           </View>
 
-          {/* Header text */}
           <Text className={`text-sm font-robotoMedium text-ink mb-6 text-center`}>CRIE SUA CONTA</Text>
 
-          {/* Form */}
           <FormProvider {...methods}>
             <View className={`w-full gap-y-4`}>
               
-              {/* Email field */}
               <TextInputComponent
                 name="email"
                 label="Email"
@@ -52,7 +48,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
                 className={`flex-1 text-base text-ink font-robotoRegular`}
               />
 
-              {/* Password field */}
               <TextInputComponent
                 name="password"
                 label="Senha"
@@ -78,7 +73,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
                 }
               />
 
-              {/* Confirm Password field */}
               <TextInputComponent
                 name="confirmPassword"
                 label="Confirmar senha"
@@ -104,7 +98,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
                 }
               />
 
-              {/* Register Button */}
               <TouchableOpacity
                 onPress={onSubmit}
                 className={`w-full bg-tabBar h-12 rounded-xl items-center justify-center mt-6 shadow-sm`}
@@ -118,7 +111,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
                 )}
               </TouchableOpacity>
 
-              {/* Back to Login Button */}
               <TouchableOpacity
                 onPress={() => {
                   router.replace('/login');

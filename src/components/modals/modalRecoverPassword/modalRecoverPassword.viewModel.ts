@@ -31,7 +31,6 @@ export function useModalRecoverPasswordViewModel() {
     async (data) => {
       setIsLoading(true);
       try {
-        // Simulate API call delay
         await new Promise((resolve) => setTimeout(resolve, 800));
 
         console.log('✅ Solicitação de recuperação enviada para:', data.email);
