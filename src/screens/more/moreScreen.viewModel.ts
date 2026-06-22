@@ -5,6 +5,7 @@ import { useAppForm } from '~/hooks/useAppForm';
 import { BookingPageSchema } from './bookingPage.schema';
 import { SERVICE_COLORS } from '~/styles/colors';
 import { useModalStore } from '~/store/useModalStore';
+import { useAuthStore } from '~/store/useAuthStore';
 
 export interface Employee {
   id: string;
@@ -96,6 +97,7 @@ export function useMoreScreenViewModel() {
           text: 'Sair',
           style: 'destructive',
           onPress: () => {
+            useAuthStore.getState().logout();
             router.replace('/login');
           },
         },

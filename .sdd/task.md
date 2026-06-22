@@ -128,11 +128,11 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] Adicionar botão de "Esqueci minha senha" redirecionando para o fluxo de recuperação de senha
     - [x] Adicionar botão de "Cadastre-se" redirecionando para o fluxo de cadastro
   ### B. Criação da tela de Cadastro
-    - [ ] Criar a tela de cadastro em `src/screens/registerView/register.view.tsx`.
-    - [ ] Adicionar a logo `/Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/assets/svg/LogoConnect.svg` centralizada conforme imagem.
-    - [ ] Criar formulário com os campos de nome, email e senha
-    - [ ] ao enviar o formulario e validar o email e senha utilizar o hook `src/store/useAuthStore.ts` para salvar as informações do usuário e token e navegar para a tela home `src/app/(private)/(tabs)/home.tsx`
-    - [ ] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
+    - [x] Criar a tela de cadastro em `src/screens/registerView/register.view.tsx`.
+    - [x] Adicionar a logo `/Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/assets/svg/LogoConnect.svg` centralizada conforme imagem.
+    - [x] Criar formulário com os campos de nome, email e senha
+    - [x] ao enviar o formulario e validar o email e senha utilizar o hook `src/store/useAuthStore.ts` para salvar as informações do usuário e token e navegar para a tela home `src/app/(private)/(tabs)/home.tsx`
+    - [x] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
   ### C. Criação da modal de Recuperação de Senha
     - [ ] Criar a modal de recuperação de senha e referencia-la em src/components/modals/GlobalModalManager.tsx.
     - [ ] Criar formulário com o campo de email
