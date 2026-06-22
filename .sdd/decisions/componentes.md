@@ -95,4 +95,31 @@ Isso corrige o comportamento do componente e garante que o dropdown possa ser pe
 * **Consistência Visual**: Todos os dropdowns mantêm a mesma animação de abertura e comportamento de busca, mas com total liberdade para renderizar o conteúdo interno de cada linha.
 * **Extensibilidade**: Facilita a inserção de novos ícones dinâmicos ou SVGs externos nas props do seletor sem precisar alterar o mapeamento estático do componente compartilhado.
 
+---
+
+## ADR 004: Correção de Contraste e Inclusão de Legenda (Label) no `CustomToggle`
+
+* **Status**: Aprovado
+* **Data**: 2026-06-22
+* **Autor**: Antigravity
+
+### Contexto
+O componente [CustomToggle.view.tsx](file:///Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/components/inputs/toggle/CustomToggle.view.tsx) foi avaliado com duas limitações:
+1. **Falta de Legenda Integrada**: O componente renderizava apenas a chave visual do switch, obrigando o desenvolvedor a criar containers flex externos com legendas `<Text>` em cada tela de consumo.
+2. **Contraste Inconsistente no Tema Escuro**: O estado ativo (ON) utilizava um tom de verde escuro fixado em fallback que apresentava baixíssimo contraste sobre o fundo escuro do aplicativo.
+
+### Alternativas Consideradas
+1. **Tratar layout e contraste de forma isolada em cada tela consumidora**: Mantendo o toggle básico puro e tratando as cores e legendas manualmente por fora.
+2. **Evoluir o componente e o arquivo global de temas**: Adicionar as propriedades opcionais `label` e `labelClass` ao componente de Toggle, e atualizar as definições de cores globais no `colors.ts` ajustando o tom de verde ativo (`success`) do modo escuro para uma cor mais clara e brilhante (`rgb(74, 222, 128)`), melhorando o contraste e a acessibilidade.
+
+### Decisão
+Optou-se pela **Alternativa 2 (Evoluir o componente e o arquivo global de temas)**.
+
+Essa evolução melhora a experiência de desenvolvimento (DX) ao encapsular a estrutura padrão de toggle com texto explicativo e garante que o design de cores siga as diretrizes de acessibilidade WCAG para contraste em modo escuro.
+
+### Consequências
+* **Acessibilidade Aprimorada**: A chave ativa do toggle agora possui excelente visibilidade e leitura em ambas as variações de temas.
+* **Componentes mais Limpos**: Telas e modais reduzem códigos repetitivos de alinhamento de texto e botão.
+
+
 
