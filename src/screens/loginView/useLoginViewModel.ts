@@ -1,41 +1,53 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
-
+import { useAppForm } from '~/hooks/useAppForm';
 import { LoginFormData, loginScheme } from './login.scheme';
+import { useAuthStore } from '~/store/useAuthStore';
 
 export default function useLoginViewModel() {
-  const [inputLogin, setInputlogin] = useState({
-    email: '',
-    password: '',
-  });
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { setToken, setUser } = useAuthStore();
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    clearErrors,
-    formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: yupResolver(loginScheme),
+  const methods = useAppForm({
+    schema: loginScheme,
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const onSubmit = handleSubmit(async loginData => {
-    router.push('/(private)/home');
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+
+  const onSubmit = methods.handleSubmit(async (loginData) => {
+    setIsLoading(true);
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 800));
+
+      // Save credentials to global state store
+      setToken('mock-jwt-token-123');
+      setUser({
+        name: 'Usuário Teste',
+        email: loginData.email,
+      });
+
+      // Redirect to private area
+      router.push('/(private)/(tabs)/home');
+    } catch (error) {
+      console.error('Error logging in:', error);
+    } finally {
+      setIsLoading(false);
+    }
   });
 
   return {
-    inputLogin,
-    setInputlogin,
-    errors,
+    methods,
+    isPasswordVisible,
+    togglePasswordVisibility,
+    isLoading,
     onSubmit,
-    clearErrors,
-    control,
   };
 }
-

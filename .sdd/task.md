@@ -115,7 +115,28 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
       - [x] Para construir a modal utilizar o componente de seleção de horários já utilizado no componente src/components/inputs/timeSelect/TimeSelectDropdown.view.tsx. Caso necessário crie um componente próprio com o seletor de horários para aproveitá-lo tanto no TImeSelectDropdown quanto em outros locais como na nossa tela more;
     - [x] Criação de botão `Copiar para outros dias` com TouchableOpacity sendo que ao clicar nele todos os outros inputs de horários devem receber o mesmo horário do input que foi selecionado ( Hora de inicio e término) e utilizar o ícone `src/assets/svg/Copy.svg`
   ### E. Criação dos componentes do dropdown de Funcionarios
-    - [ ] Deve utilizar o componente de pesquisa src/components/researchBar/ResearchBar.view.tsx
-    - [ ] Deve criar botão com o ícone src/assets/svg/Plus.svg e o  nome `Adicionar Funcionário`, ao clicar no botão deve-se abrir uma modal de criação de Funcionário
-    - [ ] Modal de criação de funcionario deve ter o CicrularPicker para adicionar a foto ( utilizar o componente src/components/inputs/circularImageInput/CircularImageInput.view.tsx)
-    - [ ] Dropdown deve listar card de funcioários ( utilizar o mesmo componente da listagem de pacientes)
+    - [x] Deve utilizar o componente de pesquisa src/components/researchBar/ResearchBar.view.tsx
+    - [x] Deve criar botão com o ícone src/assets/svg/Plus.svg e o  nome `Adicionar Funcionário`, ao clicar no botão deve-se abrir uma modal de criação de Funcionário
+    - [x] Modal de criação de funcionario deve ter o CicrularPicker para adicionar a foto ( utilizar o componente src/components/inputs/circularImageInput/CircularImageInput.view.tsx)
+    - [x] Dropdown deve listar card de funcioários ( utilizar o mesmo componente da listagem de pacientes)
+## 11. Criação do fluxo de autenticação
+  ### A. Criação da tela de Login
+    - [x] Criar a tela de login em `src/screens/loginView/login.view.tsx`.
+    - [x] Adicionar a logo `/Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/assets/svg/LogoConnect.svg` centralizada conforme imagem.
+    - [x] Criar formulário com os campos de email e senha
+    - [x] ao enviar o formulario e salvar o email e senha utilizar o hook `src/store/useAuthStore.ts` para salvar as informações do usuário e token e navegar para a tela home `src/app/(private)/(tabs)/home.tsx`
+    - [x] Adicionar botão de "Esqueci minha senha" redirecionando para o fluxo de recuperação de senha
+    - [x] Adicionar botão de "Cadastre-se" redirecionando para o fluxo de cadastro
+  ### B. Criação da tela de Cadastro
+    - [ ] Criar a tela de cadastro em `src/screens/registerView/register.view.tsx`.
+    - [ ] Adicionar a logo `/Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/assets/svg/LogoConnect.svg` centralizada conforme imagem.
+    - [ ] Criar formulário com os campos de nome, email e senha
+    - [ ] ao enviar o formulario e validar o email e senha utilizar o hook `src/store/useAuthStore.ts` para salvar as informações do usuário e token e navegar para a tela home `src/app/(private)/(tabs)/home.tsx`
+    - [ ] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
+  ### C. Criação da modal de Recuperação de Senha
+    - [ ] Criar a modal de recuperação de senha e referencia-la em src/components/modals/GlobalModalManager.tsx.
+    - [ ] Criar formulário com o campo de email
+    - [ ] ao enviar o formulario e validar o email o usuário deve receber um email com um link de redefinição de senha ( por enquanto colocar apenas log de sucesso)
+    - [ ] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
+    
+  

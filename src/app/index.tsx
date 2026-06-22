@@ -1,13 +1,12 @@
-import {Redirect} from "expo-router"
+import { Redirect } from 'expo-router';
+import { useAuthStore } from '~/store/useAuthStore';
 
 export default function RootLayout() {
+  const token = useAuthStore((state) => state.token);
 
-  const MockToken = {
-    token: false
-  }
-  if(MockToken.token){
+  if (token) {
     return <Redirect href="/(private)/(tabs)/home" />;
   }
 
-  return <Redirect href="/home" />;
+  return <Redirect href="/login" />;
 }
