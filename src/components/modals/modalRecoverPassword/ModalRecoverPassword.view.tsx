@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, Dimensions, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { FormProvider, Controller } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 
 import { useModalRecoverPasswordViewModel } from './modalRecoverPassword.viewModel';
 import Close from '~/assets/svg/Close.svg';
 import { useActiveTheme } from '~/hooks/colorScheme';
+import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInput.view';
 
 interface RecoverPasswordModalProps {
   data?: Record<string, unknown> | null;
@@ -15,14 +16,13 @@ export function ModalRecoverPassword({ data }: RecoverPasswordModalProps) {
   const { colors } = useActiveTheme();
   const { height: SCREEN_HEIGHT } = Dimensions.get('window');
   const vm = useModalRecoverPasswordViewModel();
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
 
-  const MAX_MODAL_HEIGHT = SCREEN_HEIGHT * 0.92;
+  const MODAL_HEIGHT = SCREEN_HEIGHT * 0.40;
 
   return (
     <Modalize
       ref={vm.modalRef}
-      modalHeight={MAX_MODAL_HEIGHT}
+      modalHeight={MODAL_HEIGHT}
       openAnimationConfig={{
         timing: { duration: 200 },
       }}
@@ -41,12 +41,12 @@ export function ModalRecoverPassword({ data }: RecoverPasswordModalProps) {
         showsVerticalScrollIndicator: false,
         keyboardShouldPersistTaps: 'handled',
         contentContainerStyle: {
-          paddingBottom: 100,
-          paddingTop: 20,
+          paddingBottom: 40,
+          paddingTop: 10,
         },
       }}
       HeaderComponent={
-        <View className={`w-full px-5 py-12 pt-4 relative`}>
+        <View className={`w-full px-5 py-8 pt-4 relative`}>
           <Text className={`text-2xl self-center text-ink font-bold`}>
             Recuperar Senha
           </Text>
@@ -59,47 +59,23 @@ export function ModalRecoverPassword({ data }: RecoverPasswordModalProps) {
       }
       onClosed={vm.closeModal}
     >
-      <View className={`flex-1 pl-4 pr-4 mt-6`}>
+      <View className={`flex-1 pl-4 pr-4 mt-2`}>
         <FormProvider {...vm.methods}>
-          <Controller
-            control={vm.methods.control}
+          <TextInputComponent
             name="email"
-            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-              <View className={`w-full mb-6`}>
-                <View
-                  className={`flex-row w-full h-12 px-4 rounded-xl border items-center bg-stone/5 ${
-                    error ? 'border-danger' : isEmailFocused ? 'border-tabBar' : 'border-stone/30'
-                  }`}
-                >
-                  <TextInput
-                    className={`flex-1 text-base text-ink font-robotoRegular`}
-                    placeholder="Digite seu email para recuperar a senha"
-                    placeholderTextColor={colors.muted}
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    onFocus={() => setIsEmailFocused(true)}
-                    onBlur={() => {
-                      setIsEmailFocused(false);
-                      onBlur();
-                    }}
-                    onChangeText={onChange}
-                    value={value}
-                    editable={!vm.isLoading}
-                  />
-                </View>
-                {error && (
-                  <Text className={`text-xs text-danger mt-1 font-robotoRegular`}>
-                    {error.message}
-                  </Text>
-                )}
-              </View>
-            )}
+            label=""
+            placeholder="Digite seu email para recuperar a senha"
+            placeholderTextColor={colors.muted}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            editable={!vm.isLoading}
+            containerClass={`mb-2`}
           />
         </FormProvider>
 
         <TouchableOpacity
           onPress={vm.onSubmit}
-          className={`bg-tabBar h-12 items-center justify-center rounded-xl mt-6 shadow-sm`}
+          className={`bg-tabBar h-12 items-center justify-center rounded-xl mt-4 shadow-sm`}
           disabled={vm.isLoading}
           activeOpacity={0.8}
         >
@@ -112,7 +88,7 @@ export function ModalRecoverPassword({ data }: RecoverPasswordModalProps) {
 
         <TouchableOpacity
           onPress={vm.handleClose}
-          className={`p-3 items-center justify-center mt-2`}
+          className={`p-2 items-center justify-center mt-1`}
           disabled={vm.isLoading}
           activeOpacity={0.7}
         >

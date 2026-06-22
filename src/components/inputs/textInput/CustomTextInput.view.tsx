@@ -22,6 +22,7 @@ function CustomTextInput({
   isRequire = false,
   maskType,
   leftIcon,
+  rightIcon,
   ...rest 
 }: TextInputComponentProps) {
   const { control } = useFormContext();
@@ -76,8 +77,7 @@ function CustomTextInput({
               className={cn(
                 `flex-row w-full px-4 rounded-lg border bg-stone/20`,
                 rest.multiline ? `h-24 py-2` : `h-12 items-center`,
-                error ? `border-danger` : isFocused ? `border border-tabBar` : `border-gray-300`,
-                className 
+                error ? `border-danger` : isFocused ? `border border-tabBar` : `border-gray-300`
               )}
             >
               { leftIcon && (
@@ -87,7 +87,11 @@ function CustomTextInput({
                 )
               }
               <MaskInput
-                className={cn(`w-11/12 ml-2`, rest.multiline ? `h-full` : ``)}
+                className={cn(
+                  `flex-1 ml-2`, 
+                  rest.multiline ? `h-full` : ``,
+                  className
+                )}
                 onBlur={() => { onBlur(); setIsFocused(false); }}
                 onFocus={() => setIsFocused(true)}
                 
@@ -101,6 +105,12 @@ function CustomTextInput({
                 textAlignVertical={rest.multiline ? 'top' : 'center'}
                 {...rest}
               />
+              { rightIcon && (
+                  <View className={cn(`w-1/12 justify-center items-center`)}>
+                    {rightIcon}
+                  </View>
+                )
+              }
 
             </View>
             

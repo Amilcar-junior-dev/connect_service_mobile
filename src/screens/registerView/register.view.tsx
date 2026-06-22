@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Controller, FormProvider } from 'react-hook-form';
+import { FormProvider } from 'react-hook-form';
 import { router } from 'expo-router';
 
 import { useActiveTheme } from '~/hooks/colorScheme';
@@ -10,6 +10,7 @@ import LogoConnect from '~/assets/svg/LogoConnect.svg';
 import Eye from '~/assets/svg/Eye.svg';
 import CloseEye from '~/assets/svg/CloseEye.svg';
 import { FormScrollContainer } from '~/components/formScroll/FormScrollContainer';
+import { TextInputComponent } from '~/components/inputs/textInput/CustomTextInput.view';
 
 export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = ({
   methods,
@@ -21,9 +22,6 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
   onSubmit,
 }) => {
   const { colors, vars } = useActiveTheme();
-  const [isEmailFocused, setIsEmailFocused] = useState(false);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-  const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] = useState(false);
 
   return (
     <View style={[vars]} className={`flex-1 bg-surface`}>
@@ -42,143 +40,69 @@ export const RegisterView: React.FC<ReturnType<typeof useRegisterViewModel>> = (
             <View className={`w-full gap-y-4`}>
               
               {/* Email field */}
-              <View className={`w-full`}>
-                <Text className={`text-sm font-robotoMedium text-ink mb-1`}>Email</Text>
-                <Controller
-                  control={methods.control}
-                  name="email"
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <View>
-                      <View
-                        className={`flex-row w-full h-12 px-4 rounded-xl border items-center bg-stone/5 ${
-                          error ? 'border-danger' : isEmailFocused ? 'border-tabBar' : 'border-stone/30'
-                        }`}
-                      >
-                        <TextInput
-                          className={`flex-1 text-base text-ink font-robotoRegular`}
-                          placeholder="Digite seu email"
-                          placeholderTextColor={colors.muted}
-                          keyboardType="email-address"
-                          autoCapitalize="none"
-                          onFocus={() => setIsEmailFocused(true)}
-                          onBlur={() => {
-                            setIsEmailFocused(false);
-                            onBlur();
-                          }}
-                          onChangeText={onChange}
-                          value={value}
-                          editable={!isLoading}
-                        />
-                      </View>
-                      {error && (
-                        <Text className={`text-xs text-danger mt-1 font-robotoRegular`}>
-                          {error.message}
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                />
-              </View>
+              <TextInputComponent
+                name="email"
+                label="Email"
+                placeholder="Digite seu email"
+                placeholderTextColor={colors.muted}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                editable={!isLoading}
+                labelClass={`font-robotoMedium`}
+                className={`flex-1 text-base text-ink font-robotoRegular`}
+              />
 
               {/* Password field */}
-              <View className={`w-full`}>
-                <Text className={`text-sm font-robotoMedium text-ink mb-1`}>Senha</Text>
-                <Controller
-                  control={methods.control}
-                  name="password"
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <View>
-                      <View
-                        className={`flex-row w-full h-12 px-4 rounded-xl border items-center bg-stone/5 ${
-                          error ? 'border-danger' : isPasswordFocused ? 'border-tabBar' : 'border-stone/30'
-                        }`}
-                      >
-                        <TextInput
-                          className={`flex-1 text-base text-ink font-robotoRegular`}
-                          placeholder="Digite sua senha"
-                          placeholderTextColor={colors.muted}
-                          secureTextEntry={!isPasswordVisible}
-                          autoCapitalize="none"
-                          onFocus={() => setIsPasswordFocused(true)}
-                          onBlur={() => {
-                            setIsPasswordFocused(false);
-                            onBlur();
-                          }}
-                          onChangeText={onChange}
-                          value={value}
-                          editable={!isLoading}
-                        />
-                        <TouchableOpacity 
-                          onPress={togglePasswordVisibility}
-                          className={`p-1`}
-                          activeOpacity={0.7}
-                        >
-                          {isPasswordVisible ? (
-                            <Eye width={20} height={20} color={colors.ink} />
-                          ) : (
-                            <CloseEye width={20} height={20} color={colors.ink} />
-                          )}
-                        </TouchableOpacity>
-                      </View>
-                      {error && (
-                        <Text className={`text-xs text-danger mt-1 font-robotoRegular`}>
-                          {error.message}
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                />
-              </View>
+              <TextInputComponent
+                name="password"
+                label="Senha"
+                placeholder="Digite sua senha"
+                placeholderTextColor={colors.muted}
+                secureTextEntry={!isPasswordVisible}
+                autoCapitalize="none"
+                editable={!isLoading}
+                labelClass={`font-robotoMedium`}
+                className={`flex-1 text-base text-ink font-robotoRegular`}
+                rightIcon={
+                  <TouchableOpacity 
+                    onPress={togglePasswordVisibility}
+                    className={`p-1`}
+                    activeOpacity={0.7}
+                  >
+                    {isPasswordVisible ? (
+                      <Eye width={20} height={20} color={colors.ink} />
+                    ) : (
+                      <CloseEye width={20} height={20} color={colors.ink} />
+                    )}
+                  </TouchableOpacity>
+                }
+              />
 
               {/* Confirm Password field */}
-              <View className={`w-full`}>
-                <Text className={`text-sm font-robotoMedium text-ink mb-1`}>Senha</Text>
-                <Controller
-                  control={methods.control}
-                  name="confirmPassword"
-                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                    <View>
-                      <View
-                        className={`flex-row w-full h-12 px-4 rounded-xl border items-center bg-stone/5 ${
-                          error ? 'border-danger' : isConfirmPasswordFocused ? 'border-tabBar' : 'border-stone/30'
-                        }`}
-                      >
-                        <TextInput
-                          className={`flex-1 text-base text-ink font-robotoRegular`}
-                          placeholder="Confirmar senha"
-                          placeholderTextColor={colors.muted}
-                          secureTextEntry={!isConfirmPasswordVisible}
-                          autoCapitalize="none"
-                          onFocus={() => setIsConfirmPasswordFocused(true)}
-                          onBlur={() => {
-                            setIsConfirmPasswordFocused(false);
-                            onBlur();
-                          }}
-                          onChangeText={onChange}
-                          value={value}
-                          editable={!isLoading}
-                        />
-                        <TouchableOpacity 
-                          onPress={toggleConfirmPasswordVisibility}
-                          className={`p-1`}
-                          activeOpacity={0.7}
-                        >
-                          {isConfirmPasswordVisible ? (
-                            <Eye width={20} height={20} color={colors.ink} />
-                          ) : (
-                            <CloseEye width={20} height={20} color={colors.ink} />
-                          )}
-                        </TouchableOpacity>
-                      </View>
-                      {error && (
-                        <Text className={`text-xs text-danger mt-1 font-robotoRegular`}>
-                          {error.message}
-                        </Text>
-                      )}
-                    </View>
-                  )}
-                />
-              </View>
+              <TextInputComponent
+                name="confirmPassword"
+                label="Confirmar senha"
+                placeholder="Confirmar senha"
+                placeholderTextColor={colors.muted}
+                secureTextEntry={!isConfirmPasswordVisible}
+                autoCapitalize="none"
+                editable={!isLoading}
+                labelClass={`font-robotoMedium`}
+                className={`flex-1 text-base text-ink font-robotoRegular`}
+                rightIcon={
+                  <TouchableOpacity 
+                    onPress={toggleConfirmPasswordVisibility}
+                    className={`p-1`}
+                    activeOpacity={0.7}
+                  >
+                    {isConfirmPasswordVisible ? (
+                      <Eye width={20} height={20} color={colors.ink} />
+                    ) : (
+                      <CloseEye width={20} height={20} color={colors.ink} />
+                    )}
+                  </TouchableOpacity>
+                }
+              />
 
               {/* Register Button */}
               <TouchableOpacity
