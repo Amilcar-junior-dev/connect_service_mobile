@@ -71,3 +71,28 @@ Em relação à estratégia de testes unitários:
 * **DX Simplicada**: Eliminação de código boilerplate (ex: criação de `useForm` ou `FormProvider` artificiais apenas para renderizar uma barra de pesquisa).
 * **Manutenibilidade**: Qualquer alteração visual ou de acessibilidade reflete instantaneamente em todos os inputs do app.
 
+---
+
+## ADR 003: Habilitação de `renderItem` e Flexibilização de Ícones no `CustomSelectDropdown`
+
+* **Status**: Aprovado
+* **Data**: 2026-06-22
+* **Autor**: Antigravity
+
+### Contexto
+O componente [CustomSelectDropdown.view.tsx](file:///Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/components/inputs/selectInput/CustomSelectDropdown.view.tsx) foi projetado para renderizar listas de seleção customizadas. No entanto, embora a propriedade `renderItem` estivesse definida na tipagem do componente, ela era ignorada na View, forçando um layout fixo composto apenas por `item.label` e um ícone pré-definido. Adicionalmente, as propriedades de ícones do componente (`leftIcon`, `cardIcon`, `rightActionIcon`) eram limitadas a strings fixas de um enum restrito.
+
+### Alternativas Consideradas
+1. **Manter o layout estático**: Forçar o desenvolvedor a usar o layout simples de label/ícone e criar outros componentes de dropdown caso precisasse exibir dados adicionais (como preço e tempo de serviço).
+2. **Ativar `renderItem` e unificar a flexibilização de ícones**: Atualizar a View para renderizar a propriedade `renderItem` caso fornecida pelo desenvolvedor, e ajustar a tipagem para suportar tanto strings do enum pré-definido quanto componentes React/SVGs dinâmicos (`ReactNode`), estendendo o padrão implementado no input.
+
+### Decisão
+Optou-se pela **Alternativa 2 (Ativar `renderItem` e unificar a flexibilização de ícones)**.
+
+Isso corrige o comportamento do componente e garante que o dropdown possa ser personalizado para exibir informações complexas (como detalhes de preços e tempos de serviço no formulário de agendamento) de forma limpa, mantendo o padrão estético global de animação e Z-index do dropdown.
+
+### Consequências
+* **Consistência Visual**: Todos os dropdowns mantêm a mesma animação de abertura e comportamento de busca, mas com total liberdade para renderizar o conteúdo interno de cada linha.
+* **Extensibilidade**: Facilita a inserção de novos ícones dinâmicos ou SVGs externos nas props do seletor sem precisar alterar o mapeamento estático do componente compartilhado.
+
+
