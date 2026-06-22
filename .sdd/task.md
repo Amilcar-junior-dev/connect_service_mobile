@@ -134,9 +134,9 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] ao enviar o formulario e validar o email e senha utilizar o hook `src/store/useAuthStore.ts` para salvar as informações do usuário e token e navegar para a tela home `src/app/(private)/(tabs)/home.tsx`
     - [x] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
   ### C. Criação da modal de Recuperação de Senha
-    - [ ] Criar a modal de recuperação de senha e referencia-la em src/components/modals/GlobalModalManager.tsx.
-    - [ ] Criar formulário com o campo de email
-    - [ ] ao enviar o formulario e validar o email o usuário deve receber um email com um link de redefinição de senha ( por enquanto colocar apenas log de sucesso)
-    - [ ] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
+    - [x] Criar a modal de recuperação de senha e referencia-la em src/components/modals/GlobalModalManager.tsx.
+    - [x] Criar formulário com o campo de email
+    - [x] ao enviar o formulario e validar o email o usuário deve receber um email com um link de redefinição de senha ( por enquanto colocar apenas log de sucesso)
+    - [x] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
     
   

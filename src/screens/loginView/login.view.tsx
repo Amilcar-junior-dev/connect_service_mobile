@@ -18,6 +18,7 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
   togglePasswordVisibility,
   isLoading,
   onSubmit,
+  handleForgotPassword,
 }) => {
   const { colors, vars } = useActiveTheme();
   const [isEmailFocused, setIsEmailFocused] = useState(false);
@@ -127,9 +128,7 @@ export const LoginView: React.FC<ReturnType<typeof useLoginViewModel>> = ({
 
               {/* Forgot password */}
               <TouchableOpacity
-                onPress={() => {
-                  console.log('Forgot password pressed');
-                }}
+                onPress={handleForgotPassword}
                 className={`self-end py-1`}
                 activeOpacity={0.7}
               >

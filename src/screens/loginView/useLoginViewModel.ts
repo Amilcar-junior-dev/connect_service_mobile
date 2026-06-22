@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { useAppForm } from '~/hooks/useAppForm';
 import { LoginFormData, loginScheme } from './login.scheme';
 import { useAuthStore } from '~/store/useAuthStore';
+import { useModalStore } from '~/store/useModalStore';
 
 export default function useLoginViewModel() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -43,11 +44,16 @@ export default function useLoginViewModel() {
     }
   });
 
+  const handleForgotPassword = () => {
+    useModalStore.getState().openModal('RECOVER_PASSWORD');
+  };
+
   return {
     methods,
     isPasswordVisible,
     togglePasswordVisibility,
     isLoading,
     onSubmit,
+    handleForgotPassword,
   };
 }
