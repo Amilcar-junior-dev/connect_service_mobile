@@ -41,3 +41,33 @@ Com isso, o componente pai (consumidor) recupera o item selecionado mantendo a a
 * **DX Avançada**: Facilidade de uso com tipagem forte e autocompletação em todo o fluxo de formulários.
 * **Flexibilidade**: O componente é 100% reutilizável e agnóstico de domínio.
 * **Compatibilidade**: Telas legadas que já utilizam a antiga `CustomSelectOption` continuam compilando e funcionando sem alterações, pois `CustomSelectOption` herda diretamente de `BaseSelectOption`.
+
+---
+
+## ADR 002: Flexibilização e Autonomia (Standalone) no `CustomTextInput`
+
+* **Status**: Aprovado
+* **Data**: 2026-06-22
+* **Autor**: Antigravity
+
+### Contexto
+O componente [CustomTextInput.view.tsx](file:///Users/junioroliveira/Documents/Junior/ProjetosSoftware/connect_service_mobile/src/components/inputs/textInput/CustomTextInput.view.tsx) foi originalmente projetado com uma dependência acoplada e rígida do React Hook Form (executando `useFormContext()` obrigatoriamente). Isso impedia que o componente fosse usado em fluxos simples de busca, filtros de dados (como na barra de pesquisa `ResearchBar`) ou modais rápidas que não necessitam de um formulário completo, forçando o desenvolvedor a envolver esses elementos em instâncias complexas e desnecessárias de `FormProvider`.
+
+### Alternativas Consideradas
+1. **Criar dois componentes separados de input**: Um componente `ControlledTextInput` acoplado ao React Hook Form e outro `StandaloneTextInput` para uso puro.
+2. **Abstrair e auto-detectar o contexto do formulário**: Estender o `CustomTextInput` existente para verificar em tempo de execução se há um `control` e um `name` disponíveis. Se presentes, renderizar utilizando o `<Controller>` do React Hook Form; caso contrário, comportar-se como um componente nativo controlado (`value` e `onChangeText` via props).
+
+### Decisão
+Optou-se pela **Alternativa 2 (Abstrair e auto-detectar o contexto do formulário)**. 
+
+Essa decisão permite que a padronização visual e de comportamento do Design System (como as cores do tema ativo, indicação de obrigatoriedade, foco e máscaras) seja compartilhada por todos os inputs do aplicativo, independentemente de estarem ou não inseridos em um fluxo de formulário.
+
+Em relação à estratégia de testes unitários:
+- **Fluxos de telas:** Os testes de integração (como login ou cadastro) validam os inputs apenas sob o cenário controlado com `control`.
+- **Testes do Componente de UI:** Os testes unitários focados na interface do `CustomTextInput` podem ser escritos puramente de forma simplificada (sem o contexto do formulário), facilitando a montagem e cobertura em ferramentas como Jest e Storybook.
+
+### Consequências
+* **Reuso Máximo**: O componente atende a 100% dos cenários do app de forma unificada (formulários, filtros, buscas, modais avulsas).
+* **DX Simplicada**: Eliminação de código boilerplate (ex: criação de `useForm` ou `FormProvider` artificiais apenas para renderizar uma barra de pesquisa).
+* **Manutenibilidade**: Qualquer alteração visual ou de acessibilidade reflete instantaneamente em todos os inputs do app.
+
