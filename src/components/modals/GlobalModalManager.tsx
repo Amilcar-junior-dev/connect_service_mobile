@@ -5,6 +5,7 @@ import { ModalNewService } from './modalsServices/newService/ModalNewService.vie
 import { ModalNewClient } from './modalNewClient/ModalNewClient.view';
 import { ModalSelectDateTime } from './modalSelectDateTime/ModalSelectDateTime.view';
 import { ModalNewEmployee } from './modalNewEmployee/ModalNewEmployee.view';
+import { ModalRecoverPassword } from './modalRecoverPassword/ModalRecoverPassword.view';
 
 const MODAL_REGISTRY: Record<NonNullable<ModalType>, React.ElementType> = {
   SERVICE: ModalNewService,
@@ -12,6 +13,7 @@ const MODAL_REGISTRY: Record<NonNullable<ModalType>, React.ElementType> = {
   FILTER: () => null,
   SELECT_DATE_TIME: ModalSelectDateTime,
   EMPLOYEE: ModalNewEmployee,
+  RECOVER_PASSWORD: ModalRecoverPassword,
 };
 
 export function GlobalModalManager() {

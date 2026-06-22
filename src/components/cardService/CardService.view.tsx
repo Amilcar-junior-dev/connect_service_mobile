@@ -29,7 +29,7 @@ export function CardService ({
                         {cardImage ? (
                             <Image 
                                 source={{ uri: cardImage  }} 
-                                className="w-full h-full" 
+                                className={`w-full h-full`} 
                                 resizeMode="cover" 
                             />
                         ) : (

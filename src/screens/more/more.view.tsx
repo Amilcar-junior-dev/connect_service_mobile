@@ -59,7 +59,7 @@ export function MoreScreen() {
           <View className={`w-full gap-y-1`}>
             <MoreDropdown
               title="Página de agendamentos"
-              icon={<LogoConnect color={colors?.ink} width={22} height={22} />}
+              icon={<LogoConnect color={colors?.ink} width={35} height={35} />}
               isOpen={vm.activeDropdownKey === 'agendamentos'}
               onPress={() => vm.toggleDropdown('agendamentos')}
             >

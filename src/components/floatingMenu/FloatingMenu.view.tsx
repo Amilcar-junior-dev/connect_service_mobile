@@ -40,7 +40,7 @@ export function FloatingMenu() {
         onTouchStart={vm.toggleMenu} 
       />
 
-      <View className="absolute bottom-28 right-5 items-end justify-end " style={{ zIndex: 10 }}>
+      <View className={`absolute bottom-28 right-5 items-end justify-end`} style={{ zIndex: 10 }}>
           
           {menuActions.map((action, index) => {
               const itemAnimatedStyle = useAnimatedStyle(() => {
@@ -55,16 +55,16 @@ export function FloatingMenu() {
               return (
                   <Animated.View
                       key={action.id}
-                      className="absolute bottom-0 right-0 flex-row items-center mb-3"
+                      className={`absolute bottom-0 right-0 flex-row items-center mb-3`}
                       style={itemAnimatedStyle}
                       pointerEvents={vm.isOpen ? 'auto' : 'none'}
                   >
-                      <TouchableOpacity activeOpacity={0.7} className="flex-row items-center" onPress={() => vm.handleActionPress(action.action)}>
-                              <View className="bg-ink/90 rounded-full mr-3 items-center justify-center shadow-sm elevation-md h-9" style={{ width: action.width }}>
-                                  <Text className="text-surface font-bold text-sm">{action.label}</Text>
+                      <TouchableOpacity activeOpacity={0.7} className={`flex-row items-center`} onPress={() => vm.handleActionPress(action.action)}>
+                              <View className={`bg-ink/90 rounded-full mr-3 items-center justify-center shadow-sm elevation-md h-9`} style={{ width: action.width }}>
+                                  <Text className={`text-surface font-bold text-sm`}>{action.label}</Text>
                               </View>
-                              <View className="w-16 items-center">
-                                  <View className="w-12 h-12 rounded-full bg-tintBlue items-center justify-center shadow-sm  elevation-mdborder border-transparent">
+                              <View className={`w-16 items-center`}>
+                                  <View className={`w-12 h-12 rounded-full bg-tintBlue items-center justify-center shadow-sm elevation-mdborder border-transparent`}>
                                       {action?.icon}
                                   </View>
                               </View>
@@ -76,7 +76,7 @@ export function FloatingMenu() {
           <TouchableOpacity
               activeOpacity={0.9}
               onPress={vm.toggleMenu}
-              className="w-16 h-16 rounded-full items-center justify-center shadow-lg"
+              className={`w-16 h-16 rounded-full items-center justify-center shadow-lg`}
               style={{ backgroundColor: colors.accent }} 
           >
               <Animated.View style={vm.mainButtonStyle}>

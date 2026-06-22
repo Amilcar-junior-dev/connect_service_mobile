@@ -1,15 +1,14 @@
-import * as yup from 'yup';
+import { z } from 'zod';
 
-export const loginScheme = yup.object({
-  email: yup
+export const loginScheme = z.object({
+  email: z
     .string()
-    .email('Email inválido')
-    .required('Email é obrigatório'),
-  password: yup
+    .min(1, { message: 'Email é obrigatório' })
+    .pipe(z.email({ message: 'Email inválido' })),
+  password: z
     .string()
-    .required('Senha é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres'),
+    .min(1, { message: 'Senha é obrigatória' })
+    .min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
 });
 
-export type LoginFormData = yup.InferType<typeof loginScheme>;
-
+export type LoginFormData = z.infer<typeof loginScheme>;

@@ -27,7 +27,7 @@ export function FormScrollContainer({ children, ...rest }: FormScrollContainerPr
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }}
         {...rest}
       >
-        <View className="flex-1">
+        <View className={`flex-1`}>
           {children}
         </View>
       </ScrollView>

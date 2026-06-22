@@ -30,16 +30,16 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
 
   return (
     <View className={`w-full flex-col mt-3`}>
-      <View className="w-full flex-row h-10 rounded-md bg-tabBar/5" >
-        <View className="w-1 h-full rounded-tl-md rounded-bl-md bg-tabBar" />
+      <View className={`w-full flex-row h-10 rounded-md bg-tabBar/5`} >
+        <View className={`w-1 h-full rounded-tl-md rounded-bl-md bg-tabBar`} / >
         
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={vm.toggleAccordion}
-          className="w-11/12 h-full flex-row"
+          className={`w-11/12 h-full flex-row`}
         >
-          <View className="w-7/12 px-2 h-full items-center flex-row justify-between">
-            <Text className="font-robotoBold text-sm text-ink" numberOfLines={1}> 
+          <View className={`w-7/12 px-2 h-full items-center flex-row justify-between`}>
+            <Text className={`font-robotoBold text-sm text-ink`} numberOfLines={1}> 
               {agenda.formattedDate}
             </Text>
             <Animated.View style={[{ marginLeft: 5,},AnimatedArrowStyle]}>
@@ -48,15 +48,15 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
             </Animated.View>
           </View>
 
-          <View className="w-2/12 flex-row items-center justify-center">
-              <Text className="font-robotoBold text-sm text-ink"> 
+          <View className={`w-2/12 flex-row items-center justify-center`}>
+              <Text className={`font-robotoBold text-sm text-ink`}> 
                 {agenda.totalEvents} 
               </Text>
               <Event height={15} width={15} color={colors.ink} style={{ marginLeft: 2 }}/>
           </View>
 
-          <View className="w-3/12 flex-row items-center justify-center">
-            <Text className="font-robotoBold text-sm text-ink"> 
+          <View className={`w-3/12 flex-row items-center justify-center`}>
+            <Text className={`font-robotoBold text-sm text-ink`}> 
               {vm.formattedValue} 
             </Text>
           </View>
@@ -64,7 +64,7 @@ export function DailyAgendaAccordion({ agenda }: DailyAgendaAccordionProps) {
 
         <TouchableOpacity 
           onPress={vm.handleAddPress}
-          className="w-1/12 h-full items-center justify-center"
+          className={`w-1/12 h-full items-center justify-center`}
         >
             <Plus height={12} width={12} color={colors.ink}/>
         </TouchableOpacity>

@@ -1,20 +1,21 @@
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { useAppForm } from '~/hooks/useAppForm';
-import { LoginFormData, loginScheme } from './login.scheme';
+import { RegisterFormData, registerScheme } from './register.scheme';
 import { useAuthStore } from '~/store/useAuthStore';
-import { useModalStore } from '~/store/useModalStore';
 
-export default function useLoginViewModel() {
+export default function useRegisterViewModel() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { setToken, setUser } = useAuthStore();
 
   const methods = useAppForm({
-    schema: loginScheme,
+    schema: registerScheme,
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
@@ -22,35 +23,36 @@ export default function useLoginViewModel() {
     setIsPasswordVisible((prev) => !prev);
   };
 
-  const onSubmit = methods.handleSubmit(async (loginData) => {
+  const toggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible((prev) => !prev);
+  };
+
+  const onSubmit = methods.handleSubmit(async (registerData) => {
     setIsLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 800));
 
       setToken('mock-jwt-token-123');
       setUser({
-        name: 'Usuário Teste',
-        email: loginData.email,
+        name: 'Novo Usuário',
+        email: registerData.email,
       });
 
       router.push('/(private)/(tabs)/home');
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('Error registering user:', error);
     } finally {
       setIsLoading(false);
     }
   });
 
-  const handleForgotPassword = () => {
-    useModalStore.getState().openModal('RECOVER_PASSWORD');
-  };
-
   return {
     methods,
     isPasswordVisible,
+    isConfirmPasswordVisible,
     togglePasswordVisibility,
+    toggleConfirmPasswordVisibility,
     isLoading,
     onSubmit,
-    handleForgotPassword,
   };
 }

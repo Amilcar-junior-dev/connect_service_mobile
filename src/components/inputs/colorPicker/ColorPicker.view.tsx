@@ -22,20 +22,20 @@ export function ColorPicker({
   labelClass,
 }: ColorPickerProps) {
   return (
-    <View className={cn('mb-4 w-full', containerClass)}>
+    <View className={cn(`mb-4 w-full`, containerClass)}>
       {label && (
-        <Text className={cn('text-ink text-lg mb-2', labelClass)}>
+        <Text className={cn(`text-ink text-lg mb-2`, labelClass)}>
           {label}
         </Text>
       )}
-      <View className="flex-row flex-wrap gap-2 mt-1 w-full justify-center">
+      <View className={`flex-row flex-wrap gap-2 mt-1 w-full justify-center`}>
         {colors.map((color, index) => {
           const isSelected = selectedColor?.toLowerCase() === color?.toLowerCase();
           return (
             <TouchableOpacity
               key={index}
               onPress={() => onSelectColor(color)}
-              className="w-6 h-6 rounded-md items-center justify-center"
+              className={`w-6 h-6 rounded-md items-center justify-center`}
               style={{ backgroundColor: color }}
               activeOpacity={0.7}
             >
