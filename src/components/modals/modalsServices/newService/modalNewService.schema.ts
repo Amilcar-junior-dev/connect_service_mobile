@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const ExpenseSchema = z.object({
+export const ServiceSchema = z.object({
   service_name: z.string({error: 'Nome é obrigatório'}).min(3, 'Mínimo de 3 caracteres'),
   description_service: z.string({error: 'Descrição é obrigatório'}).min(1, 'Descrição obrigatório'),
   category: z.object({
@@ -19,4 +19,4 @@ export const ExpenseSchema = z.object({
   service_value: z.string({error: 'Valor do serviço é obrigatório'}).min(1, 'Valor do serviço é obrigatório')
 });
   
-export type DespesaFormType = z.infer<typeof ExpenseSchema>;
+export type ServiceFormType = z.infer<typeof ServiceSchema>;

@@ -6,6 +6,7 @@ import { BookingPageSchema } from './bookingPage.schema';
 import { SERVICE_COLORS } from '~/styles/colors';
 import { useModalStore } from '~/store/useModalStore';
 import { useAuthStore } from '~/store/useAuthStore';
+import { useEmployeeStore } from '~/store/useEmployeeStore';
 
 export interface Employee {
   id: string;
@@ -41,13 +42,8 @@ export function useMoreScreenViewModel() {
   const [bookingColor, setBookingColor] = useState<string>(SERVICE_COLORS[0]);
 
   // States for Employees
-  const initialEmployees: Employee[] = [
-    { id: '1', name: 'Funcionário 1', email: 'func1@connect.com', imageUrl: null },
-    { id: '2', name: 'Funcionário 2', email: 'func2@connect.com', imageUrl: null },
-    { id: '3', name: 'Funcionário 3', email: 'func3@connect.com', imageUrl: null },
-  ];
-  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
-  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>(initialEmployees);
+  const employees = useEmployeeStore((state) => state.employees);
+  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>(employees);
 
   // States for Operating Hours
   const [operatingHours, setOperatingHours] = useState<Record<string, DayHours>>({

@@ -3,6 +3,7 @@ import { Modalize } from 'react-native-modalize';
 import { useAppForm } from '~/hooks/useAppForm';
 import { useImagePicker } from '~/hooks/useImagePicker';
 import { useModalStore } from '~/store/useModalStore';
+import { useEmployeeStore } from '~/store/useEmployeeStore';
 import { EmployeeSchema } from './modalNewEmployee.schema';
 
 export function useModalNewEmployeeViewModel() {
@@ -16,6 +17,7 @@ export function useModalNewEmployeeViewModel() {
   });
 
   const closeModal = useModalStore((state) => state.closeModal);
+  const addEmployee = useEmployeeStore((state) => state.addEmployee);
   const [profileImage, setProfileImage] = useState('');
   const { pickImage } = useImagePicker();
 
@@ -29,11 +31,13 @@ export function useModalNewEmployeeViewModel() {
 
   const onSubmit = methods.handleSubmit(
     (data) => {
-      const dataSubmit = {
-        ...data,
-        profile_photo: profileImage,
-      };
-      console.log('✅ Funcionário pronto para salvar:', dataSubmit);
+      addEmployee({
+        name: data.name,
+        email: data.email,
+        imageUrl: profileImage || null,
+        createdAt: new Date().toISOString(),
+      });
+      console.log('✅ Funcionário salvo com sucesso');
       handleClose();
     },
     (errors) => {

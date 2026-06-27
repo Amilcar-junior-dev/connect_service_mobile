@@ -3,8 +3,8 @@ import { Modalize } from 'react-native-modalize';
 
 import { useAppForm } from '~/hooks/useAppForm';
 import { useImagePicker } from '~/hooks/useImagePicker';
+import { useClientStore } from '~/store/useClientStore';
 import { useModalStore } from '~/store/useModalStore';
-
 import { ClientSchema } from './modalNewClient.schema';
 
 export function useModalNewClientViewModel() {
@@ -22,6 +22,7 @@ export function useModalNewClientViewModel() {
   });
 
   const closeModal = useModalStore((state) => state.closeModal);
+  const addClient = useClientStore((state) => state.addClient);
   const [profileImage, setProfileImage] = useState('');
   const { pickImage } = useImagePicker();
 
@@ -35,11 +36,14 @@ export function useModalNewClientViewModel() {
 
   const onSubmit = methods.handleSubmit(
     (data) => {
-      const dataSubmit = {
-        ...data,
+      const { save_to_contacts, ...clientData } = data;
+      addClient({
+        ...clientData,
         profile_photo: profileImage,
-      };
-      console.log('✅ Cliente pronto para salvar:', dataSubmit);
+        createdAt: new Date().toISOString(),
+      });
+      console.log('✅ Cliente salvo com sucesso');
+      handleClose();
     },
     (errors) => {
       console.log('❌ Validação do formulário:', errors);

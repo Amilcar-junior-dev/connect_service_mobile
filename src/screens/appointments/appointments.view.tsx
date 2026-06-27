@@ -15,6 +15,8 @@ import dayjs from "dayjs";
 import { cn } from "~/utils/cx";
 import { useAppointmentViewModel } from "./appointmentsViewModel";
 import { TextInputComponent } from "~/components/inputs/textInput/CustomTextInput.view";
+import { useClientStore } from "~/store/useClientStore";
+import { useServiceStore } from "~/store/useServiceStore";
 
 import ArrowBack from "~/assets/svg/ArrowLeft.svg"
 
@@ -30,25 +32,28 @@ export default function ApointmentScreen() {
     const services = vm.watch?.("services") || [];
     const repeat = vm.watch?.("repeat");
 
-    const clientsList = useMemo<CustomSelectOption[]>(() => [
-        { id: 1, label: 'Roberto Carlos' },
-        { id: 2, label: 'Ana Julia' },
-        { id: 3, label: 'Marcos Paulo' },
-    ], []);
+    const storeClients = useClientStore((state) => state.clients);
+    const storeServices = useServiceStore((state) => state.services);
 
-    const servicesList = useMemo<CustomSelectOption[]>(() => [
-        { id: 1, label: 'Luzes', price: 250.00, duration: { hours: 2, minutes: 0 } },
-        { id: 2, label: 'Chapinha', price: 50.00, duration: { hours: 0, minutes: 45 } },
-        { id: 3, label: 'Corte', price: 80.00, duration: { hours: 1, minutes: 0 } },
-        { id: 4, label: 'Hidratação', price: 120.00, duration: { hours: 1, minutes: 15 } },
-        { id: 5, label: 'Manutenção de alongamento', price: 300.00, duration: { hours: 2, minutes: 30 } },
-        { id: 6, label: 'Alisamento', price: 400.00, duration: { hours: 3, minutes: 0 } },
-        { id: 7, label: 'Escova', price: 60.00, duration: { hours: 0, minutes: 45 } },
-        { id: 8, label: 'Coloração', price: 180.00, duration: { hours: 1, minutes: 45 } },
-        { id: 9, label: 'Tonalização', price: 150.00, duration: { hours: 1, minutes: 15 } },
-        {id: 10, label: 'Reconstrução', price: 220.00, duration: { hours: 1, minutes: 30 } },
-        { id: 11, label: 'Botox', price: 350.00, duration: { hours: 1, minutes: 30 } },
-    ], []);
+    const clientsList = useMemo<CustomSelectOption[]>(() => {
+        return storeClients.map(c => ({
+            id: c.id,
+            label: `${c.first_name} ${c.last_name || ''}`.trim(),
+            img: c.profile_photo,
+        }));
+    }, [storeClients]);
+
+    const servicesList = useMemo<CustomSelectOption[]>(() => {
+        return storeServices.map(s => ({
+            id: s.id,
+            label: s.service_name,
+            price: s.service_value,
+            duration: {
+                hours: s.time_hours,
+                minutes: s.time_minuts,
+            },
+        }));
+    }, [storeServices]);
 
     const RepeatList = useMemo<CustomSelectOption[]>(() => [
         { id: 1, label: 'Segunda-Feira', },

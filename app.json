@@ -2,7 +2,7 @@
   "expo": {
     "name": "connectservice",
     "slug": "connectservice",
-    "scheme": "connectservice", 
+    "scheme": "connectservice",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,14 +29,15 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-   "plugins": [
+    "plugins": [
       "expo-router",
       [
         "expo-image-picker",
         {
           "photosPermission": "Este aplicativo precisa de acesso à sua galeria para que você possa fazer o upload de imagens."
         }
-      ]
+      ],
+      "expo-font"
     ]
   }
 }
