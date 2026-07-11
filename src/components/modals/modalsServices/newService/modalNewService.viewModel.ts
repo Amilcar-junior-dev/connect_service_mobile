@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAppForm } from '~/hooks/useAppForm';
-import { ExpenseSchema } from './modalNewService.schema';
+import { ServiceSchema } from './modalNewService.schema';
 import { useImagePicker } from '~/hooks/useImagePicker';
+import { useServiceStore } from '~/store/useServiceStore';
 import { useModalStore } from '~/store/useModalStore';
 import { Modalize } from 'react-native-modalize';
 import { z } from 'zod';
@@ -9,9 +10,10 @@ import { BaseSelectOption } from '~/components/inputs/selectInput/customSelectDr
 
 export function useModalNewServiceViewModel() {
   const modalRef = useRef<Modalize>(null);
-  const methods = useAppForm({ schema: ExpenseSchema });
+  const methods = useAppForm({ schema: ServiceSchema });
 
   const closeModal = useModalStore((state) => state.closeModal);
+  const addService = useServiceStore((state) => state.addService);
   const modalVisible = useModalStore((state) => state.activeModal)
 
   const [selectedColor, setSelectedColor] = useState<string>('#969E9E');
@@ -40,12 +42,25 @@ export function useModalNewServiceViewModel() {
 
   const onSubmit = methods.handleSubmit(
     (data) => {
-      const dataSubmite = {
-        ...data,
-        cover: coverImage
-      }
-      console.log('✅ Dados prontos para salvar: ', dataSubmite);
+      const cleanValue = data.service_value
+        .replace(/[^\d,.-]/g, '')
+        .replace(/\./g, '')
+        .replace(',', '.');
+      const serviceValue = parseFloat(cleanValue) || 0;
 
+      addService({
+        service_name: data.service_name,
+        description_service: data.description_service,
+        category: data.category,
+        time_hours: Number(data.time_hours),
+        time_minuts: Number(data.time_minuts),
+        service_value: serviceValue,
+        color: selectedColor,
+        coverImage: coverImage,
+        createdAt: new Date().toISOString(),
+      });
+      console.log('✅ Serviço salvo com sucesso');
+      handleClose();
     },
     (erros) => {
       console.log('❌ O Zod bloqueou o envio! Motivo:', erros);

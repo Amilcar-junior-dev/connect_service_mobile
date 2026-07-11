@@ -158,9 +158,17 @@ export  function ExpandableCalendarScreen() {
                   onScroll={scrollHandler}
                   scrollEventThrottle={16}
                 >
-                  {vm.mockDailyAgendas.map((dia) => (
-                    <DailyAgendaAccordion key={dia.id} agenda={dia} />
-                  ))}
+                  {vm.mockDailyAgendas.length === 0 ? (
+                    <View className={`items-center justify-center mt-10`}>
+                      <Text className={`text-muted text-base font-robotoMedium`}>
+                        Nenhum agendamento encontrado.
+                      </Text>
+                    </View>
+                  ) : (
+                    vm.mockDailyAgendas.map((dia) => (
+                      <DailyAgendaAccordion key={dia.id} agenda={dia} />
+                    ))
+                  )}
                 </AnimatedGHScrollView>
               </View> 
           </CalendarProvider>

@@ -42,6 +42,7 @@ const CustomSelectDropdown = <T extends BaseSelectOption>({
   typeDropdown = 'select',
   multiLabelSingular = 'item',
   multiLabelPlural = 'itens',
+  renderItem,
 }: CustomSelectDropdownProps<T>) => {
 
 
@@ -70,6 +71,14 @@ const CustomSelectDropdown = <T extends BaseSelectOption>({
     UserPlus:({width = 15, heigth = 15}: LocalIconProps)=>  null,
   };
 
+  const renderIcon = (icon: PickerIconNames | ReactNode | null | undefined, width = 15, height = 15) => {
+    if (!icon) return null;
+    if (typeof icon === 'string' && icon in IconOptions) {
+      return IconOptions[icon as keyof typeof IconOptions]({ width, heigth: height });
+    }
+    return icon as ReactNode;
+  };
+
 
 
   return (
@@ -89,7 +98,7 @@ const CustomSelectDropdown = <T extends BaseSelectOption>({
         >
           {leftIcon && !vm?.getSelectedImage() && (
             <View className={`mr-2 w-6 items-center`}>
-              {IconOptions?.[leftIcon]?.({width: 25, heigth: 25})}
+              {renderIcon(leftIcon, 25, 25)}
             </View>
           )}
 
@@ -123,7 +132,7 @@ const CustomSelectDropdown = <T extends BaseSelectOption>({
             onPress={onRightActionPress}
             className={`bg-accent p-3 rounded-full shadow-sm active:opacity-80 items-center justify-center`}
           >
-            { IconOptions?.[rightActionIcon]?.({width: 15, heigth: 15})}
+            {renderIcon(rightActionIcon, 15, 15)}
           </TouchableOpacity>
         )}
       </View>
@@ -166,18 +175,20 @@ const CustomSelectDropdown = <T extends BaseSelectOption>({
                     isSelected ? `bg-accent/5 border-accent` : ``
                   )}
                 >
-                  <View className={`flex-row items-center flex-1`}>
-                    {
-                      cardIcon && (
+                  {renderItem ? (
+                    renderItem(item)
+                  ) : (
+                    <View className={`flex-row items-center flex-1`}>
+                      {cardIcon && (
                         <View className={`w-8 h-8 rounded-full items-center justify-center mr-3`}>
-                          { IconOptions?.[cardIcon]({ width: 16, heigth: 16 })}
+                          {renderIcon(cardIcon, 16, 16)}
                         </View>
-                      )
-                    }
-                    <Text className={`text-ink font-robotoMedium text-base flex-1`}>
-                      {item?.label}
-                    </Text>
-                  </View>
+                      )}
+                      <Text className={`text-ink font-robotoMedium text-base flex-1`}>
+                        {item?.label}
+                      </Text>
+                    </View>
+                  )}
 
                   {typeDropdown === 'checkBox' && (
                     <View 

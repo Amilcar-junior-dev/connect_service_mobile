@@ -4,12 +4,13 @@ import { TextInputProps } from "react-native";
 export type leftIconType = 'Calendar' | 'Phone' | 'Email'
 
 export interface TextInputComponentProps extends TextInputProps {
-    name: string;
+    name?: string;
     label: string;
-    isRequire?: boolean 
-    labelClass?: string
-    containerClass?: string
-    leftIcon?: leftIconType
-    rightIcon?: ReactNode
+    isRequire?: boolean; 
+    labelClass?: string;
+    containerClass?: string;
+    leftIcon?: leftIconType | ReactNode;
+    rightIcon?: ReactNode;
     maskType?: 'currency' | 'phone' | 'date';
+    error?: string;
 }
