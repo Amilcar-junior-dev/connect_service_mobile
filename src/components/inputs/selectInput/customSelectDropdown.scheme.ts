@@ -25,10 +25,10 @@ export interface CustomSelectOption extends BaseSelectOption {
 export interface CustomSelectDropdownProps<T extends BaseSelectOption = BaseSelectOption> {
     label: string;
     placeholder?: string;
-    leftIcon?: PickerIconNames | null;
-    cardIcon?: PickerIconNames | null;
-    rightIcon?: PickerIconNames | null;
-    rightActionIcon?: PickerIconNames | null;
+    leftIcon?: PickerIconNames | ReactNode | null;
+    cardIcon?: PickerIconNames | ReactNode | null;
+    rightIcon?: PickerIconNames | ReactNode | null;
+    rightActionIcon?: PickerIconNames | ReactNode | null;
     onRightActionPress?: () => void;
     options: T[];
     onSelect: (item: T | T[] | null) => void;

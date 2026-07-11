@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { cn } from '~/utils/cx';
 import { useCustomToggleViewModel } from './CustomToggle.viewModel';
@@ -9,14 +9,15 @@ export function CustomToggle({
   value,
   onValueChange,
   containerClass,
+  label,
+  labelClass,
 }: CustomToggleProps) {
   const vm = useCustomToggleViewModel({ value, onValueChange });
 
-  return (
+  const toggleButton = (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={vm.handlePress}
-      className={cn(``, containerClass)}
     >
       <Animated.View
         style={vm.animatedContainerStyle}
@@ -28,6 +29,18 @@ export function CustomToggle({
         />
       </Animated.View>
     </TouchableOpacity>
+  );
+
+
+  return (
+    <View className={cn(``, containerClass)}>
+      {label && (
+        <Text className={cn(`text-base font-normal text-ink mb-4`, labelClass)}>
+          {label}
+        </Text>
+      )}
+      {toggleButton}
+    </View>
   );
 }
 
