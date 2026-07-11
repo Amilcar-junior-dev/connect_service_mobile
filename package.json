@@ -10,7 +10,8 @@
     "doc": "node .notion-sync/doc-file.js",
     "release": "node .notion-sync/release.js",
     "daily": "node .notion-sync/daily.js",
-    "dashboard": "node .notion-sync/dashboard.js"
+    "dashboard": "node .notion-sync/dashboard.js",
+    "quarterly": "node .notion-sync/quarterly.js"
   },
   "dependencies": {
     "@expo-google-fonts/roboto": "^0.4.3",
