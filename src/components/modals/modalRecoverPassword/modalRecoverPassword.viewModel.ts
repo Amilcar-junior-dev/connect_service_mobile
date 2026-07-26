@@ -5,6 +5,7 @@ import { Modalize } from 'react-native-modalize';
 import { useAppForm } from '~/hooks/useAppForm';
 import { useModalStore } from '~/store/useModalStore';
 import { RecoverPasswordSchema } from './modalRecoverPassword.schema';
+import { supabase } from '~/lib/supabase';
 
 export function useModalRecoverPasswordViewModel() {
   const modalRef = useRef<Modalize>(null);
@@ -28,13 +29,19 @@ export function useModalRecoverPasswordViewModel() {
   };
 
   const onSubmit = methods.handleSubmit(
-    async (data) => {
+    async (dat) => {
       setIsLoading(true);
       try {
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        const { error, data } = await supabase.auth.resetPasswordForEmail(dat.email);
+        console.log("🚀 ~ modalRecoverPassword.viewModel.ts:36 ~ useModalRecoverPasswordViewModel ~ data:", data)
 
-        console.log('✅ Solicitação de recuperação enviada para:', data.email);
-        
+        if (error) {
+          Alert.alert('Erro ao solicitar recuperação', error.message);
+          return;
+        }
+
+        console.log('✅ Solicitação de recuperação enviada para:', dat.email);
+
         Alert.alert(
           'Recuperação de Senha',
           'Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua senha.',
@@ -49,6 +56,7 @@ export function useModalRecoverPasswordViewModel() {
         );
       } catch (error) {
         console.error('Error requesting password recovery:', error);
+        Alert.alert('Erro', 'Ocorreu um erro inesperado ao solicitar a recuperação de senha.');
       } finally {
         setIsLoading(false);
       }

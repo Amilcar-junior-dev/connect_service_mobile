@@ -1,14 +1,14 @@
 import { useState } from 'react';
+import { Alert } from 'react-native';
 import { router } from 'expo-router';
 import { useAppForm } from '~/hooks/useAppForm';
 import { LoginFormData, loginScheme } from './login.scheme';
-import { useAuthStore } from '~/store/useAuthStore';
 import { useModalStore } from '~/store/useModalStore';
+import { supabase } from '~/lib/supabase';
 
 export default function useLoginViewModel() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { setToken, setUser } = useAuthStore();
 
   const methods = useAppForm({
     schema: loginScheme,
@@ -25,17 +25,20 @@ export default function useLoginViewModel() {
   const onSubmit = methods.handleSubmit(async (loginData) => {
     setIsLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
-
-      setToken('mock-jwt-token-123');
-      setUser({
-        name: 'Usuário Teste',
+      const { error } = await supabase.auth.signInWithPassword({
         email: loginData.email,
+        password: loginData.password,
       });
+
+      if (error) {
+        Alert.alert('Erro ao entrar', error.message);
+        return;
+      }
 
       router.push('/(private)/(tabs)/home');
     } catch (error) {
       console.error('Error logging in:', error);
+      Alert.alert('Erro', 'Ocorreu um erro inesperado ao fazer login.');
     } finally {
       setIsLoading(false);
     }
