@@ -33,7 +33,6 @@ export function useModalRecoverPasswordViewModel() {
       setIsLoading(true);
       try {
         const { error, data } = await supabase.auth.resetPasswordForEmail(dat.email);
-        console.log("🚀 ~ modalRecoverPassword.viewModel.ts:36 ~ useModalRecoverPasswordViewModel ~ data:", data)
 
         if (error) {
           Alert.alert('Erro ao solicitar recuperação', error.message);

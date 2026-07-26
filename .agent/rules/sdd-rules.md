@@ -38,3 +38,16 @@ Antes de propor alterações ou criar códigos:
   - **Model**: Schemas de validação (`.scheme.ts`) e services de API.
 - Código compartilhado em: `src/components/`, `src/hooks/`, `src/services/`, `src/utils/`, `src/theme/`.
 - Estrutura por feature em: `src/features/feature-name/`.
+
+---
+
+## 5. Prevenção de Regressões e Verificação de Regras de Negócio
+
+Toda vez que você realizar uma refatoração ou implementar uma nova funcionalidade, você é **obrigado** a:
+1. **Comparar Alterações com a Branch Principal (`main` / `develop`)**:
+   - Compare o código desenvolvido com o que está na branch principal para certificar-se de que nenhum fluxo ou comportamento pré-existente foi removido ou alterado involuntariamente.
+2. **Validar Contra Especificações**:
+   - Verifique se o código proposto está 100% alinhado com as regras de negócio e requisitos especificados em `.sdd/spec.md` e nas ADRs em `.sdd/decisions/`.
+3. **Executar a Suíte de Testes**:
+   - Execute o comando `yarn test` para comprovar que nenhuma lógica existente quebrou e que todos os testes passam com sucesso.
+

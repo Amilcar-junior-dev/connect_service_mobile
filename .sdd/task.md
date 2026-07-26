@@ -138,5 +138,15 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] Criar formulário com o campo de email
     - [x] ao enviar o formulario e validar o email o usuário deve receber um email com um link de redefinição de senha ( por enquanto colocar apenas log de sucesso)
     - [x] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
-    
-  
+
+## 12. Testes Unitários do Fluxo de Autenticação
+  - [x] Instalação do Jest 29 e jest-expo 54 para compatibilidade com React 19/Expo 54
+  - [x] Instalação de @testing-library/react-native e test-renderer para React 19
+  - [x] Configuração de scripts de testes no `package.json`
+  - [x] Criação do arquivo de configuração `jest.config.js` com suporte a aliases `~/`
+  - [x] Criação do setup global `jest.setup.js` mockando `react-native-mmkv`, `expo-router` e `supabase`
+  - [x] Implementação de testes unitários para a store `useAuthStore.test.ts`
+  - [x] Implementação de testes unitários para `useLoginViewModel.test.ts` usando await renderHook
+  - [x] Implementação de testes unitários para `useRegisterViewModel.test.ts`
+  - [x] Implementação de testes unitários para `modalRecoverPassword.viewModel.test.ts`
+  - [x] Execução e validação de sucesso de todos os 15 testes unitários

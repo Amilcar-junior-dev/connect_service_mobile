@@ -18,6 +18,8 @@ Este arquivo serve como memória persistente para as sessões de desenvolvimento
   - SDK do Supabase configurado com adaptador de armazenamento síncrono customizado baseado no `react-native-mmkv` para acelerar a leitura e gravação de tokens de sessão.
   - Sincronização reativa da sessão via `supabase.auth.onAuthStateChange` na raiz de `useAuthStore.ts`.
   - Controle de banco de dados por **Migrações locais (Migrations)** via Supabase CLI sem a necessidade de rodar contêineres Docker locais (infraestrutura de desenvolvimento ágil e leve).
+- **Adiamento de Deep Linking de Senha (ADR-0003)**:
+  - O fluxo completo de redefinição de senha via deep links nativos (`connectservice://reset-password`) foi adiado para evitar complexidade nativa no MVP. A chamada da API foi implementada e testada, mas redireciona temporariamente para um site público (ex: Google) para validação.
 
 ---
 
@@ -46,7 +48,6 @@ Este arquivo serve como memória persistente para as sessões de desenvolvimento
 
 ## 4. Próximos Passos Lógicos (Handover)
 
-1. **Testes Unitários**: Criar e implementar os arquivos de testes de unidade para o fluxo de autenticação baseando-se no mapeamento realizado em `auth_test_cases.md`.
-2. **Modelagem de Banco de Dados**: Criar as migrações locais SQL na pasta `supabase/migrations/` para estruturar as tabelas de `clients`, `services`, `employees`, `appointments` e a tabela intermediária de muitos-para-muitos `appointment_services`.
-3. **Sincronização de Dados**: Adaptar as stores locais do Zustand de Clientes, Serviços e Agendamentos para buscar e salvar registros diretamente no banco do Supabase na nuvem, aplicando a estratégia Offline-First com cache local via MMKV.
-4. **Controle Financeiro**: Implementar a View e o ViewModel da aba de Controle Financeiro (`financial`).
+1. **Modelagem de Banco de Dados**: Criar as migrações locais SQL na pasta `supabase/migrations/` para estruturar as tabelas de `clients`, `services`, `employees`, `appointments` e a tabela intermediária de muitos-para-muitos `appointment_services`.
+2. **Sincronização de Dados**: Adaptar as stores locais do Zustand de Clientes, Serviços e Agendamentos para buscar e salvar registros diretamente no banco do Supabase na nuvem, aplicando a estratégia Offline-First com cache local via MMKV.
+3. **Controle Financeiro**: Implementar a View e o ViewModel da aba de Controle Financeiro (`financial`).
