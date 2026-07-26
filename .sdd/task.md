@@ -22,14 +22,14 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
 
 ## 4. Agendamentos (`src/screens/appointments`)
 - [x] Criação do componente de View (`appointments.view.tsx`)
-- [ ] Criação do ViewModel associado para gerenciamento de agendamentos
-- [ ] Integração com serviço de calendário e persistência
+- [x] Criação do ViewModel associado para gerenciamento de agendamentos
+- [x] Integração com serviço de calendário e persistência
 
 ## 5. Serviços (`src/screens/services`)
 - [x] Criação do Schema de Validação de Serviços (`serviceScreen.scheme.ts`)
 - [x] Implementação do ViewModel de Serviços (`serviceScreen.viewModel.ts`)
 - [x] Implementação da View de Serviços (`service.view.tsx`)
-- [ ] Fluxo completo de cadastro, edição e exclusão de serviços
+- [x] Fluxo completo de cadastro, edição e exclusão de serviços
 
 ## 6. Controle Financeiro e Estatísticas (`financial`)
 - [ ] Criação da View financeira (`financial.view.tsx`)
@@ -37,9 +37,9 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
 - [ ] Exibição de gráficos e extrato financeiro
 
 ## 7. Mais / Configurações (`more`)
-- [ ] Criação da View de Perfil e Configurações (`more.view.tsx`)
+- [x] Criação da View de Perfil e Configurações (`more.view.tsx`)
 - [ ] Implementação de edição de dados cadastrais
-- [ ] Função de logout da aplicação
+- [x] Função de logout da aplicação
 
 ## 8. Modal Novo Serviço (`src/components/modals/modalsServices/newService/ModalNewService.view.tsx`) 
 - [x] Adicionar novo select input de Categorias
