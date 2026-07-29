@@ -150,3 +150,11 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
   - [x] Implementação de testes unitários para `useRegisterViewModel.test.ts`
   - [x] Implementação de testes unitários para `modalRecoverPassword.viewModel.test.ts`
   - [x] Execução e validação de sucesso de todos os 15 testes unitários
+
+## 13. Rota e Tela de Redefinição de Senha (reset-password)
+  - [x] Criar o Schema de Validação de Redefinição (`resetPassword.schema.ts`) com Zod
+  - [x] Implementar o ViewModel de Redefinição (`resetPassword.viewModel.ts`) integrado ao `supabase.auth.updateUser`
+  - [x] Implementar a View de Redefinição (`resetPassword.view.tsx`) com NativeWind seguindo o design da tela de cadastro
+  - [x] Criar a rota no Expo Router (`src/app/reset-password.tsx`)
+  - [x] Criar testes unitários para `resetPassword.viewModel.test.ts`
+  - [x] Validar a suite de testes (`yarn test`) e compilação do TypeScript (`npx tsc --noEmit`)

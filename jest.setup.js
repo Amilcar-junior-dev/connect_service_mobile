@@ -38,6 +38,26 @@ jest.mock('expo-router', () => ({
   },
 }));
 
+// Mock do expo-linking
+jest.mock('expo-linking', () => {
+  return {
+    useLinkingURL: jest.fn(),
+    parse: jest.fn((url) => {
+      if (!url) return { queryParams: {} };
+      if (url.includes('code=')) {
+        const code = url.split('code=')[1].split('&')[0];
+        return { queryParams: { code } };
+      }
+      if (url.includes('access_token=')) {
+        const access_token = url.split('access_token=')[1].split('&')[0];
+        const refresh_token = url.split('refresh_token=')[1].split('&')[0];
+        return { queryParams: { access_token, refresh_token } };
+      }
+      return { queryParams: {} };
+    }),
+  };
+});
+
 // 3. Mock do Cliente Supabase e Helper de Gatilho de Autenticação
 const authCallbacks = [];
 jest.mock('~/lib/supabase', () => {
@@ -48,6 +68,10 @@ jest.mock('~/lib/supabase', () => {
         signUp: jest.fn(),
         signOut: jest.fn(),
         resetPasswordForEmail: jest.fn(),
+        exchangeCodeForSession: jest.fn(),
+        setSession: jest.fn(),
+        getSession: jest.fn().mockResolvedValue({ data: { session: null } }),
+        updateUser: jest.fn(),
         onAuthStateChange: jest.fn().mockImplementation((callback) => {
           authCallbacks.push(callback);
           return {

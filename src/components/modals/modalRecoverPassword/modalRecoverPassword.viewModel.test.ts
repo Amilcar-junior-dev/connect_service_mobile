@@ -24,7 +24,9 @@ describe('useModalRecoverPasswordViewModel', () => {
       await result.current.onSubmit();
     });
 
-    expect(mockReset).toHaveBeenCalledWith('recuperar@example.com');
+    expect(mockReset).toHaveBeenCalledWith('recuperar@example.com', {
+      redirectTo: 'connectservice://reset-password',
+    });
     expect(alertSpy).toHaveBeenCalledWith(
       'Recuperação de Senha',
       'Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua senha.',
@@ -59,7 +61,9 @@ describe('useModalRecoverPasswordViewModel', () => {
       await result.current.onSubmit();
     });
 
-    expect(mockReset).toHaveBeenCalledWith('limite@example.com');
+    expect(mockReset).toHaveBeenCalledWith('limite@example.com', {
+      redirectTo: 'connectservice://reset-password',
+    });
     expect(alertSpy).toHaveBeenCalledWith('Erro ao solicitar recuperação', 'Limite de envios excedido');
     expect(closeSpy).not.toHaveBeenCalled();
   });
