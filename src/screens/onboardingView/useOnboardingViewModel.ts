@@ -1,43 +1,66 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
-import { useOnboardingStore } from '~/store/useOnboardingStore';
+import { useOnboardingStore, DayHours } from '~/store/useOnboardingStore';
 import { companyService } from '~/services/companyService';
 
 export function generateSlug(name: string): string {
   return name
     .toLowerCase()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-    .replace(/[^a-z0-9\s-]/g, '')   // Remove caracteres especiais
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
     .trim()
-    .replace(/\s+/g, '-');          // Substitui espaços por hífens
+    .replace(/\s+/g, '-');
 }
+
+export const PRESET_SPECIALIZATIONS = [
+  'Cabeleireiro(a)',
+  'Manicure',
+  'Cosmetologista',
+  'Técnico(a) de depilação',
+  'Maquiador(a)',
+  'Designer de sobrancelha',
+  'Extensionista',
+  'Barbeiro(a)',
+  'Esteticista',
+  'Massoterapeuta',
+];
 
 export function useOnboardingViewModel() {
   const store = useOnboardingStore();
   const [isLoading, setIsLoading] = useState(false);
   const [isFetchingCep, setIsFetchingCep] = useState(false);
+  const [isFinishedSuccess, setIsFinishedSuccess] = useState(false);
 
-  // Estados locais do formulário inicializados com a store MMKV
-  const [companyName, setCompanyName] = useState(store.companyName);
-  const [slug, setSlug] = useState(store.slug);
-  const [segment, setSegment] = useState(store.segment);
-  const [teamSize, setTeamSize] = useState(store.teamSize);
-  const [serviceType, setServiceType] = useState(store.serviceType || 'fixed');
+  // Estados dos 4 passos
+  const [firstName, setFirstName] = useState(store.firstName);
+  const [lastName, setLastName] = useState(store.lastName);
+  const [avatarUrl, setAvatarUrl] = useState(store.avatarUrl);
+  const [specialization, setSpecialization] = useState(store.specialization);
+  const [customSpecialization, setCustomSpecialization] = useState('');
+  const [workplaceName, setWorkplaceName] = useState(store.workplaceName);
   const [zipCode, setZipCode] = useState(store.zipCode);
   const [city, setCity] = useState(store.city);
   const [state, setState] = useState(store.state);
   const [address, setAddress] = useState(store.address);
+  const [operatingHours, setOperatingHours] = useState<Record<string, DayHours>>(store.operatingHours);
 
-  // Atualiza o slug automaticamente ao mudar o nome da empresa
-  const handleCompanyNameChange = useCallback((name: string) => {
-    setCompanyName(name);
-    const autoSlug = generateSlug(name);
-    setSlug(autoSlug);
-  }, []);
+  // Cálculo da Barra de Progresso
+  let progressPercentage = '25%';
+  if (isFinishedSuccess) {
+    progressPercentage = '100%';
+  } else if (store.currentStep === 1) {
+    progressPercentage = '25%';
+  } else if (store.currentStep === 2) {
+    progressPercentage = '50%';
+  } else if (store.currentStep === 3) {
+    progressPercentage = '75%';
+  } else if (store.currentStep === 4) {
+    progressPercentage = '90%';
+  }
 
-  // Busca o endereço na API do ViaCEP ao informar um CEP completo
+  // Busca o endereço na API do ViaCEP
   const handleCepSearch = useCallback(async (cep: string) => {
     const cleanCep = cep.replace(/\D/g, '');
     setZipCode(cleanCep);
@@ -61,30 +84,33 @@ export function useOnboardingViewModel() {
     }
   }, []);
 
+  // Handlers dos Passos
   const handleStep1Next = useCallback(() => {
-    if (!companyName?.trim() || companyName.trim().length < 3) {
-      Alert.alert('Atenção', 'Informe o nome da empresa com pelo menos 3 caracteres.');
+    if (!firstName?.trim() || firstName.trim().length < 2) {
+      Alert.alert('Atenção', 'Informe seu nome com pelo menos 2 caracteres.');
       return false;
     }
-    const finalSlug = slug || generateSlug(companyName);
-    store.setStep1Data({ companyName, slug: finalSlug });
+    store.setStep1Data({ firstName, lastName, avatarUrl });
     store.setCurrentStep(2);
     return true;
-  }, [companyName, slug, store]);
+  }, [firstName, lastName, avatarUrl, store]);
 
   const handleStep2Next = useCallback(() => {
-    if (!segment) {
-      Alert.alert('Atenção', 'Selecione o segmento do seu negócio.');
+    const selectedSpec = customSpecialization?.trim() || specialization;
+    if (!selectedSpec) {
+      Alert.alert('Atenção', 'Selecione ou digite sua especialização.');
       return false;
     }
-    if (!teamSize) {
-      Alert.alert('Atenção', 'Selecione o porte da sua equipe.');
-      return false;
-    }
-    store.setStep2Data({ segment, teamSize });
+    store.setStep2Data({ specialization: selectedSpec });
     store.setCurrentStep(3);
     return true;
-  }, [segment, teamSize, store]);
+  }, [specialization, customSpecialization, store]);
+
+  const handleStep3Next = useCallback(() => {
+    store.setStep3Data({ workplaceName, zipCode, city, state, address });
+    store.setCurrentStep(4);
+    return true;
+  }, [workplaceName, zipCode, city, state, address, store]);
 
   const handlePrevStep = useCallback(() => {
     if (store.currentStep > 1) {
@@ -92,37 +118,52 @@ export function useOnboardingViewModel() {
     }
   }, [store]);
 
-  const handleFinishOnboarding = useCallback(async () => {
-    if (!serviceType) {
-      Alert.alert('Atenção', 'Selecione o tipo de atendimento.');
-      return;
-    }
+  const toggleDay = useCallback((dayKey: string) => {
+    setOperatingHours((prev) => ({
+      ...prev,
+      [dayKey]: {
+        ...prev[dayKey],
+        active: !prev[dayKey].active,
+      },
+    }));
+  }, []);
 
+  const handleFinishOnboarding = useCallback(async () => {
     setIsLoading(true);
+
+    const activeSpecialization = customSpecialization?.trim() || store.specialization || specialization;
+    const companyName = workplaceName?.trim() || [firstName, lastName].filter(Boolean).join(' ') || 'Minha Empresa';
+    const slug = generateSlug(companyName);
+
     const payload = {
-      companyName: store.companyName || companyName,
-      slug: store.slug || slug,
-      segment: store.segment || segment,
-      teamSize: store.teamSize || teamSize,
-      serviceType,
+      firstName: store.firstName || firstName,
+      lastName: store.lastName || lastName,
+      avatarUrl: store.avatarUrl || avatarUrl,
+      specialization: activeSpecialization,
+      workplaceName: store.workplaceName || workplaceName,
+      companyName,
+      slug,
       zipCode,
       city,
       state,
       address,
+      operatingHours,
     };
 
     try {
       await companyService.createCompany(payload);
 
-      store.setStep3Data({ serviceType, zipCode, city, state, address });
+      store.setStep4Data({ operatingHours });
       store.setOnboardingCompleted(true);
 
-      Alert.alert('Sucesso!', 'Seu estabelecimento foi configurado com sucesso!');
+      // Atualiza o progresso para 100% apenas após o sucesso!
+      setIsFinishedSuccess(true);
+
+      Alert.alert('Sucesso!', 'Seu perfil e horário de atendimento foram salvos!');
       router.replace('/(private)/(tabs)/home');
     } catch (error: any) {
       console.error('Erro ao salvar onboarding no Supabase:', error);
-      // Retém os dados salvos localmente na MMKV para permitir nova tentativa
-      store.setStep3Data({ serviceType, zipCode, city, state, address });
+      store.setStep4Data({ operatingHours });
       Alert.alert(
         'Erro na Conexão',
         'Não foi possível salvar online no momento. Seus dados foram mantidos no celular. Tente novamente.'
@@ -131,44 +172,52 @@ export function useOnboardingViewModel() {
       setIsLoading(false);
     }
   }, [
-    serviceType,
+    firstName,
+    lastName,
+    avatarUrl,
+    specialization,
+    customSpecialization,
+    workplaceName,
     zipCode,
     city,
     state,
     address,
-    companyName,
-    slug,
-    segment,
-    teamSize,
+    operatingHours,
     store,
   ]);
 
   return {
     currentStep: store.currentStep,
-    companyName,
-    slug,
-    segment,
-    teamSize,
-    serviceType,
+    progressPercentage,
+    firstName,
+    lastName,
+    avatarUrl,
+    specialization,
+    customSpecialization,
+    workplaceName,
     zipCode,
     city,
     state,
     address,
+    operatingHours,
     isLoading,
     isFetchingCep,
 
-    setCompanyName: handleCompanyNameChange,
-    setSlug,
-    setSegment,
-    setTeamSize,
-    setServiceType,
+    setFirstName,
+    setLastName,
+    setAvatarUrl,
+    setSpecialization,
+    setCustomSpecialization,
+    setWorkplaceName,
     setZipCode: handleCepSearch,
     setCity,
     setState,
     setAddress,
+    toggleDay,
 
     handleStep1Next,
     handleStep2Next,
+    handleStep3Next,
     handlePrevStep,
     handleFinishOnboarding,
   };
