@@ -63,9 +63,12 @@ export function OnboardingView() {
               <View className="w-6" />
             )}
 
-            <TouchableOpacity activeOpacity={0.7}>
-              <Text className="text-sm font-robotoMedium text-accent">Ajuda</Text>
-            </TouchableOpacity>
+            {/* Botão Ajuda (Oculto na UI conforme solicitação) */}
+            {false && (
+              <TouchableOpacity activeOpacity={0.7}>
+                <Text className="text-sm font-robotoMedium text-accent">Ajuda</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Barra de Progresso Fina */}
