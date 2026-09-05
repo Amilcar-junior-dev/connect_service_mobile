@@ -138,4 +138,40 @@ describe('useOnboardingViewModel (Benchmark Redesign 4-Steps Test Suite)', () =>
     expect(useOnboardingStore.getState().isOnboardingCompleted).toBe(true);
     expect(router.replace).toHaveBeenCalledWith('/(private)/(tabs)/home');
   });
+
+  // [TDD-06]
+  it('deve abrir o TimePickerModal, atualizar o horário selecionado e copiar para todos os dias', async () => {
+    const { result } = await renderHook(() => useOnboardingViewModel());
+
+    // Abre modal para editar horário inicial da segunda-feira
+    await act(async () => {
+      result.current.openTimePicker('segunda', 'start');
+    });
+
+    expect(result.current.isTimePickerVisible).toBe(true);
+    expect(result.current.timePickerTarget).toEqual({ dayKey: 'segunda', type: 'start' });
+
+    // Atualiza para 08:30
+    await act(async () => {
+      result.current.updateSelectedTime({ hours: 8, minutes: 30 });
+    });
+
+    expect(result.current.operatingHours.segunda.startHours).toBe(8);
+    expect(result.current.operatingHours.segunda.startMinutes).toBe(30);
+
+    // Fecha o modal
+    await act(async () => {
+      result.current.closeTimePicker();
+    });
+
+    expect(result.current.isTimePickerVisible).toBe(false);
+
+    // Copiar para os outros dias
+    await act(async () => {
+      result.current.copyTimesToAllDays();
+    });
+
+    expect(result.current.operatingHours.terca.startHours).toBe(8);
+    expect(result.current.operatingHours.terca.startMinutes).toBe(30);
+  });
 });

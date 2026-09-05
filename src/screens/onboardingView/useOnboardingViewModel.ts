@@ -46,6 +46,60 @@ export function useOnboardingViewModel() {
   const [address, setAddress] = useState(store.address);
   const [operatingHours, setOperatingHours] = useState<Record<string, DayHours>>(store.operatingHours);
 
+  // Estados para TimePickerModal
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
+  const [timePickerTarget, setTimePickerTarget] = useState<{ dayKey: string; type: 'start' | 'end' } | null>(null);
+  const [lastFocusedDayKey, setLastFocusedDayKey] = useState<string>('segunda');
+
+  const openTimePicker = useCallback((dayKey: string, type: 'start' | 'end') => {
+    setLastFocusedDayKey(dayKey);
+    setTimePickerTarget({ dayKey, type });
+    setIsTimePickerVisible(true);
+  }, []);
+
+  const closeTimePicker = useCallback(() => {
+    setIsTimePickerVisible(false);
+    setTimePickerTarget(null);
+  }, []);
+
+  const updateSelectedTime = useCallback(
+    ({ hours, minutes }: { hours: number; minutes: number }) => {
+      if (!timePickerTarget) return;
+      const { dayKey, type } = timePickerTarget;
+
+      setOperatingHours((prev) => ({
+        ...prev,
+        [dayKey]: {
+          ...prev[dayKey],
+          ...(type === 'start'
+            ? { startHours: hours, startMinutes: minutes }
+            : { endHours: hours, endMinutes: minutes }),
+        },
+      }));
+    },
+    [timePickerTarget]
+  );
+
+  const copyTimesToAllDays = useCallback(() => {
+    const reference = operatingHours[lastFocusedDayKey];
+    if (!reference) return;
+
+    setOperatingHours((prev) => {
+      const updated = { ...prev };
+      Object.keys(updated).forEach((key) => {
+        updated[key] = {
+          ...updated[key],
+          startHours: reference.startHours,
+          startMinutes: reference.startMinutes,
+          endHours: reference.endHours,
+          endMinutes: reference.endMinutes,
+        };
+      });
+      return updated;
+    });
+    Alert.alert('Sucesso', 'Horários copiados para todos os dias!');
+  }, [operatingHours, lastFocusedDayKey]);
+
   // Cálculo da Barra de Progresso
   let progressPercentage = '25%';
   if (isFinishedSuccess) {
@@ -201,7 +255,12 @@ export function useOnboardingViewModel() {
     address,
     operatingHours,
     isLoading,
-    isFetchingCep,
+    isTimePickerVisible,
+    timePickerTarget,
+    openTimePicker,
+    closeTimePicker,
+    updateSelectedTime,
+    copyTimesToAllDays,
 
     setFirstName,
     setLastName,
