@@ -158,3 +158,29 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
   - [x] Criar a rota no Expo Router (`src/app/reset-password.tsx`)
   - [x] Criar testes unitários para `resetPassword.viewModel.test.ts`
   - [x] Validar a suite de testes (`yarn test`) e compilação do TypeScript (`npx tsc --noEmit`)
+
+## 14. TurboModule Nativo de Biometria (NativeBiometrics)
+  - [x] Criar a especificação TypeScript `NativeBiometrics.ts` estendendo `TurboModule` em `src/specs/`
+  - [x] Implementar o módulo nativo Android em **Kotlin** (`BiometricsModule.kt` e `BiometricsPackage.kt`)
+  - [x] Registrar permissões (`USE_BIOMETRIC`) e dependências (`androidx.biometric`) no Android
+  - [x] Registrar o `BiometricsPackage` no `MainApplication.kt`
+  - [x] Criar a store Zustand persitida com MMKV (`useBiometricsStore.ts`)
+  - [x] Criar o custom hook `useBiometrics.ts`
+  - [x] Criar a modal de oferta `ModalRegisterBiometrics` e registrar no `GlobalModalManager`
+  - [x] Implementar o auto-disparo de biometria e botão manual na tela de login (`useLoginViewModel.ts` e `login.view.tsx`)
+
+## 15. Backlog de Lançamento da V1 (Lançamento até Final do Ano)
+  - [ ] **Sprint 1: Módulo Financeiro (`financial`)**
+    - [ ] Criar a View financeira (`financial.view.tsx`) com resumo de faturamento
+    - [ ] Criar ViewModel de finanças para cálculo de receitas, despesas e comissões
+    - [ ] Exibição de gráficos e extrato financeiro
+  - [ ] **Sprint 2: Validação de Perfil & Configurações**
+    - [ ] Edição de dados cadastrais do perfil do estabelecimento na tela `more`
+    - [ ] Sincronização do flag de biometria com o `user_metadata` do Supabase
+  - [ ] **Sprint 3: iOS Native Biometrics (Swift)**
+    - [ ] Implementar `BiometricsModule.swift` usando o framework `LocalAuthentication` (`LAContext`)
+    - [ ] Criar a ponte Objective-C++ `BiometricsModule.mm` para o Codegen/JSI no iOS
+    - [ ] Adicionar a permissão `NSFaceIDUsageDescription` no `Info.plist`
+  - [ ] **Sprint 4: CI/CD & Deploy de Produção**
+    - [ ] Configuração do EAS Build (Expo Application Services) para Android (APK/AAB) e iOS (TestFlight)
+    - [ ] Code Review final (`/review-code`) e auditoria de regressão antes do lançamento

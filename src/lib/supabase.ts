@@ -1,6 +1,7 @@
 import 'react-native-url-polyfill/auto';
 import { createClient } from '@supabase/supabase-js';
 import { createMMKV } from 'react-native-mmkv';
+import { Database } from '~/types/database.types';
 
 // Inicializa uma instância dedicada do MMKV para persistência da autenticação do Supabase
 const storage = createMMKV({ id: 'supabase-auth-storage' });
@@ -22,7 +23,8 @@ const supabaseStorage = {
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL ?? '';
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY ?? '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Cliente Supabase 100% Typesafe agindo como Query Builder Nativo
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
     storage: supabaseStorage,
     autoRefreshToken: true,
