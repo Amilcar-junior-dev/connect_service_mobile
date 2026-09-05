@@ -271,19 +271,21 @@ export function OnboardingView() {
                 Informe seu horário de atendimento. Não se preocupe: você poderá editar isso depois, se necessário.
               </Text>
 
-              {/* Botão de Copiar Horários */}
-              <View className="flex-row justify-end mb-4">
-                <TouchableOpacity
-                  onPress={vm.copyTimesToAllDays}
-                  activeOpacity={0.7}
-                  className="flex-row items-center bg-accent/10 px-3 py-1.5 rounded-full border border-accent/20"
-                >
-                  <Copy color={colors.accent} width={14} height={14} className="mr-1.5" />
-                  <Text className="text-accent text-xs font-robotoMedium">
-                    Copiar para todos os dias
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              {/* Botão de Copiar Horários (Oculto na UI conforme solicitação) */}
+              {false && (
+                <View className="flex-row justify-end mb-4">
+                  <TouchableOpacity
+                    onPress={vm.copyTimesToAllDays}
+                    activeOpacity={0.7}
+                    className="flex-row items-center bg-accent/10 px-3 py-1.5 rounded-full border border-accent/20"
+                  >
+                    <Copy color={colors.accent} width={14} height={14} className="mr-1.5" />
+                    <Text className="text-accent text-xs font-robotoMedium">
+                      Copiar para todos os dias
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
 
               {/* Lista de Dias da Semana com Seleção Interativa de Horário */}
               <View className="gap-y-3">
