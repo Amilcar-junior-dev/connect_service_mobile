@@ -33,8 +33,6 @@ export function ToastContainer() {
     };
   }, [visible, duration, hideToast]);
 
-  if (!visible) return null;
-
   // Definições de Cores e Ícones Padrão por Variante
   const getVariantStyles = (variant: ToastVariant) => {
     switch (variant) {
@@ -84,43 +82,50 @@ export function ToastContainer() {
   };
 
   return (
-    <Animated.View
-      entering={SlideInUp.duration(250)}
-      exiting={SlideOutUp.duration(200)}
+    <View
       style={[vars, { paddingTop: insets.top + 8 }]}
       className="absolute top-0 left-0 right-0 z-50 px-4 pointer-events-box-none"
     >
-      <TouchableOpacity
-        activeOpacity={onPress ? 0.8 : 0.95}
-        onPress={handlePressToast}
-        className={`w-full flex-row items-center p-3.5 rounded-2xl border ${styleConfig.borderColor} ${styleConfig.bgColor} shadow-lg shadow-black/10 elevation-md`}
-      >
-        {/* Ícone no Canto Esquerdo */}
-        <View className={`w-10 h-10 rounded-xl items-center justify-center mr-3 ${styleConfig.badgeBg}`}>
-          {icon || styleConfig.defaultIcon}
-        </View>
-
-        {/* Conteúdo: Título & Descrição */}
-        <View className="flex-1 pr-2">
-          {title ? (
-            <Text className="text-sm font-robotoBold text-ink font-bold mb-0.5">
-              {title}
-            </Text>
-          ) : null}
-          <Text className="text-xs font-robotoRegular text-ink/80 leading-4">
-            {description}
-          </Text>
-        </View>
-
-        {/* Botão Fechar (X) */}
-        <TouchableOpacity
-          onPress={hideToast}
-          activeOpacity={0.7}
-          className="p-1 -mr-1 rounded-full opacity-60 active:opacity-100"
+      {visible && (
+        <Animated.View
+          key="global-toast-animated"
+          entering={SlideInUp.duration(300)}
+          exiting={SlideOutUp.duration(300)}
+          className="w-full"
         >
-          <Close width={16} height={16} color={colors?.ink} />
-        </TouchableOpacity>
-      </TouchableOpacity>
-    </Animated.View>
+          <TouchableOpacity
+            activeOpacity={onPress ? 0.8 : 0.95}
+            onPress={handlePressToast}
+            className={`w-full flex-row items-center p-3.5 rounded-2xl border ${styleConfig.borderColor} ${styleConfig.bgColor} shadow-lg shadow-black/10 elevation-md`}
+          >
+            {/* Ícone no Canto Esquerdo */}
+            <View className={`w-10 h-10 rounded-xl items-center justify-center mr-3 ${styleConfig.badgeBg}`}>
+              {icon || styleConfig.defaultIcon}
+            </View>
+
+            {/* Conteúdo: Título & Descrição */}
+            <View className="flex-1 pr-2">
+              {title ? (
+                <Text className="text-sm font-robotoBold text-ink font-bold mb-0.5">
+                  {title}
+                </Text>
+              ) : null}
+              <Text className="text-xs font-robotoRegular text-ink/80 leading-4">
+                {description}
+              </Text>
+            </View>
+
+            {/* Botão Fechar (X) */}
+            <TouchableOpacity
+              onPress={hideToast}
+              activeOpacity={0.7}
+              className="p-1 -mr-1 rounded-full opacity-60 active:opacity-100"
+            >
+              <Close width={16} height={16} color={colors?.ink} />
+            </TouchableOpacity>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+    </View>
   );
 }
