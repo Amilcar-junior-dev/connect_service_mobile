@@ -33,41 +33,41 @@ export function ToastContainer() {
     };
   }, [visible, duration, hideToast]);
 
-  // Definições de Cores e Ícones Padrão por Variante
+  // Definições de Cores e Ícones Padrão por Variante baseados no Tema Ativo
   const getVariantStyles = (variant: ToastVariant) => {
     switch (variant) {
       case 'success':
         return {
-          borderColor: 'border-emerald-500/40',
+          borderColor: 'border-success/40',
           bgColor: 'bg-surface',
-          badgeBg: 'bg-emerald-500/10',
-          textColor: 'text-emerald-600',
-          defaultIcon: <Check width={20} height={20} color="#10b981" />,
+          badgeBg: 'bg-success/10',
+          textColor: 'text-success',
+          defaultIcon: <Check width={20} height={20} color={colors?.success || '#189143'} />,
         };
       case 'error':
         return {
-          borderColor: 'border-rose-500/40',
+          borderColor: 'border-danger/40',
           bgColor: 'bg-surface',
-          badgeBg: 'bg-rose-500/10',
-          textColor: 'text-rose-600',
-          defaultIcon: <Close width={20} height={20} color="#f43f5e" />,
+          badgeBg: 'bg-danger/10',
+          textColor: 'text-danger',
+          defaultIcon: <Close width={20} height={20} color={colors?.danger || '#ea001b'} />,
         };
       case 'warning':
         return {
-          borderColor: 'border-amber-500/40',
+          borderColor: 'border-warning/40',
           bgColor: 'bg-surface',
-          badgeBg: 'bg-amber-500/10',
-          textColor: 'text-amber-600',
-          defaultIcon: <Notification width={20} height={20} color="#f59e0b" />,
+          badgeBg: 'bg-warning/10',
+          textColor: 'text-warning',
+          defaultIcon: <Notification width={20} height={20} color={colors?.warning || '#f79f1a'} />,
         };
       case 'info':
       default:
         return {
-          borderColor: 'border-sky-500/40',
+          borderColor: 'border-accent/40',
           bgColor: 'bg-surface',
-          badgeBg: 'bg-sky-500/10',
-          textColor: 'text-sky-600',
-          defaultIcon: <Notification width={20} height={20} color="#0284c7" />,
+          badgeBg: 'bg-accent/10',
+          textColor: 'text-accent',
+          defaultIcon: <Notification width={20} height={20} color={colors?.accent || '#6dc6e3'} />,
         };
     }
   };
