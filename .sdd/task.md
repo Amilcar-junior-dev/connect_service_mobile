@@ -22,14 +22,14 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
 
 ## 4. Agendamentos (`src/screens/appointments`)
 - [x] Criação do componente de View (`appointments.view.tsx`)
-- [ ] Criação do ViewModel associado para gerenciamento de agendamentos
-- [ ] Integração com serviço de calendário e persistência
+- [x] Criação do ViewModel associado para gerenciamento de agendamentos
+- [x] Integração com serviço de calendário e persistência
 
 ## 5. Serviços (`src/screens/services`)
 - [x] Criação do Schema de Validação de Serviços (`serviceScreen.scheme.ts`)
 - [x] Implementação do ViewModel de Serviços (`serviceScreen.viewModel.ts`)
 - [x] Implementação da View de Serviços (`service.view.tsx`)
-- [ ] Fluxo completo de cadastro, edição e exclusão de serviços
+- [x] Fluxo completo de cadastro, edição e exclusão de serviços
 
 ## 6. Controle Financeiro e Estatísticas (`financial`)
 - [ ] Criação da View financeira (`financial.view.tsx`)
@@ -37,9 +37,9 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
 - [ ] Exibição de gráficos e extrato financeiro
 
 ## 7. Mais / Configurações (`more`)
-- [ ] Criação da View de Perfil e Configurações (`more.view.tsx`)
+- [x] Criação da View de Perfil e Configurações (`more.view.tsx`)
 - [ ] Implementação de edição de dados cadastrais
-- [ ] Função de logout da aplicação
+- [x] Função de logout da aplicação
 
 ## 8. Modal Novo Serviço (`src/components/modals/modalsServices/newService/ModalNewService.view.tsx`) 
 - [x] Adicionar novo select input de Categorias
@@ -138,5 +138,49 @@ Este checklist acompanha o progresso de desenvolvimento do aplicativo com base n
     - [x] Criar formulário com o campo de email
     - [x] ao enviar o formulario e validar o email o usuário deve receber um email com um link de redefinição de senha ( por enquanto colocar apenas log de sucesso)
     - [x] Adicionar botão de "Já tenho uma conta" redirecionando para a tela de login
-    
-  
+
+## 12. Testes Unitários do Fluxo de Autenticação
+  - [x] Instalação do Jest 29 e jest-expo 54 para compatibilidade com React 19/Expo 54
+  - [x] Instalação de @testing-library/react-native e test-renderer para React 19
+  - [x] Configuração de scripts de testes no `package.json`
+  - [x] Criação do arquivo de configuração `jest.config.js` com suporte a aliases `~/`
+  - [x] Criação do setup global `jest.setup.js` mockando `react-native-mmkv`, `expo-router` e `supabase`
+  - [x] Implementação de testes unitários para a store `useAuthStore.test.ts`
+  - [x] Implementação de testes unitários para `useLoginViewModel.test.ts` usando await renderHook
+  - [x] Implementação de testes unitários para `useRegisterViewModel.test.ts`
+  - [x] Implementação de testes unitários para `modalRecoverPassword.viewModel.test.ts`
+  - [x] Execução e validação de sucesso de todos os 15 testes unitários
+
+## 13. Rota e Tela de Redefinição de Senha (reset-password)
+  - [x] Criar o Schema de Validação de Redefinição (`resetPassword.schema.ts`) com Zod
+  - [x] Implementar o ViewModel de Redefinição (`resetPassword.viewModel.ts`) integrado ao `supabase.auth.updateUser`
+  - [x] Implementar a View de Redefinição (`resetPassword.view.tsx`) com NativeWind seguindo o design da tela de cadastro
+  - [x] Criar a rota no Expo Router (`src/app/reset-password.tsx`)
+  - [x] Criar testes unitários para `resetPassword.viewModel.test.ts`
+  - [x] Validar a suite de testes (`yarn test`) e compilação do TypeScript (`npx tsc --noEmit`)
+
+## 14. TurboModule Nativo de Biometria (NativeBiometrics)
+  - [x] Criar a especificação TypeScript `NativeBiometrics.ts` estendendo `TurboModule` em `src/specs/`
+  - [x] Implementar o módulo nativo Android em **Kotlin** (`BiometricsModule.kt` e `BiometricsPackage.kt`)
+  - [x] Registrar permissões (`USE_BIOMETRIC`) e dependências (`androidx.biometric`) no Android
+  - [x] Registrar o `BiometricsPackage` no `MainApplication.kt`
+  - [x] Criar a store Zustand persitida com MMKV (`useBiometricsStore.ts`)
+  - [x] Criar o custom hook `useBiometrics.ts`
+  - [x] Criar a modal de oferta `ModalRegisterBiometrics` e registrar no `GlobalModalManager`
+  - [x] Implementar o auto-disparo de biometria e botão manual na tela de login (`useLoginViewModel.ts` e `login.view.tsx`)
+
+## 15. Backlog de Lançamento da V1 (Lançamento até Final do Ano)
+  - [ ] **Sprint 1: Módulo Financeiro (`financial`)**
+    - [ ] Criar a View financeira (`financial.view.tsx`) com resumo de faturamento
+    - [ ] Criar ViewModel de finanças para cálculo de receitas, despesas e comissões
+    - [ ] Exibição de gráficos e extrato financeiro
+  - [ ] **Sprint 2: Validação de Perfil & Configurações**
+    - [ ] Edição de dados cadastrais do perfil do estabelecimento na tela `more`
+    - [ ] Sincronização do flag de biometria com o `user_metadata` do Supabase
+  - [ ] **Sprint 3: iOS Native Biometrics (Swift)**
+    - [ ] Implementar `BiometricsModule.swift` usando o framework `LocalAuthentication` (`LAContext`)
+    - [ ] Criar a ponte Objective-C++ `BiometricsModule.mm` para o Codegen/JSI no iOS
+    - [ ] Adicionar a permissão `NSFaceIDUsageDescription` no `Info.plist`
+  - [ ] **Sprint 4: CI/CD & Deploy de Produção**
+    - [ ] Configuração do EAS Build (Expo Application Services) para Android (APK/AAB) e iOS (TestFlight)
+    - [ ] Code Review final (`/review-code`) e auditoria de regressão antes do lançamento
