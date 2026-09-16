@@ -43,6 +43,10 @@ yarn-error.*
 # Private Notion Integration
 .notion-sync/
 
-.agents
-.sdd
+# SDD & Tools
+.agents/
+.agent/
+.sdd/
+PROGRESS.md
+.notion-sync/
 
