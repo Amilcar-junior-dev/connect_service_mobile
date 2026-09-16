@@ -1,39 +1,11 @@
 import { create } from 'zustand';
-import React from 'react';
+import { ToastVariant, ToastOptions, ToastState } from '~/types/toast.types';
 
-export type ToastVariant = 'success' | 'error' | 'warning' | 'info';
-
-export interface ToastOptions {
-  type?: ToastVariant;
-  title?: string;
-  description?: string;
-  message?: string; // alias/fallback para description
-  icon?: React.ReactNode;
-  duration?: number; // ms, ex: 4000
-  onPress?: () => void;
-}
-
-export interface ToastState {
-  visible: boolean;
-  type: ToastVariant;
-  title?: string;
-  description: string;
-  icon?: React.ReactNode;
-  duration: number;
-  onPress?: () => void;
-
-  showToast: (options: ToastOptions | string) => void;
-  hideToast: () => void;
-
-  error: (description: string, options?: Omit<ToastOptions, 'description' | 'type'>) => void;
-  success: (description: string, options?: Omit<ToastOptions, 'description' | 'type'>) => void;
-  warning: (description: string, options?: Omit<ToastOptions, 'description' | 'type'>) => void;
-  info: (description: string, options?: Omit<ToastOptions, 'description' | 'type'>) => void;
-}
+export { ToastVariant, ToastOptions, ToastState };
 
 export const useToastStore = create<ToastState>((set, get) => ({
   visible: false,
-  type: 'info',
+  type: ToastVariant.INFO,
   title: undefined,
   description: '',
   icon: undefined,
@@ -44,7 +16,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
     if (typeof options === 'string') {
       set({
         visible: true,
-        type: 'info',
+        type: ToastVariant.INFO,
         title: undefined,
         description: options,
         icon: undefined,
@@ -55,7 +27,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
     }
 
     const {
-      type = 'info',
+      type = ToastVariant.INFO,
       title,
       description = options.message || '',
       icon,
@@ -65,7 +37,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
 
     set({
       visible: true,
-      type,
+      type: type as ToastVariant,
       title,
       description,
       icon,
@@ -80,7 +52,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
 
   error: (description, options) => {
     get().showToast({
-      type: 'error',
+      type: ToastVariant.ERROR,
       description,
       ...options,
     });
@@ -88,7 +60,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
 
   success: (description, options) => {
     get().showToast({
-      type: 'success',
+      type: ToastVariant.SUCCESS,
       description,
       ...options,
     });
@@ -96,7 +68,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
 
   warning: (description, options) => {
     get().showToast({
-      type: 'warning',
+      type: ToastVariant.WARNING,
       description,
       ...options,
     });
@@ -104,7 +76,7 @@ export const useToastStore = create<ToastState>((set, get) => ({
 
   info: (description, options) => {
     get().showToast({
-      type: 'info',
+      type: ToastVariant.INFO,
       description,
       ...options,
     });

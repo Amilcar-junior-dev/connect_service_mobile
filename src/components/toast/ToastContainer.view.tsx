@@ -36,7 +36,7 @@ export function ToastContainer() {
   // Definições de Cores e Ícones Padrão por Variante baseados no Tema Ativo
   const getVariantStyles = (variant: ToastVariant) => {
     switch (variant) {
-      case 'success':
+      case ToastVariant.SUCCESS:
         return {
           borderColor: 'border-success/40',
           bgColor: 'bg-surface',
@@ -44,7 +44,7 @@ export function ToastContainer() {
           textColor: 'text-success',
           defaultIcon: <Check width={20} height={20} color={colors?.success || '#189143'} />,
         };
-      case 'error':
+      case ToastVariant.ERROR:
         return {
           borderColor: 'border-danger/40',
           bgColor: 'bg-surface',
@@ -52,7 +52,7 @@ export function ToastContainer() {
           textColor: 'text-danger',
           defaultIcon: <Close width={20} height={20} color={colors?.danger || '#ea001b'} />,
         };
-      case 'warning':
+      case ToastVariant.WARNING:
         return {
           borderColor: 'border-warning/40',
           bgColor: 'bg-surface',
@@ -60,7 +60,7 @@ export function ToastContainer() {
           textColor: 'text-warning',
           defaultIcon: <Notification width={20} height={20} color={colors?.warning || '#f79f1a'} />,
         };
-      case 'info':
+      case ToastVariant.INFO:
       default:
         return {
           borderColor: 'border-accent/40',
