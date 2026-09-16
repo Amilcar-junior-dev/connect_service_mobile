@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
+
 import { useSharedValue, useAnimatedStyle, withTiming, interpolateColor } from 'react-native-reanimated';
+
 import { useActiveTheme } from '~/hooks/colorScheme';
+
 import { CustomToggleProps } from './customToggle.scheme';
 
 export function useCustomToggleViewModel({ value, onValueChange }: Omit<CustomToggleProps, 'containerClass'>) {
@@ -9,7 +12,7 @@ export function useCustomToggleViewModel({ value, onValueChange }: Omit<CustomTo
 
   useEffect(() => {
     progress.value = withTiming(value ? 1 : 0, { duration: 250 });
-  }, [value]);
+  }, [value, progress]);
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     const bgColor = interpolateColor(

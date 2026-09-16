@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+
 import { View, Text, TouchableOpacity } from 'react-native';
+
 import Animated, { SlideInUp, SlideOutUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useActiveTheme } from '~/hooks/colorScheme';
-import { useToastStore, ToastVariant } from '~/store/useToastStore';
+
 import Check from '~/assets/svg/Check.svg';
 import Close from '~/assets/svg/Close.svg';
 import Notification from '~/assets/svg/Notification.svg';
+import { useActiveTheme } from '~/hooks/colorScheme';
+import { useToastStore, ToastVariant } from '~/store/useToastStore';
 
 export function ToastContainer() {
   const { colors, vars } = useActiveTheme();

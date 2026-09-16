@@ -1,9 +1,13 @@
 import React from 'react';
+
 import { TouchableOpacity, View, Text } from 'react-native';
+
 import Animated from 'react-native-reanimated';
+
 import { cn } from '~/utils/cx';
-import { useCustomToggleViewModel } from './CustomToggle.viewModel';
+
 import { CustomToggleProps } from './customToggle.scheme';
+import { useCustomToggleViewModel } from './CustomToggle.viewModel';
 
 export function CustomToggle({
   value,
