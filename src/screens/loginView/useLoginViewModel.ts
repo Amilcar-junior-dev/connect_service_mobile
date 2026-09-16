@@ -7,6 +7,8 @@ import { useModalStore } from '~/store/useModalStore';
 import { supabase } from '~/lib/supabase';
 import { companyService } from '~/services/companyService';
 import { useOnboardingStore } from '~/store/useOnboardingStore';
+import { toast } from '~/store/useToastStore';
+import { mapSupabaseAuthError } from '~/utils/errorMapper';
 
 export default function useLoginViewModel() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -34,7 +36,8 @@ export default function useLoginViewModel() {
 
       console.log("🚀 ~ useLoginViewModel.ts:33 ~ useLoginViewModel ~ error:", error)
       if (error) {
-        Alert.alert('Erro ao entrar', error.message);
+        const mapped = mapSupabaseAuthError(error);
+        toast.error(mapped.description, { title: mapped.title });
         return;
       }
 
@@ -57,7 +60,8 @@ export default function useLoginViewModel() {
       }
     } catch (error) {
       console.error('Error logging in:', error);
-      Alert.alert('Erro', 'Ocorreu um erro inesperado ao fazer login.');
+      const mapped = mapSupabaseAuthError(error);
+      toast.error(mapped.description, { title: mapped.title });
     } finally {
       setIsLoading(false);
     }

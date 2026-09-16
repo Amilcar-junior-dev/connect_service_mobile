@@ -3,6 +3,7 @@ import useRegisterViewModel from './useRegisterViewModel';
 import { supabase } from '~/lib/supabase';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
+import { useToastStore } from '~/store/useToastStore';
 
 describe('useRegisterViewModel', () => {
   it('deve alternar a visibilidade da senha e confirmação de senha de forma independente', async () => {
@@ -23,14 +24,13 @@ describe('useRegisterViewModel', () => {
     expect(result.current.isConfirmPasswordVisible).toBe(true);
   });
 
-  it('deve cadastrar com sucesso (sessão direta) e navegar para a Home', async () => {
+  it('deve cadastrar com sucesso (sessão direta) e navegar para o Onboarding', async () => {
     const mockSignUp = supabase.auth.signUp as jest.Mock;
     mockSignUp.mockResolvedValueOnce({
       data: { session: { access_token: 'token' } },
       error: null,
     });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useRegisterViewModel());
 
     await act(async () => {
@@ -47,11 +47,14 @@ describe('useRegisterViewModel', () => {
       email: 'novo@example.com',
       password: 'senha123',
     });
-    expect(alertSpy).toHaveBeenCalledWith('Sucesso!', 'Cadastro realizado com sucesso!');
-    expect(router.push).toHaveBeenCalledWith('/(private)/(tabs)/home');
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('success');
+    expect(toastState.title).toBe('Boas-vindas!');
+    expect(router.push).toHaveBeenCalledWith('/onboarding');
   });
 
-  it('deve cadastrar com sucesso (confirmação pendente), alertar o usuário e ir para login', async () => {
+  it('deve cadastrar com sucesso (confirmação pendente), notificar via Toast e ir para login', async () => {
     const mockSignUp = supabase.auth.signUp as jest.Mock;
     // Sem data.session indica confirmação pendente de e-mail
     mockSignUp.mockResolvedValueOnce({
@@ -59,7 +62,6 @@ describe('useRegisterViewModel', () => {
       error: null,
     });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useRegisterViewModel());
 
     await act(async () => {
@@ -72,21 +74,20 @@ describe('useRegisterViewModel', () => {
       await result.current.onSubmit();
     });
 
-    expect(alertSpy).toHaveBeenCalledWith(
-      'Confirmar Conta',
-      'Cadastro realizado! Por favor, confirme seu e-mail pelo link enviado para a sua caixa de entrada.'
-    );
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('info');
+    expect(toastState.title).toBe('Confirmar Conta');
     expect(router.push).toHaveBeenCalledWith('/login');
   });
 
-  it('deve exibir um Alerta quando a API do Supabase retornar erro no cadastro', async () => {
+  it('deve exibir um Toast de erro amigável quando a API do Supabase retornar erro no cadastro', async () => {
     const mockSignUp = supabase.auth.signUp as jest.Mock;
     mockSignUp.mockResolvedValueOnce({
       data: { session: null },
-      error: { message: 'Este e-mail já está cadastrado' },
+      error: { message: 'User already registered' },
     });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useRegisterViewModel());
 
     await act(async () => {
@@ -99,7 +100,11 @@ describe('useRegisterViewModel', () => {
       await result.current.onSubmit();
     });
 
-    expect(alertSpy).toHaveBeenCalledWith('Erro ao cadastrar', 'Este e-mail já está cadastrado');
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('error');
+    expect(toastState.title).toBe('E-mail já Cadastrado');
+    expect(toastState.description).toContain('já está cadastrado');
     expect(router.push).not.toHaveBeenCalled();
   });
 });

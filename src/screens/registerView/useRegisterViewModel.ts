@@ -4,6 +4,8 @@ import { router } from 'expo-router';
 import { useAppForm } from '~/hooks/useAppForm';
 import { RegisterFormData, registerScheme } from './register.scheme';
 import { supabase } from '~/lib/supabase';
+import { toast } from '~/store/useToastStore';
+import { mapSupabaseAuthError } from '~/utils/errorMapper';
 
 export default function useRegisterViewModel() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -36,23 +38,25 @@ export default function useRegisterViewModel() {
       });
 
       if (error) {
-        Alert.alert('Erro ao cadastrar', error.message);
+        const mapped = mapSupabaseAuthError(error);
+        toast.error(mapped.description, { title: mapped.title });
         return;
       }
 
       if (data.session) {
-        Alert.alert('Sucesso!', 'Cadastro realizado com sucesso!');
-        router.push('/(private)/(tabs)/home');
+        toast.success('Cadastro realizado com sucesso!', { title: 'Boas-vindas!' });
+        router.push('/onboarding');
       } else {
-        Alert.alert(
-          'Confirmar Conta',
-          'Cadastro realizado! Por favor, confirme seu e-mail pelo link enviado para a sua caixa de entrada.'
+        toast.info(
+          'Cadastro realizado! Por favor, confirme seu e-mail pelo link enviado para sua caixa de entrada.',
+          { title: 'Confirmar Conta', duration: 6000 }
         );
         router.push('/login');
       }
     } catch (error) {
       console.error('Error registering user:', error);
-      Alert.alert('Erro', 'Ocorreu um erro inesperado ao realizar o cadastro.');
+      const mapped = mapSupabaseAuthError(error);
+      toast.error(mapped.description, { title: mapped.title });
     } finally {
       setIsLoading(false);
     }

@@ -11,6 +11,7 @@ import { Theme } from '~/styles/colors';
 import '~/styles/global.css';
 import { View } from 'react-native';
 import { GlobalModalManager } from '~/components/modals/GlobalModalManager';
+import { ToastContainer } from '~/components/toast/ToastContainer.view';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '~/lib/reactQuery';
 
@@ -36,6 +37,7 @@ export default function RouteLayout() {
             <Stack.Screen name="login" options={{ headerShown: false }} />
           </Stack>
           <GlobalModalManager />
+          <ToastContainer />
         </View>
       </GestureHandlerRootView>
     </QueryClientProvider>

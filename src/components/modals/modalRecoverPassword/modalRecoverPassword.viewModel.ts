@@ -6,6 +6,8 @@ import { useAppForm } from '~/hooks/useAppForm';
 import { useModalStore } from '~/store/useModalStore';
 import { RecoverPasswordSchema } from './modalRecoverPassword.schema';
 import { supabase } from '~/lib/supabase';
+import { toast } from '~/store/useToastStore';
+import { mapSupabaseAuthError } from '~/utils/errorMapper';
 
 export function useModalRecoverPasswordViewModel() {
   const modalRef = useRef<Modalize>(null);
@@ -37,27 +39,22 @@ export function useModalRecoverPasswordViewModel() {
         });
 
         if (error) {
-          Alert.alert('Erro ao solicitar recuperação', error.message);
+          const mapped = mapSupabaseAuthError(error);
+          toast.error(mapped.description, { title: mapped.title });
           return;
         }
 
         console.log('✅ Solicitação de recuperação enviada para:', dat.email);
 
-        Alert.alert(
-          'Recuperação de Senha',
+        toast.success(
           'Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua senha.',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                handleClose();
-              },
-            },
-          ]
+          { title: 'Recuperação Enviada', duration: 5000 }
         );
+        handleClose();
       } catch (error) {
         console.error('Error requesting password recovery:', error);
-        Alert.alert('Erro', 'Ocorreu um erro inesperado ao solicitar a recuperação de senha.');
+        const mapped = mapSupabaseAuthError(error);
+        toast.error(mapped.description, { title: mapped.title });
       } finally {
         setIsLoading(false);
       }

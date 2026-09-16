@@ -63,6 +63,36 @@ useModalStore.getState().openModal('RECOVER_PASSWORD', { optionalData });
 
 ---
 
+## 🔔 Sistema Global de Feedback (`ToastContainer`)
+
+Notificações flutuantes animadas no topo da tela com suporte a **4 variantes (`error`, `success`, `warning`, `info`)**, temas **Light/Dark**, **tempo customizável**, **título + descrição**, **ícone no canto esquerdo** e **ação de clique (`onPress`)**.
+
+### Como disparar um Toast em qualquer ViewModel, Hook ou utilitário:
+```typescript
+import { toast } from '~/store/useToastStore';
+import { mapSupabaseAuthError } from '~/utils/errorMapper';
+
+// Exemplo 1: Toast de erro amigável com tradução de erro do Supabase
+const mapped = mapSupabaseAuthError(error);
+toast.error(mapped.description, { title: mapped.title });
+
+// Exemplo 2: Toast de sucesso com tempo e callback de clique
+toast.success('Perfil atualizado com sucesso!', {
+  title: 'Sucesso',
+  duration: 3000,
+  onPress: () => router.push('/profile'),
+});
+
+// Exemplo 3: Toast de informação com ícone customizado
+toast.info('Seu link de confirmação foi enviado por e-mail.', {
+  title: 'Verifique sua Caixa de Entrada',
+  duration: 6000,
+});
+```
+
+---
+
 ## 🖼️ Ícones e Recursos Vetoriais (SVG)
 - **Caminho:** `~/assets/svg/`
-- **Ícones disponíveis:** `LogoConnect.svg`, `Eye.svg`, `CloseEye.svg`, `GoogleLogo.svg`, `Close.svg`, etc.
+- **Ícones disponíveis:** `LogoConnect.svg`, `Eye.svg`, `CloseEye.svg`, `GoogleLogo.svg`, `Close.svg`, `Check.svg`, `Notification.svg`, etc.
+

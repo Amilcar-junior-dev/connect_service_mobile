@@ -1,17 +1,15 @@
 import { renderHook, act } from '@testing-library/react-native';
 import { useModalRecoverPasswordViewModel } from './modalRecoverPassword.viewModel';
 import { supabase } from '~/lib/supabase';
-import { Alert } from 'react-native';
+import { useToastStore } from '~/store/useToastStore';
 
 describe('useModalRecoverPasswordViewModel', () => {
-  it('deve solicitar recuperação de senha com sucesso e fechar a modal', async () => {
+  it('deve solicitar recuperação de senha com sucesso, exibir Toast e fechar a modal', async () => {
     const mockReset = supabase.auth.resetPasswordForEmail as jest.Mock;
     mockReset.mockResolvedValueOnce({ error: null });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useModalRecoverPasswordViewModel());
 
-    // Mock do método close da modalize
     const closeSpy = jest.fn();
     // @ts-ignore
     result.current.modalRef.current = { close: closeSpy };
@@ -27,26 +25,19 @@ describe('useModalRecoverPasswordViewModel', () => {
     expect(mockReset).toHaveBeenCalledWith('recuperar@example.com', {
       redirectTo: 'connectservice://reset-password',
     });
-    expect(alertSpy).toHaveBeenCalledWith(
-      'Recuperação de Senha',
-      'Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua senha.',
-      expect.any(Array)
-    );
-    
-    // Simula o clique no botão "OK" do Alerta que aciona o closeSpy
-    const alertCallbacks = alertSpy.mock.calls[0][2];
-    // @ts-ignore
-    alertCallbacks[0].onPress();
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('success');
+    expect(toastState.title).toBe('Recuperação Enviada');
     expect(closeSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('deve exibir um Alerta quando a API do Supabase falhar', async () => {
+  it('deve exibir um Toast de erro amigável quando a API do Supabase falhar', async () => {
     const mockReset = supabase.auth.resetPasswordForEmail as jest.Mock;
     mockReset.mockResolvedValueOnce({
-      error: { message: 'Limite de envios excedido' },
+      error: { message: 'too many requests' },
     });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useModalRecoverPasswordViewModel());
 
     const closeSpy = jest.fn();
@@ -64,7 +55,10 @@ describe('useModalRecoverPasswordViewModel', () => {
     expect(mockReset).toHaveBeenCalledWith('limite@example.com', {
       redirectTo: 'connectservice://reset-password',
     });
-    expect(alertSpy).toHaveBeenCalledWith('Erro ao solicitar recuperação', 'Limite de envios excedido');
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('error');
+    expect(toastState.title).toBe('Muitas Tentativas');
     expect(closeSpy).not.toHaveBeenCalled();
   });
 });

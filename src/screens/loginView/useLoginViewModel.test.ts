@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { Alert } from 'react-native';
 import { companyService } from '~/services/companyService';
 import { useOnboardingStore } from '~/store/useOnboardingStore';
+import { useToastStore } from '~/store/useToastStore';
 
 jest.mock('~/services/companyService', () => ({
   companyService: {
@@ -75,14 +76,13 @@ describe('useLoginViewModel', () => {
     expect(router.push).toHaveBeenCalledWith('/onboarding');
   });
 
-  it('deve exibir um Alerta quando a API do Supabase retornar erro', async () => {
+  it('deve exibir um Toast de erro amigável quando a API do Supabase retornar erro', async () => {
     const mockSignIn = supabase.auth.signInWithPassword as jest.Mock;
     mockSignIn.mockResolvedValueOnce({
       data: { session: null },
-      error: { message: 'Credenciais inválidas' },
+      error: { message: 'Invalid login credentials' },
     });
 
-    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
     const { result } = await renderHook(() => useLoginViewModel());
 
     await act(async () => {
@@ -95,7 +95,11 @@ describe('useLoginViewModel', () => {
     });
 
     expect(mockSignIn).toHaveBeenCalled();
-    expect(alertSpy).toHaveBeenCalledWith('Erro ao entrar', 'Credenciais inválidas');
+    const toastState = useToastStore.getState();
+    expect(toastState.visible).toBe(true);
+    expect(toastState.type).toBe('error');
+    expect(toastState.title).toBe('Credenciais Inválidas');
+    expect(toastState.description).toContain('E-mail ou senha incorretos');
     expect(router.push).not.toHaveBeenCalled();
   });
 });
