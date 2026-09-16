@@ -25,6 +25,11 @@ export interface Database {
           logo_url: string | null;
           cover_url: string | null;
           primary_color: string | null;
+          first_name: string | null;
+          last_name: string | null;
+          avatar_url: string | null;
+          specialization: string | null;
+          operating_hours: Json | null;
           onboarding_completed: boolean;
           created_at: string;
           updated_at: string;
@@ -44,6 +49,11 @@ export interface Database {
           logo_url?: string | null;
           cover_url?: string | null;
           primary_color?: string | null;
+          first_name?: string | null;
+          last_name?: string | null;
+          avatar_url?: string | null;
+          specialization?: string | null;
+          operating_hours?: Json | null;
           onboarding_completed?: boolean;
           created_at?: string;
           updated_at?: string;
@@ -63,6 +73,11 @@ export interface Database {
           logo_url?: string | null;
           cover_url?: string | null;
           primary_color?: string | null;
+          first_name?: string | null;
+          last_name?: string | null;
+          avatar_url?: string | null;
+          specialization?: string | null;
+          operating_hours?: Json | null;
           onboarding_completed?: boolean;
           created_at?: string;
           updated_at?: string;

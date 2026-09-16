@@ -6,7 +6,7 @@ export interface MappedError {
 /**
  * Mapeia erros em inglês do Supabase Auth e da API para mensagens amigáveis em pt-BR.
  */
-export function mapSupabaseAuthError(error: any): MappedError {
+export function mapSupabaseAuthError(error: unknown): MappedError {
   if (!error) {
     return {
       title: 'Aviso',
@@ -14,7 +14,18 @@ export function mapSupabaseAuthError(error: any): MappedError {
     };
   }
 
-  const rawMessage = typeof error === 'string' ? error : error?.message || error?.error_description || '';
+  let rawMessage = '';
+  if (typeof error === 'string') {
+    rawMessage = error;
+  } else if (error && typeof error === 'object') {
+    const errObj = error as Record<string, unknown>;
+    if (typeof errObj.message === 'string') {
+      rawMessage = errObj.message;
+    } else if (typeof errObj.error_description === 'string') {
+      rawMessage = errObj.error_description;
+    }
+  }
+
   const lowerMsg = rawMessage.toLowerCase();
 
   if (lowerMsg.includes('invalid login credentials') || lowerMsg.includes('invalid_credentials')) {

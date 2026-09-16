@@ -21,7 +21,7 @@ export const onboardingScheme = z.object({
   address: z.string().optional(),
 
   // Passo 4: Horários de Atendimento (JSON)
-  operatingHours: z.record(z.any()).optional(),
+  operatingHours: z.record(z.string(), z.any()).optional(),
 });
 
 export type OnboardingFormData = z.infer<typeof onboardingScheme>;

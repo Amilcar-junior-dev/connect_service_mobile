@@ -255,6 +255,7 @@ export function useOnboardingViewModel() {
     address,
     operatingHours,
     isLoading,
+    isFetchingCep,
     isTimePickerVisible,
     timePickerTarget,
     openTimePicker,

@@ -7,6 +7,7 @@ import {
   ScrollView,
   Switch,
   TextInput,
+  DimensionValue,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useActiveTheme } from '~/hooks/colorScheme';
@@ -75,7 +76,7 @@ export function OnboardingView() {
           <View className="w-full h-1 bg-stone/20 rounded-full overflow-hidden">
             <View
               className="h-full bg-accent rounded-full"
-              style={{ width: vm.progressPercentage }}
+              style={{ width: vm.progressPercentage as DimensionValue }}
             />
           </View>
         </View>
